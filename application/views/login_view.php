@@ -28,19 +28,20 @@
     <div class="main">   
 
     <?php if (isset($mostrar_codigo_verificacion) && $mostrar_codigo_verificacion): ?>
-        <!-- Mostrar el campo para el código de verificación -->
-        <form id="main-ver" method="post" action="<?php echo base_url('index.php/Login/validate_login'); ?>">
-            
-            <input type="hidden" name="email" value="<?php echo htmlspecialchars($this->session->userdata('temp_login')['email']); ?>">
-            <input type="hidden" name="password" value="<?php echo htmlspecialchars($this->session->userdata('temp_login')['password']); ?>">
-            <div class="">
-                <label for="codigo_verificacion">Verificando....</label>
-                <input type="text" name="codigo_verificacion" id="codigo_verificacion" placeholder="codigo de verificación"class="form-control verification-code" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Verificar Código</button>
-        </form>
-    <?php endif; ?>
-    <div class="main">   
+    <!-- Mostrar el campo para el código de verificación -->
+    <form id="main-ver" method="post" action="<?php echo base_url('index.php/Login/validate_login'); ?>">
+        
+        <input type="hidden" name="email" value="<?php echo htmlspecialchars($this->session->userdata('temp_login')['email']); ?>">
+        <input type="hidden" name="password" value="<?php echo htmlspecialchars($this->session->userdata('temp_login')['password']); ?>">
+        <div class="">
+            <label for="codigo_verificacion">Verificando....</label>
+            <video class="video-lo" src="<?php echo base_url('assets/img/candado.mp4'); ?>" autoplay loop muted style="display: block; margin: 10px auto; width: 100px; height: 100px;"></video>
+            <br>
+            <input type="text" name="codigo_verificacion" id="codigo_verificacion" placeholder="Código de verificación" class="form-control verification-code" required>
+        </div>
+        <button type="submit" id="SingIn-b"><i class="bx bx-lock"></i> Verificar codigo</button>
+    </form>
+<?php endif; ?>
         <input type="checkbox" id="chk" aria-hidden="true">
         
         <div class="login">
