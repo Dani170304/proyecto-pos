@@ -88,6 +88,12 @@ class Admin extends CI_Controller
         $this->load->view('inc/pie');
     }
 
+    public function eliminardb()
+    {
+        $id_usuario=$_POST['id_usuario'];
+        $this->Admin_model->eliminarusuario($id_usuario);
+        redirect('Admin/index', 'refresh');
+    }
     public function agregarbd()
     {
         // Cargar el modelo de Usuario
@@ -175,7 +181,7 @@ class Admin extends CI_Controller
         }
     }
 
-    public function eliminardb()
+    public function deshabilitardb()
     {
         $id_usuario = $_POST['id_usuario'];
         $data['estado'] = '0';

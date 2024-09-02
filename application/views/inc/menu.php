@@ -64,7 +64,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
     <div class="image">
-        <img src="<?php echo base_url(); ?>template/dist/img/user3-128x128.jpg" class="img-circle elevation-2" alt="User Image">
+        <img src="<?php echo base_url(); ?>template/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
     </div>
     <div class="info">
         <?php if (isset($user) && !is_null($user)): ?>

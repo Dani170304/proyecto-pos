@@ -80,7 +80,7 @@
                 foreach($usuarios->result() as $row)
                 {
                 ?>
-                <tr>
+                <tr>Tabla de definición de actores gestión de ventas
                     <td> <?php echo $contador ?></td>
                     <td><?php echo $row-> nombres; ?></td>
                     <td><?php echo $row-> apellidos; ?></td>
@@ -92,7 +92,7 @@
                     echo form_open_multipart("Admin/habilitarbd");
                     ?>
                     <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>">
-                    <button type="submit" class="btn btn-morado">Habilitar</button>
+                    <button type="submit" class="btn btn-morado"><i class="fas fa-check-circle"></i></button>
                     <?php
                     echo form_close();
                     ?>

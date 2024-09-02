@@ -12,6 +12,14 @@
         background-color: #563d7c; /* Color morado más oscuro para el hover */
         color: white;
     }
+    .btn-info
+    {
+      padding-top: 3px;
+      padding-bottom: 3px;
+      padding-left: 8px;
+      padding-right: 8px;
+
+    }
     .btn-verde {
         background-color: #3AD335; /* Color morado */
         color: black; /* Color del texto */
@@ -99,6 +107,7 @@
                 ?>
                 <tr>
                     <td  class="color-num"> <?php echo $contador ?></td>
+                    </td>
                     <td><?php echo $row-> nombres; ?></td>
                     <td><?php echo $row-> apellidos; ?></td>
                     <td><?php echo $row-> email; ?></td>
@@ -112,11 +121,18 @@
                           <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
                         <?php echo form_close(); ?>
                                 
+
+
                         <?php echo form_open_multipart("Admin/eliminardb"); ?>
                           <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>">
                           <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                         <?php echo form_close(); ?>
+                        <?php echo form_open_multipart("Admin/deshabilitardb"); ?>
+                          <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>">
+                          <button type="submit" class="btn btn-info"><i class="fas fa-ban"></i></button>
+                        <?php echo form_close(); ?>
                       </div>
+                      
                     </td>
                 </tr>
                 <?php

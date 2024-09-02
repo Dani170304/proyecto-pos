@@ -49,7 +49,7 @@ class Admin_model extends CI_Model {
     }
     public function get_user_by_id($user_id) {
         $this->db->where('id_usuario', $user_id);
-        $query = $this->db->get('usuarios'); // Cambia 'users' si es necesario
+        $query = $this->db->get('usuarios'); 
         return $query->row_array();
     }
 
