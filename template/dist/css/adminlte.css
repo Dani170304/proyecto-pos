@@ -5168,11 +5168,14 @@ input[type="button"].btn-block {
   padding: 0.75rem 1.5rem;
   font-size: 1.25rem;
   line-height: 1.5;
+
 }
 
 .pagination-lg .page-item:first-child .page-link {
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
+  background-color: #fff;
+
 }
 
 .pagination-lg .page-item:last-child .page-link {
@@ -10680,10 +10683,47 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .dark-mode .preloader {
-  background-color: #454d55 !important;
-  color: #fff;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	overflow: hidden;
+	background: linear-gradient(45deg, rgb(170, 0, 68), #380016);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.dark-mode .preloader::before {
+	content: "";
+	border: 6px solid transparent;
+	border-top-color: #fff;
+	border-bottom-color: #fff;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	-webkit-animation: animate-preloader 1s linear infinite;
+	animation: animate-preloader 1s linear infinite;
+	box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+@-webkit-keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
+@keyframes animate-preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 html.scroll-smooth {
   scroll-behavior: smooth;
 }
@@ -21324,32 +21364,35 @@ body.text-sm .control-sidebar {
 
 .dark-mode .page-item.disabled a,
 .dark-mode .page-item.disabled .page-link {
-  background-color: #3a4047 !important;
-  border-color: #6c757d !important;
-  color: #6c757d;
+  background-color: #000 !important;
+  border: 2px solid #B30050 !important;
+  color: #2a92ff;
 }
 
 .dark-mode .page-item .page-link {
-  color: #3f6791;
+  color: #2a92ff;
 }
 
 .dark-mode .page-item.active .page-link {
-  background-color: #3f6791;
-  border-color: #3f6791;
+  background-color: #000;
+  border: 2px solid #B30050;
   color: #fff;
 }
 
 .dark-mode .page-item.active .page-link:hover, .dark-mode .page-item.active .page-link:focus {
-  color: #ced4da !important;
+  color: #ff0000 !important;
+  background-color: #3f474e;
+
 }
 
 .dark-mode .page-item:not(.active) .page-link {
-  background-color: #343a40;
-  border-color: #6c757d;
+  background-color: #000;
+  border: 2px solid #B30050;
+
 }
 
 .dark-mode .page-item:not(.active) .page-link:hover, .dark-mode .page-item:not(.active) .page-link:focus {
-  color: #4774a3;
+  color: #ff0000;
   background-color: #3f474e;
 }
 
@@ -33238,7 +33281,8 @@ html.maximized-card {
 .dark-mode .table-bordered,
 .dark-mode .table-bordered td,
 .dark-mode .table-bordered th {
-  border-color: #6c757d;
+  border-color:  #141414;
+  ;
 }
 
 .dark-mode .table-hover tbody tr:hover {
@@ -33253,7 +33297,7 @@ html.maximized-card {
 
 .dark-mode .table th,
 .dark-mode .table td {
-  border-top-color: #6c757d;
+  border-top-color: #939393;
 }
 
 .dark-mode .table.table-head-fixed thead tr:nth-child(1) th {
@@ -53091,13 +53135,14 @@ font-size: 21px;
 }
 .table-neon {
   background-color: #141414; /* Fondo oscuro para hacer resaltar los colores neón */
+
 }
 .table-neon th {
-  background-color: #39FF14; /* Verde neón para los encabezados */
-  color: #000; 
-  text-shadow: 0 0 5px #39FF14;
+  background-color: #B30051; /* Verde neón para los encabezados */
+  color: #fff; 
+  /* text-shadow: 0 0 5px #39FF14; */
   padding: 5px 10px; /* Reduce el espacio dentro de las celdas del encabezado */
-  font-size: 14px; /* Reduce el tamaño de la fuente en el encabezado */
+  font-size: 16px; /* Reduce el tamaño de la fuente en el encabezado */
 }
 .table-neon td {
   background-color: #141414; /* Fondo oscuro para las celdas */
@@ -53106,7 +53151,7 @@ font-size: 21px;
   padding: 5px 10px; /* Reduce el espacio dentro de las celdas */
 }
 .table-neon .color-num {
-  background-color: #FF073A; /* Rojo neón para la columna No. */
+  background-color: #5D002A; /* Rojo neón para la columna No. */
   color: #ffffff;
   text-shadow: 0 0 5px #FF073A;
   padding: 5px 10px; /* Ajuste del padding para que coincida con el resto de la tabla */

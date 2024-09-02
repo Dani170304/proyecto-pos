@@ -33,6 +33,12 @@
       color: #083CC2;
       font-weight: bold;
     }
+    .hr-ta
+    {
+      margin-top: -10px;
+      margin-bottom: 30px;
+      border: 1px solid #ccc;
+    }
   </style>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -68,13 +74,11 @@
     </div>
 <?php endif; ?>
 <div class="card-info">
-              <div class="card-header">
-                <h3 class="card-title">LISTA</h3>
-              </div>
+
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped table-neon">
-
+<hr class="hr-ta">
             <thead>
 
                 <th>No.</th>

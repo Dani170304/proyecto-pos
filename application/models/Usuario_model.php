@@ -43,6 +43,7 @@ class Usuario_model extends CI_Model {
         $this->db->where('email', $email);
         return $this->db->update('usuarios');
     }
+
     
 }
 ?>

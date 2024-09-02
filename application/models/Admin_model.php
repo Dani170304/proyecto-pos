@@ -47,5 +47,46 @@ class Admin_model extends CI_Model {
         $this->db->where('id_usuario', $id_usuario);
         $this->db->update('usuarios', $data);
     }
+    public function get_user_by_id($user_id) {
+        $this->db->where('id_usuario', $user_id);
+        $query = $this->db->get('usuarios'); // Cambia 'users' si es necesario
+        return $query->row_array();
+    }
+
+    // Get total ganancias
+    public function get_ganancias() {
+        $this->db->select_sum('precio');
+        $query = $this->db->get('detalle_ventas');
+        $result = $query->row();
+        return $result->precio ? $result->precio : 0;
+    }
+
+    // Get total ventas
+    public function get_ventas() {
+        $this->db->select('COUNT(id_orden) as total_ventas');
+        $query = $this->db->get('ventas_cabeza');
+        $result = $query->row();
+        return $result->total_ventas ? $result->total_ventas : 0;
+    }
+
+    // Get total clientes
+    public function get_clientes() {
+        $this->db->where('rol', 'usuario');
+        $this->db->where('sesion_verificada', 'si');
+        $this->db->from('usuarios');
+        return $this->db->count_all_results();
+    }
+    public function obtener_ultimas_ventas() {
+        $this->db->select('v.id_orden, p.nombre AS producto, dv.cantidad, dv.precio, (dv.cantidad * dv.precio) AS total, u.nombres AS usuario');
+        $this->db->from('detalle_ventas dv');
+        $this->db->join('productos p', 'dv.id_producto = p.id_producto');
+        $this->db->join('ventas_cabeza v', 'dv.id_orden = v.id_orden');
+        $this->db->join('usuarios u', 'v.id_mesero = u.id_usuario');
+        $this->db->order_by('dv.fecha', 'DESC');
+        $this->db->limit(5); // Limita a las últimas 5 ventas
+        $query = $this->db->get();
+        return $query->result(); // Make sure this returns an array of objects
+    }
+    
 }
 ?>

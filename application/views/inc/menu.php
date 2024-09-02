@@ -1,8 +1,8 @@
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__wobble" src="<?php echo base_url(); ?>template/dist/img/logo_drink.jpg" alt="DricnkLogo" height="60" width="60">
+  <div class="preloader ">
+    <!-- <img class="animation__wobble" src="<?php echo base_url(); ?>template/dist/img/logo_drink.jpg" alt="DricnkLogo" height="60" width="60"> -->
   </div>
 
   <!-- INICIO Barra de arriba -->
@@ -54,7 +54,7 @@
   <!-- INICIO Navegador derecha -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index.html" class="brand-link">
+    <a href="<?php echo site_url('cerrarDrink'); ?>" class="brand-link">
       <img src="<?php echo base_url(); ?>template/dist/img/logo_drink.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">DRINKMASTER</span>
     </a>
@@ -63,15 +63,20 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="<?php echo base_url(); ?>template/dist/img/user3-128x128.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <p class="info-p"><strong>Daniela Coca</strong></p>
-          <p class="info-p-rol">admin</p>
+    <div class="image">
+        <img src="<?php echo base_url(); ?>template/dist/img/user3-128x128.jpg" class="img-circle elevation-2" alt="User Image">
+    </div>
+    <div class="info">
+        <?php if (isset($user) && !is_null($user)): ?>
+          <p class="info-p"><strong><?php echo $user['nombre_completo']; ?></strong></p>
+            <p class="info-p-rol"><?php echo $user['rol']; ?></p>
+        <?php else: ?>
+            <p class="info-p"><strong>Usuario no disponible</strong></p>
+            <p class="info-p-rol">Rol no disponible</p>
+        <?php endif; ?>
+    </div>
+</div>
 
-        </div>
-      </div>
 
       <!-- INICIO Navegador derecha -->
       <nav class="mt-2">

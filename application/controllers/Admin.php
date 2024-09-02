@@ -8,23 +8,60 @@ require 'vendor/autoload.php';
 
 class Admin extends CI_Controller
 {
+
     // usuarios
     public function dash()
     {
+        $data_g['ganancias'] = $this->Admin_model->get_ganancias();
+        $data_g['ventas'] = $this->Admin_model->get_ventas();
+        $data_g['clientes'] = $this->Admin_model->get_clientes();
+        $data_v['ventas'] = $this->Admin_model->obtener_ultimas_ventas();
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $data['user'] = $user_data;
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
-        $this->load->view('inc/dash');
+        $this->load->view('inc/menu', $data);
+        $this->load->view('inc/dash',$data_g, $data_v); // Suponiendo que esta es la vista
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
-
+    
+    
     public function index()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $data_u['user'] = $user_data;
+
         $lista = $this->Admin_model->listausuarios();
         $data['usuarios'] = $lista;
 
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
+        $this->load->view('inc/menu', $data_u);
         $this->load->view('admin_panel_view', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
