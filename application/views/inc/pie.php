@@ -47,6 +47,7 @@
 <!-- Page specific script -->
 <script>
 $(function () {
+    // Configuración para la tabla #example1
     $("#example1").DataTable({
         "responsive": true,
         "lengthChange": false,
@@ -55,9 +56,9 @@ $(function () {
             {
                 extend: 'excel',
                 text: '<i class="fas fa-file-excel"></i> Excel',
-                className: 'btn btn-secondary-exel',
+                className: 'btn btn-secondary-excel',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4] // Índices de las columnas a incluir
+                    columns: [0, 1, 2, 3, 4] // Columnas a incluir para esta tabla específica
                 }
             },
             {
@@ -65,7 +66,7 @@ $(function () {
                 text: '<i class="fas fa-file-pdf"></i> PDF',
                 className: 'btn btn-secondary-pdf',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4] // Índices de las columnas a incluir
+                    columns: [0, 1, 2, 3, 4] // Columnas a incluir para esta tabla específica
                 }
             },
             {
@@ -73,13 +74,49 @@ $(function () {
                 text: '<i class="fas fa-print"></i> Print',
                 className: 'btn btn-secondary-print',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4] // Índices de las columnas a incluir
+                    columns: [0, 1, 2, 3, 4] // Columnas a incluir para esta tabla específica
                 }
             }
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
-
 </script>
+<script>
+$(function () {
+    // Configuración para la tabla #example1
+    $("#example2").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": [
+            {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-secondary-excel',
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5] // Columnas a incluir para esta tabla específica
+                }
+            },
+            {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                className: 'btn btn-secondary-pdf',
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5] // Columnas a incluir para esta tabla específica
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i> Print',
+                className: 'btn btn-secondary-print',
+                exportOptions: {
+                    columns: [0, 2, 3, 4, 5] // Columnas a incluir para esta tabla específica
+                }
+            }
+        ]
+    }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+});
+</script>
+
 </body>
 </html>

@@ -41,11 +41,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>LISTA DE USUARIOS</h1>
+            <h1>LISTA DE productos</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/index">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/productos">Home</a></li>
               <li class="breadcrumb-item active">Tablas</li>
             </ol>
           </div>
@@ -53,7 +53,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <br>
-<a href="<?php echo base_url(); ?>index.php/Admin/index">
+<a href="<?php echo base_url(); ?>index.php/Admin/productos">
 <button type="button" class="btn btn-warning">Ver lista</button>
 <br>
 <br>
@@ -66,38 +66,48 @@
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
             <thead>
-                <th>No.</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Email</th>
-                <th>Rol</th>
+            <th>No.</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categoria</th>
+                <th>Stock</th>
+                <th>Precio</th>
                 <th>Estado</th>
-                <th>Habilitar</th>
+                <th>Acciones</th>
             </thead>
             <tbody>
                 <?php
                 $contador=1;
-                foreach($usuarios->result() as $row)
+                foreach($productos->result() as $row)
                 {
                 ?>
-                <tr>
-                    <td> <?php echo $contador ?></td>
-                    <td><?php echo $row-> nombres; ?></td>
-                    <td><?php echo $row-> apellidos; ?></td>
-                    <td><?php echo $row-> email; ?></td>
-                    <td><?php echo $row-> rol; ?></td>
-                    <td><?php echo $row-> estado; ?></td>
+                                <tr>
+                    <td  class="color-num"> <?php echo $contador ?></td>
+                    </td>
+                    <td>
+                        <?php
+                        $foto=$row->imagen;
+                        ?>
+                        <img src="<?php echo base_url()?>/assets/imagenes_bebidas/<?php echo $foto ?>" width="40"/>
+                    </td>
+
+                    <td><?php echo $row-> nombre; ?></td>
+                    <td><?php echo $row-> categoria; ?></td>
+                    <td><?php echo $row-> stock; ?></td>
+                    <td><?php echo $row-> precio; ?></td>
+                    <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td>
                     <?php
-                    echo form_open_multipart("Admin/habilitarbd");
+                    echo form_open_multipart("Admin/habilitarproductobd");
                     ?>
-                    <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>">
+                    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                     <button type="submit" class="btn btn-morado"><i class="fas fa-check-circle"></i></button>
                     <?php
                     echo form_close();
                     ?>
                     </td>
                 </tr>
+
                 <?php
                 $contador++;
                 }
