@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/productos">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos/productos">Home</a></li>
                         <li class="breadcrumb-item active">Agregar Producto</li>
                     </ol>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <?php echo form_open_multipart("Admin/agregarproductobd", ['id' => 'formAgregar']); ?>
+                            <?php echo form_open_multipart("Productos/agregarproductobd", ['id' => 'formAgregar']); ?>
 
                             <div class="form-group">
                                 <div style="position: relative;">

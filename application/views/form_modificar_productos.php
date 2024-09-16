@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/productos">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos/productos">Home</a></li>
                         <li class="breadcrumb-item active">Modificar Producto</li>
                     </ol>
                 </div>
@@ -71,68 +71,59 @@
                     <div class="card">
                         <div class="card-body">
                             <?php foreach ($infoproducto->result() as $row): ?>
-                                <?php echo form_open_multipart("Admin/modificarproductodb"); ?>
-                                
-                                <?php if ($this->session->flashdata('error_msg')): ?>
-                                    <script>
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: '<?php echo $this->session->flashdata('error_msg'); ?>',
-                                            confirmButtonText: 'OK',
-                                            confirmButtonColor: '#1AEB01',
-                                            customClass: {
-                                                confirmButton: 'swal2-confirm'
-                                            }
-                                        });
-                                    </script>
-                                <?php endif; ?>
+                                <?php echo form_open_multipart("Productos/modificarproductodb"); ?>
 
-                                <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>" required>
+<input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>" required>
+<input type="hidden" name="imagen_actual" value="<?php echo $row->imagen; ?>"> <!-- Imagen actual -->
 
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-user"></i></span>
-                                        <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" value="<?php echo $row->nombre; ?>" required>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-file-alt"></i></span>
-                                        <select class="form-control" name="categoria" required>
-                                            <option value="" disabled <?php echo ($row->categoria == '') ? 'selected' : ''; ?>>Seleccione la categoria</option>
-                                            <option value="botella" <?php echo ($row->categoria == 'botella') ? 'selected' : ''; ?>>Botella</option>
-                                            <option value="coctel" <?php echo ($row->categoria == 'coctel') ? 'selected' : ''; ?>>Coctel</option>
-                                            <option value="soda" <?php echo ($row->categoria == 'soda') ? 'selected' : ''; ?>>Sosa</option>
-                                            <option value="cerveza" <?php echo ($row->categoria == 'cerveza') ? 'selected' : ''; ?>>Cerveza</option>
-                                            <option value="piqueo" <?php echo ($row->categoria == 'piqueo') ? 'selected' : ''; ?>>Piqueo</option>
+<div class="form-group">
+    <div style="position: relative;">
+        <span class="input-icon"><i class="fa fa-user"></i></span>
+        <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" value="<?php echo $row->nombre; ?>" required>
+    </div>
+</div>
+<br>
+<div class="form-group">
+    <div style="position: relative;">
+        <span class="input-icon"><i class="fa fa-file-alt"></i></span>
+        <select class="form-control" name="categoria" required>
+            <option value="" disabled <?php echo ($row->categoria == '') ? 'selected' : ''; ?>>Seleccione la categoria</option>
+            <option value="botella" <?php echo ($row->categoria == 'botella') ? 'selected' : ''; ?>>Botella</option>
+            <option value="coctel" <?php echo ($row->categoria == 'coctel') ? 'selected' : ''; ?>>Coctel</option>
+            <option value="soda" <?php echo ($row->categoria == 'soda') ? 'selected' : ''; ?>>Soda</option>
+            <option value="cerveza" <?php echo ($row->categoria == 'cerveza') ? 'selected' : ''; ?>>Cerveza</option>
+            <option value="piqueo" <?php echo ($row->categoria == 'piqueo') ? 'selected' : ''; ?>>Piqueo</option>
+        </select>
+    </div>
+</div>
+<br>
+<div class="form-group">
+    <div style="position: relative;">
+        <span class="input-icon"><i class="fa fa-envelope"></i></span>
+        <input type="number" class="form-control" name="stock" placeholder="Escriba el stock" value="<?php echo $row->stock; ?>" required>
+    </div>
+</div>
+<br>
+<div class="form-group">
+    <div style="position: relative;">
+        <span class="input-icon"><i class="fa fa-dollar-sign"></i></span>
+        <input type="number" class="form-control" name="precio" placeholder="Escriba el precio" value="<?php echo $row->precio; ?>" required>
+    </div>
+</div>
+<br>
+<div class="form-group">
+    <div style="position: relative;">
+        <span class="input-icon"><i class="fa fa-image"></i></span>
+        <input type="file" class="form-control" name="imagen" accept="image/*">
+        <?php if (isset($row->imagen) && !empty($row->imagen)): ?>
+            <p>Imagen actual: <?php echo $row->imagen; ?></p>
+        <?php endif; ?>
+    </div>
+</div>
+<br>
+<button type="submit" class="btn btn-morado">Modificar Producto</button>
+<?php echo form_close(); ?>
 
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="stock" placeholder="Escriba el stock" value="<?php echo $row->stock; ?>" required>
-                                </div>
-                                <br>
-                                <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="precio" placeholder="Escriba el precio" value="<?php echo $row->precio; ?>" required>
-                                </div>
-                                <br>
-                                <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-image"></i></span>
-                                    <input type="file" class="form-control" name="imagen" accept="image/*" placeholder="Seleccione la imagen">
-                                    <?php if (isset($row->imagen) && !empty($row->imagen)): ?>
-                                        <p>Imagen seleccionada: <?php echo $row->imagen; ?></p>
-                                    <?php endif; ?>
-                                </div>
-
-                                <br>
-                                <button type="submit" class="btn btn-morado">Modificar Producto</button>
-                                <?php echo form_close(); ?>
                             <?php endforeach; ?>
                         </div>
                         <!-- /.card-body -->

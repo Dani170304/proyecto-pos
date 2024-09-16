@@ -67,10 +67,10 @@
       </div><!-- /.container-fluid -->
     </section>
     <br>
-<a href="<?php echo base_url(); ?>index.php/Admin/agregarproductos">
+<a href="<?php echo base_url(); ?>index.php/Productos/agregarproductos">
 <button type="button" class="btn btn-verde">Agregar producto</button>
 </a>
-<a href="<?php echo base_url(); ?>index.php/Admin/eliminadosproductos">
+<a href="<?php echo base_url(); ?>index.php/Productos/eliminadosproductos">
 <button type="button" class="btn btn-warning">Ver eliminados</button>
 <br>
 <br>
@@ -122,15 +122,15 @@
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td class="text-center">
                       <div class="btn-group-ac">
-                        <?php echo form_open_multipart("Admin/modificarproducto"); ?>
+                        <?php echo form_open_multipart("Productos/modificarproducto"); ?>
                           <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                           <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
                         <?php echo form_close(); ?>
-                        <?php echo form_open_multipart("Admin/eliminarproductodb"); ?>
+                        <?php echo form_open_multipart("Productos/eliminarproductodb"); ?>
                           <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                           <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                         <?php echo form_close(); ?>
-                        <?php echo form_open_multipart("Admin/deshabilitarproductodb"); ?>
+                        <?php echo form_open_multipart("Productos/deshabilitarproductodb"); ?>
                           <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                           <button type="submit" class="btn btn-info"><i class="fas fa-ban"></i></button>
                         <?php echo form_close(); ?>

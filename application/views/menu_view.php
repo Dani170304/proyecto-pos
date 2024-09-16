@@ -24,7 +24,7 @@
         <div class="mostrar" id="D1">
             <section class="products">
                 <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'botella') : ?>
+                    <?php if ($product['categoria'] === 'BOTELLA') : ?>
                         <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
@@ -42,7 +42,7 @@
         <div class="mostrar" id="D2">
             <section class="products">
                 <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'coctel') : ?>
+                    <?php if ($product['categoria'] === 'COCTEL') : ?>
                         <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
@@ -55,7 +55,7 @@
         <div class="mostrar" id="D3">
             <section class="products">
                 <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'cerveza') : ?>
+                    <?php if ($product['categoria'] === 'CERVEZA') : ?>
                         <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
@@ -68,7 +68,7 @@
         <div class="mostrar" id="D4">
             <section class="products">
                 <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'piqueo') : ?>
+                    <?php if ($product['categoria'] === 'PIQUEO') : ?>
                         <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
@@ -83,7 +83,10 @@
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'soda') : ?>
                         <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
-                            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
+                        <?php
+                        $foto=$row->imagen;
+                        ?>
+                        <img src="<?php echo base_url()?>/assets/imagenes_bebidas/<?php echo $foto ?>"/>
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
                             <p>Precio: $<?= $product['precio'] ?></p>
                         </div>

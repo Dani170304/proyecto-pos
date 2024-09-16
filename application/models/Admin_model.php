@@ -91,37 +91,6 @@ class Admin_model extends CI_Model {
     }
     //FIN CRUD USUARIOS
 
-    //INICIO CRUD PRODUCTOS
-    public function listaproductos()
-    {
-        $this->db->select('*');
-        $this->db->from('productos');
-        $this->db->where('estado','1');
-        return $this->db->get(); // devuelve resultados
-    }
-    public function recuperarproducto($id_producto)
-    {
-        $this->db->select('*');
-        $this->db->from('productos');
-        $this->db->where('id_producto', $id_producto);
-        return $this->db->get();
-    }
-    public function listaproductoseliminados()
-    {
-        $this->db->select('*');
-        $this->db->from('productos');
-        $this->db->where('estado','0');
-        return $this->db->get(); // devuelve resultados
-    }
-    public function eliminarproducto($id_producto)
-    {
-        $this->db->where('id_producto', $id_producto);
-        $this->db->delete('productos');
-    }
-    public function modificarproducto($id_producto, $data)
-    {
-        $this->db->where('id_producto', $id_producto);
-        $this->db->update('productos', $data);
-    }
+    
 }
 ?>

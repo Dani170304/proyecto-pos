@@ -45,7 +45,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/productos">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos/productos">Home</a></li>
               <li class="breadcrumb-item active">Tablas</li>
             </ol>
           </div>
@@ -53,7 +53,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <br>
-<a href="<?php echo base_url(); ?>index.php/Admin/productos">
+<a href="<?php echo base_url(); ?>index.php/Productos/productos">
 <button type="button" class="btn btn-warning">Ver lista</button>
 <br>
 <br>
@@ -98,7 +98,7 @@
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td>
                     <?php
-                    echo form_open_multipart("Admin/habilitarproductobd");
+                    echo form_open_multipart("Productos/habilitarproductobd");
                     ?>
                     <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                     <button type="submit" class="btn btn-morado"><i class="fas fa-check-circle"></i></button>
