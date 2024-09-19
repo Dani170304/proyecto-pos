@@ -117,6 +117,10 @@ label {
 	cursor: pointer;
 	transition: .5s ease-in-out;
 }
+#label-si
+{
+	margin-bottom: 23px;
+}
 
 input {
 	width: 60%;
@@ -135,6 +139,7 @@ input {
 	color: #ff4040; /* Color inicial del ícono */
 	transition: color 0.3s ease; /* Transición suave */
 	font-size: 21px;
+	margin-bottom: 20px;
 }
 
 #SingIn-b:hover i, #SingUp-b:hover i {
@@ -211,7 +216,16 @@ button:hover {
 	margin-left: 60px; /* Ajusta la posición horizontal */
 	position: relative;
 }
+#olv
+{
+	color: #ff4040;
 
+	margin-left: 20px;
+}
+#olv:hover
+{
+	color: #fff;
+}
 /*Phone*/
 @media (min-width: 900px) {
 

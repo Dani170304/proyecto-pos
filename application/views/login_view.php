@@ -11,14 +11,28 @@
     <link href="<?php echo base_url(); ?>assets-ini/assets/css/style.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>assets-ini/assets/vendor/venobox/venobox.css" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        .swal2-confirm {
+            display: flex;
+            justify-content: center;
+            width: 60px;
+        }
+        .loading-message {
+            display: none;
+            text-align: center;
+            font-size: 18px;
+            color: #bb0533; /* Color del texto */
+        }
+        #loadingMessageSignup {
+            margin-top: 10px;
+        }
+        input
+        {
+            color: #bb0533; /* Aplica el color a todo el cuerpo */
+
+        }
+    </style>
 </head>
-<style>
-    .swal2-confirm {
-        display: flex;
-        justify-content: center;
-        width: 60px;
-    }
-</style>
 <body>
     <div class="btn-container">
         <a href="<?php echo site_url('inicio'); ?>" class="btn-inicio">
@@ -29,7 +43,7 @@
 
     <?php if (isset($mostrar_codigo_verificacion) && $mostrar_codigo_verificacion): ?>
     <!-- Mostrar el campo para el código de verificación -->
-    <form id="main-ver" method="post" action="<?php echo base_url('index.php/Login/validate_login'); ?>">
+    <form id="main-ver" method="post" action="<?php echo base_url('index.php/Login/validate_login'); ?>" onsubmit="showLoadingMessage('loadingMessageMain');">
         
         <input type="hidden" name="email" value="<?php echo htmlspecialchars($this->session->userdata('temp_login')['email']); ?>">
         <input type="hidden" name="password" value="<?php echo htmlspecialchars($this->session->userdata('temp_login')['password']); ?>">
@@ -39,40 +53,47 @@
             <br>
             <input type="text" name="codigo_verificacion" id="codigo_verificacion" placeholder="Código de verificación" class="form-control verification-code" required>
         </div>
-        <button type="submit" id="SingIn-b"><i class="bx bx-lock"></i> Verificar codigo</button>
+        <button type="submit" id="SingIn-b"><i class="bx bx-lock"></i> Verificar código</button>
+        <div class="loading-message" id="loadingMessageMain">Verificando.......</div>
     </form>
-<?php endif; ?>
+    <?php endif; ?>
+
         <input type="checkbox" id="chk" aria-hidden="true">
         
         <div class="login">
 
             <?php if (!isset($mostrar_codigo_verificacion) || !$mostrar_codigo_verificacion): ?>
                 <!-- Mostrar el formulario de login normal -->
-                <form id="login-form" action="<?php echo site_url('login/validate_login'); ?>" method="POST">
+                <form id="login-form" action="<?php echo site_url('login/validate_login'); ?>" method="POST" onsubmit="showLoadingMessage('loadingMessageLogin');">
                     <label for="chk" aria-hidden="true">LOG IN</label>
                     <input type="email" name="email" id="userEmail" placeholder="Email" required="">
                     <div class="password-container">
                         <input type="password" name="password" id="loginPasswordInput" placeholder="Password" required="">
-                        <span class="password-toggle" onclick="togglePasswordVisibility('loginPasswordInput')">
+                        <span class="password-toggle" onclick="togglePasswordVisibility('loginPasswordInput', 'login-password-toggle-icon')">
                             <i id="login-password-toggle-icon" class="zmdi zmdi-eye"></i>
                         </span>
                     </div>
                     <div>
                         <button type="submit" id="SingIn-b"><i class="bx bx-user"></i> LOG IN</button>
                     </div>
+                    <div class="loading-message" id="loadingMessageLogin">Iniciando.......</div>
                 </form>
             <?php endif; ?>
+            <br>
+            <a id="olv" href="<?php echo site_url('login/reset_password'); ?>">Olvidaste tu contraseña?</a>
+
         </div>
 
         <div class="signup">
-            <form action="<?php echo site_url('login/validate_signup'); ?>" method="POST" id="signupForm">
+            <form action="<?php echo site_url('login/validate_signup'); ?>" method="POST" id="signupForm" onsubmit="showLoadingMessage('loadingMessageSignup');">
                 <label id="label-si" for="chk" aria-hidden="true">SIGN UP</label>
+                <div class="loading-message" id="loadingMessageSignup">Enviando correo, por favor espera...</div>
                 <input type="text" name="nombre" id="signupNombre" placeholder="Nombre" required="">
                 <input type="text" name="apellido" id="signupApellido" placeholder="Apellido" required="">
                 <input type="email" name="email" id="signupEmail" placeholder="Email" required="">
                 <div class="password-container">
                     <input type="password" name="password" id="signupPasswordInput" placeholder="Password" required="">
-                    <span class="password-toggle" onclick="togglePasswordVisibility('signupPasswordInput')">
+                    <span class="password-toggle" onclick="togglePasswordVisibility('signupPasswordInput', 'signup-password-toggle-icon')">
                         <i id="signup-password-toggle-icon" class="zmdi zmdi-eye"></i>
                     </span>
                 </div>
@@ -84,6 +105,14 @@
         </div>
 
         <script>
+            function showLoadingMessage(messageId) {
+                // Muestra el mensaje de carga correspondiente
+                var loadingMessage = document.getElementById(messageId);
+                if (loadingMessage) {
+                    loadingMessage.style.display = 'block';
+                }
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
                 <?php if ($this->session->flashdata('error_msg')): ?>
                     Swal.fire({
@@ -131,7 +160,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        html: 'La contraseña no cumple con los requisitos de seguridad debe contener, <strong>simbolos</strong> o <strong>numeros</strong>.',
+                        html: 'La contraseña no cumple con los requisitos de seguridad debe contener, <strong>símbolos</strong> o <strong>números</strong>.',
                         confirmButtonText: 'OK',
                         confirmButtonColor: '#1AEB01',
                         customClass: {
@@ -141,9 +170,9 @@
                 }
             });
 
-            function togglePasswordVisibility(inputId) {
+            function togglePasswordVisibility(inputId, iconId) {
                 var passwordInput = document.getElementById(inputId);
-                var toggleIcon = document.getElementById('signup-password-toggle-icon');
+                var toggleIcon = document.getElementById(iconId);
 
                 if (passwordInput.type === 'password') {
                     passwordInput.type = 'text';

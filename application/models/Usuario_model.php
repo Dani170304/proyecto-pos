@@ -45,5 +45,50 @@ class Usuario_model extends CI_Model {
     }
 
     
+    public function email_exists2($email)
+    {
+        $this->db->where('email', $email);
+        $query = $this->db->get('usuarios');
+        
+        // Devuelve true si existe al menos un resultado
+        return $query->num_rows() > 0;
+    }
+    public function is_account_verified($email)
+{
+    $this->db->select('sesion_verificada');
+    $this->db->where('email', $email);
+    $query = $this->db->get('usuarios');
+
+    // Devuelve true si el usuario está verificado
+    return $query->num_rows() > 0 && $query->row()->sesion_verificada === 'si';
+}
+
+    public function store_reset_token($email, $token)
+    {
+        // Aquí puedes almacenar el token en una tabla o campo adicional en la tabla usuarios
+        $data = array(
+            'reset_token' => $token,
+            'token_expiration' => date('Y-m-d H:i:s', strtotime('+1 hour')), // Ejemplo de expiración
+        );
+        $this->db->where('email', $email);
+        return $this->db->update('usuarios', $data);
+    }
+
+    public function update_password($token, $new_password)
+    {
+        // Verificar el token
+        $this->db->where('reset_token', $token);
+        return $this->db->update('usuarios', array('password' => $new_password, 'reset_token' => null));
+    }
+    
+    
+    public function is_token_valid($token)
+{
+    $this->db->where('reset_token', $token);
+    $this->db->where('token_expiration >=', date('Y-m-d H:i:s'));
+    $query = $this->db->get('usuarios');
+    return $query->num_rows() > 0;
+}
+
 }
 ?>
