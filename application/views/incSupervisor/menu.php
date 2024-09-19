@@ -13,7 +13,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url(); ?>index.php/Admin/dash" class="nav-link">INICIO</a>
+        <a href="<?php echo base_url(); ?>index.php/Supervisor/dash" class="nav-link">INICIO</a>
       </li>
     </ul>
 
@@ -84,7 +84,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
-            <a href="<?php echo base_url(); ?>index.php/Admin/dash" class="nav-link active">
+            <a href="<?php echo base_url(); ?>index.php/Supervisor/dash" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -99,21 +99,15 @@
               <!-- <i class="fas fa-angle-right right"></i> -->
             </p>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Admin/index" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Supervisor/index" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>USUARIOS</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Productos/productos" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Productos_supervisor/productos" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>PRODUCTOS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Productos/productos" class="nav-link">
-                  <i class="far fa-dot-circle nav-icon"></i>
-                  <p>EVENTOS</p>
                 </a>
               </li>
           </li>
@@ -146,12 +140,6 @@
                 <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REPORTE DIARIO</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
-                  <i class="far fa-dot-circle nav-icon"></i>
-                  <p>REPORTE MENSUAL</p>
                 </a>
               </li>
               <li class="nav-item">

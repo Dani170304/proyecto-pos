@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin_model extends CI_Model {
+class Supervisor_model extends CI_Model {
 
     //INICIO CRUD USUARIOS
     public function listausuarios()

@@ -112,7 +112,7 @@
             </div>
             <div class="resume-item">
               <h4>DANIELA COCA</h4>
-              <h5>PROGRAMADORA</h5>
+              <h5>DEVELOPER</h5>
               <p><em>Daniela es la mente maestra detrás de nuestras soluciones tecnológicas, garantizando que nuestras herramientas y sistemas funcionen a la perfección.</em></p>
               <ul>
                 <li>Experta en desarrollo de software y programación.</li>

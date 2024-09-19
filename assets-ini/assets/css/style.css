@@ -245,6 +245,19 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: 1335px;
   }
 }
+@media (min-width: 1295px) {
+  .nav-menu {
+    margin-top: -850px;
+    display: flex;
+    justify-content: center;
+    /* background: #f2f3f5; */
+    padding: 10px 0;
+  }
+  .nav-menu > ul > li.right-align {
+    position: relative;
+    margin-left: 1270px;
+  }
+}
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
   color: #000;
   background: #bb0533;
@@ -518,18 +531,14 @@ section {
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
-.contact .info {
-  width: 100%;
-  background: #fff;
-}
 
 .contact .info i {
   font-size: 20px;
-  color: #0563bb;
+  color: #ffffff;
   float: left;
   width: 44px;
   height: 44px;
-  background: #eef7ff;
+  background: #dd1a4b;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -542,22 +551,31 @@ section {
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 5px;
-  color: #000;
+  color: #fff;
 }
 
 .contact .info p {
   padding: 0 0 0 60px;
   margin-bottom: 0;
   font-size: 14px;
-  color: #728394;
+  color: #fffb00;
 }
 
-.contact .info .email, .contact .info .phone {
+.contact .info , .contact .info {
   margin-top: 40px;
 }
+.email{
+  margin-left: 850px;
+  margin-top: -50px;
 
+}
+.phone
+{
+  margin-left: 450px;
+
+}
 .contact .info .email:hover i, .contact .info .address:hover i, .contact .info .phone:hover i {
-  background: #0563bb;
+  background: #22a1a1;
   color: #fff;
 }
 

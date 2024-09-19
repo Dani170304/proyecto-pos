@@ -49,6 +49,9 @@ class Login extends CI_Controller {
                             case 'usuario':
                                 redirect('menu');
                                 break;
+                            case 'supervisor':
+                                redirect('supervisor');
+                                break;
                             default:
                                 redirect('menu');
                                 break;
@@ -85,6 +88,9 @@ class Login extends CI_Controller {
                     case 'usuario':
                         redirect('menu');
                         break;
+                    case 'supervisor':
+                        redirect('supervisor/dash');
+                        break;
                     default:
                         redirect('menu');
                         break;
@@ -95,6 +101,7 @@ class Login extends CI_Controller {
             redirect('login');
         }
     }
+    
     
 
     public function validate_signup()

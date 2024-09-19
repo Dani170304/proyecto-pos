@@ -35,7 +35,7 @@ class Usuario_model extends CI_Model {
         $this->db->from('usuarios');
         $this->db->where('email', $email);
         $query = $this->db->get();
-        return $query->num_rows() > 0;
+        return $query->num_rows() > 0;/*  */
     }
     public function update_verification_status($email)
     {

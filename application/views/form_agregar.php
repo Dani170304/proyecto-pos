@@ -84,6 +84,7 @@
                                 <select class="form-control" name="rol" required>
                                     <option value="" disabled selected>Seleccione su rol</option>
                                     <option value="administrador">Administrador</option>
+                                    <option value="supervisor">Supervisor</option>
                                     <option value="usuario">Usuario/Cliente</option>
                                 </select>
                             </div>
