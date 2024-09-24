@@ -143,19 +143,19 @@
               <!-- <i class="fas fa-angle-right right"></i> -->
             </p>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Admin/reporteDia" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REPORTE DIARIO</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Admin/reporteMes" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REPORTE MENSUAL</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Admin/reporteProducto" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REPORTE PRODUCTOS</p>
                 </a>

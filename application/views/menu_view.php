@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <title>MENU</title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="icon" href="<?php echo base_url(); ?>assets/img/logo_drink.jpg" type="image/png">
 </head>
 
@@ -25,10 +28,10 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'BOTELLA') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
+                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: $<?= $product['precio'] ?></p>
+                            <p>Precio: Bs.<?= $product['precio'] ?></p>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -43,10 +46,10 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'COCTEL') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
+                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: $<?= $product['precio'] ?></p>
+                            <p>Precio: Bs.<?= $product['precio'] ?></p>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -56,10 +59,10 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'CERVEZA') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
+                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: $<?= $product['precio'] ?></p>
+                            <p>Precio: Bs.<?= $product['precio'] ?></p>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -69,10 +72,10 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'PIQUEO') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
+                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: $<?= $product['precio'] ?></p>
+                            <p>Precio: Bs.<?= $product['precio'] ?></p>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -82,13 +85,13 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'soda') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>">
+                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                         <?php
                         $foto=$row->imagen;
                         ?>
                         <img src="<?php echo base_url()?>/assets/imagenes_bebidas/<?php echo $foto ?>"/>
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: $<?= $product['precio'] ?></p>
+                            <p>Precio: Bs.<?= $product['precio'] ?></p>
                         </div>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -127,13 +130,6 @@
                             <input type="text" value="<?= htmlspecialchars($nombres) ?>" readonly>
                         </div>
                     <?php endif; ?>
-
-                    <!-- <?php if (isset($id_usuario)) : ?>
-                        <div class="bold-text-info">
-                            <span>N°</span>
-                            <input type="text" value="<?= htmlspecialchars($id_usuario) ?>" readonly>
-                        </div>
-                    <?php endif; ?> -->
                     <br>
                     <br>
                 </form>
@@ -145,6 +141,101 @@
 
 
     </div>
+    <script>
+(function() {
+    let productos = document.querySelectorAll('section.products > .product');
+    let listaCarrito = document.getElementById('cart-list');
+    let totalDisplay = document.getElementById('total');
+    let inputCarrito = document.getElementById('cart');
+
+    let total = 0;
+    let itemsCarrito = [];
+
+    productos.forEach(producto => {
+        producto.addEventListener('click', function(e) {
+            let nombre = e.currentTarget.dataset.name;
+            let valor = parseFloat(e.currentTarget.dataset.value);
+            let id = e.currentTarget.dataset.index;
+            let imagen = e.currentTarget.dataset.image; // Obtener la imagen
+
+            // Buscar si el producto ya está en el carrito
+            let itemExistente = itemsCarrito.find(item => item.id === id);
+
+            if (itemExistente) {
+                // Incrementar la cantidad del producto existente
+                itemExistente.cantidad += 1;
+            } else {
+                // Agregar artículo al carrito si no existe
+                itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen });
+            }
+
+            // Actualizar total y la interfaz
+            total += valor;
+            actualizarCarrito();
+        });
+    });
+
+    function actualizarCarrito() {
+        // Limpiar la lista del carrito
+        listaCarrito.innerHTML = '';
+
+        // Agregar cada producto al carrito
+        itemsCarrito.forEach(item => {
+            let li = document.createElement('li');
+            li.style.display = 'table-row';
+            li.innerHTML = `
+                <span style="display: table-cell; width: 5%;">
+                    <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
+                </span>
+                <span style="display: table-cell; width: 22%;">${item.nombre}</span>
+                <span style="display: table-cell; width: 6%; text-align: center;">x ${item.cantidad}</span>
+                <span style="display: table-cell; width: 10%; text-align: right;">Bs. ${item.valor.toFixed(2)}</span>
+                <span style="display: table-cell; width: 14%; text-align: right;">
+                    <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                    <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                    <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" style="cursor: pointer; width: 23px; height: auto;">
+                </span>
+            `;
+
+
+            listaCarrito.appendChild(li);
+
+            // Agregar eventos a los botones
+            li.querySelector('.btn-mas').addEventListener('click', function() {
+                item.cantidad += 1;
+                total += item.valor;
+                actualizarCarrito();
+            });
+
+            li.querySelector('.btn-menos').addEventListener('click', function() {
+                if (item.cantidad > 1) {
+                    item.cantidad -= 1;
+                    total -= item.valor;
+                } else {
+                    total -= item.valor;
+                    itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
+                }
+                actualizarCarrito();
+            });
+
+            li.querySelector('.btn-borrar').addEventListener('click', function() {
+                total -= item.valor * item.cantidad;
+                itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
+                actualizarCarrito();
+            });
+        });
+
+        // Actualizar total
+        totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
+        
+        // Actualizar el input oculto para el envío del formulario
+        inputCarrito.value = JSON.stringify(itemsCarrito);
+    }
+
+})();
+</script>
+
+
     <script>
         let tipoBebidaContainer = document.getElementById('tipoBebidaContainer');
         let menuBotellas = document.getElementById('D1');

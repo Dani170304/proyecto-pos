@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Gilroy';
-    src: url('/POS-SELF/assets/fonts/gilroy-regular.ttf');
+    src: url('/POS-SELF/assets/fonts/Gilroy-Regular.ttf');
     /* Puedes agregar más formatos si es necesario (e.g., ttf, svg, etc.) */
     font-weight: normal;
     font-style: normal;
@@ -9,7 +9,7 @@
   
   @font-face {
     font-family: 'GilroyBold';
-    src: url('/POS-SELF/assets/fonts/gilroy-bold.ttf');
+    src: url('/POS-SELF/assets/fonts/Gilroy-Bold.ttf');
   }
   
   .bold-text {
@@ -420,3 +420,34 @@
       float: none;
     }
   }
+
+
+  #cart-list {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#cart-list li {
+    display: table-row;
+}
+
+#cart-list li span {
+    display: table-cell;
+    padding: 6px; /* Espaciado entre celdas */
+}
+
+.bold-text-total {
+    text-align: center; /* Alinear el total a la derecha */
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#cart-list li {
+  padding: 10px 0; /* Espaciado entre filas */
+}
+
+#cart-list button {
+  margin-left: 5px;
+  cursor: pointer;
+}
