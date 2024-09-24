@@ -55,7 +55,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>LISTA DE PRODUCTOS</h1>
+            <h1 id="title">LISTA DE PRODUCTOS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -67,10 +67,13 @@
       </div><!-- /.container-fluid -->
     </section>
     <br>
-<a href="<?php echo base_url(); ?>index.php/Productos/agregarproductos">
+<a href="<?php echo base_url(); ?>index.php/Productos_supervisor/agregarproductos">
 <button type="button" class="btn btn-verde">Agregar producto</button>
 </a>
-
+<a href="<?php echo base_url(); ?>index.php/Productos_supervisor/eliminadosproductos">
+<button type="button" class="btn btn-warning">Ver deshabilitados</button>
+<br>
+<br>
 <?php if ($this->session->has_userdata('id_usuario')) : ?>
     <div class="bold-text-info">
         <!-- <span>N°</span> -->
@@ -118,9 +121,13 @@
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td class="text-center">
                       <div class="btn-group-ac">
-                        <?php echo form_open_multipart("Productos/modificarproducto"); ?>
+                        <?php echo form_open_multipart("Productos_supervisor/modificarproducto"); ?>
                           <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                           <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
+                        <?php echo form_close(); ?>
+                        <?php echo form_open_multipart("Productos_supervisor/deshabilitarproductodb"); ?>
+                          <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+                          <button type="submit" class="btn btn-info"><i class="fas fa-ban"></i></button>
                         <?php echo form_close(); ?>
                       </div>
                       

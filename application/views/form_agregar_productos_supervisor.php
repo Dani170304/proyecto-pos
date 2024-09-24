@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar Usuario</title>
+    <title>Agregar Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -45,12 +45,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 id="title">Agregar Usuario</h1>
+                    <h1 id="title">Agregar Producto</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/index">Home</a></li>
-                        <li class="breadcrumb-item active">Agregar Usuario</li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos_supervisor/productos">Home</a></li>
+                        <li class="breadcrumb-item active">Agregar Producto</li>
                     </ol>
                 </div>
             </div>
@@ -63,49 +63,44 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <?php echo form_open_multipart("Admin/agregarbd", ['id' => 'formAgregar']); ?>
+                            <?php echo form_open_multipart("Productos_supervisor/agregarproductobd", ['id' => 'formAgregar']); ?>
 
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="nombres" placeholder="Escriba sus Nombres" maxlength="20" required>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" required>
                                 </div>
                             </div>
-                            <br>
+                            <div class="form-group">
+                                    <div style="position: relative;">
+                                    <span class="input-icon"><i class="fa fa-file-alt"></i></span>
+                                        <select class="form-control" name="categoria" required>
+                                            <option value="" disabled>Seleccione la categoria</option>
+                                            <option value="botella" >Botella</option>
+                                            <option value="coctel" >Coctel</option>
+                                            <option value="soda">Soda</option>
+                                            <option value="cerveza" >Cerveza</option>
+                                            <option value="piqueo" >Piqueo</option>
+
+                                        </select>
+                                    </div>
+                                </div>
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="apellidos" placeholder="Escriba sus Apellidos" maxlength="20" required>
+                                    <input type="text" class="form-control" name="stock" placeholder="Escriba el stock"  required>
                                 </div>
                             </div>
-                            <br>
-                            <div style="position: relative;">
-                                <span class="input-icon"><i class="fa fa-file-alt"></i></span>
-                                <select class="form-control" name="rol" required>
-                                    <option value="" disabled selected>Seleccione su rol</option>
-                                    <option value="administrador">Administrador</option>
-                                    <option value="supervisor">Supervisor</option>
-                                    <option value="usuario">Usuario/Cliente</option>
-                                </select>
-                            </div>
-                            <br>
                             <div style="position: relative;">
                                 <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                <input type="email" class="form-control" name="email" placeholder="Escriba su Email" required>
+                                <input type="email" class="form-control" name="precio" placeholder="Escriba el precio" required>
                             </div>
                             <br>
                             <div style="position: relative;">
-                                <span class="input-icon"><i class="fa fa-lock"></i></span>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Escriba su Password" required
-                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-                                <span class="password-toggle" onclick="togglePasswordVisibility('password')">
-                                    <i id="password-toggle-icon" class="zmdi zmdi-eye"></i>
-                                </span>
+                                <span class="input-icon"><i class="fa fa-image"></i></span>
+                                <input type="file" class="form-control" name="imagen" accept="image/*" placeholder="Seleccione la imagen" required>
                             </div>
-                            <small class="form-text text-muted">
-                                La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula y un número.
-                            </small>
-                            <br>
+
                             <br>
                             <button type="submit" class="btn btn-morado">Agregar Usuario</button>
 

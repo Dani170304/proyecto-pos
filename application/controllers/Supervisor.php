@@ -74,16 +74,32 @@ class Supervisor extends CI_Controller
 
         $this->load->view('incSupervisor/head');
         $this->load->view('incSupervisor/menu');
-        $this->load->view('eliminados', $data);
+        $this->load->view('eliminadosproductos_supervisor', $data);
         $this->load->view('incSupervisor/footer');
         $this->load->view('incSupervisor/pie');
     }
 
     public function agregar()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Productos_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+        
         $this->load->view('incSupervisor/head');
-        $this->load->view('incSupervisor/menu');
-        $this->load->view('form_agregar');
+        $this->load->view('incSupervisor/menu',$dataU);
+        $this->load->view('form_agregar_supervisor');
         $this->load->view('incSupervisor/footer');
         $this->load->view('incSupervisor/pie');
     }
@@ -96,6 +112,10 @@ class Supervisor extends CI_Controller
     }
     public function agregarbd()
     {
+
+        
+
+
         // Cargar el modelo de Usuario
         $this->load->model('Supervisor_model');
         
@@ -201,11 +221,28 @@ class Supervisor extends CI_Controller
 
     public function modificar()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Supervisor_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+
+
         $id_usuario = $_POST['id_usuario'];
         $data['infousuario'] = $this->Supervisor_model->recuperarusuario($id_usuario);
         $this->load->view('incSupervisor/head');
-        $this->load->view('incSupervisor/menu');
-        $this->load->view('form_modificar', $data);
+        $this->load->view('incSupervisor/menu',$dataU);
+        $this->load->view('form_modificar_supervisor', $data);
         $this->load->view('incSupervisor/footer');
         $this->load->view('incSupervisor/pie');
     }

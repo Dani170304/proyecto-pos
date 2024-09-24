@@ -55,11 +55,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>LISTA DE USUARIOS</h1>
+            <h1 id="title">LISTA DE USUARIOS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Supervisor/agregar">Home</a></li>
               <li class="breadcrumb-item active">Tablas</li>
             </ol>
           </div>
@@ -67,7 +67,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <br>
-<a href="<?php echo base_url(); ?>index.php/Admin/agregar">
+<a href="<?php echo base_url(); ?>index.php/Supervisor/agregar">
 <button type="button" class="btn btn-verde">Agregar usuario</button>
 </a>
 <?php if ($this->session->has_userdata('id_usuario')) : ?>
@@ -111,7 +111,7 @@
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td class="text-center">
                       <div class="btn-group-ac">
-                        <?php echo form_open_multipart("Admin/modificar"); ?>
+                        <?php echo form_open_multipart("Supervisor/modificar"); ?>
                           <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>">
                           <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
                         <?php echo form_close(); ?>

@@ -69,11 +69,28 @@ class Admin extends CI_Controller
 
     public function eliminados()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+
         $lista = $this->Admin_model->listausuarioseliminados();
         $data['usuarios'] = $lista;
+        
 
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
+        $this->load->view('inc/menu',$dataU);
         $this->load->view('eliminados', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
@@ -81,8 +98,23 @@ class Admin extends CI_Controller
 
     public function agregar()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $data['user'] = $user_data;
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
+        $this->load->view('inc/menu',$data);
         $this->load->view('form_agregar');
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
@@ -201,10 +233,28 @@ class Admin extends CI_Controller
 
     public function modificar()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+
+
+
         $id_usuario = $_POST['id_usuario'];
         $data['infousuario'] = $this->Admin_model->recuperarusuario($id_usuario);
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
+        $this->load->view('inc/menu',$dataU);
         $this->load->view('form_modificar', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');

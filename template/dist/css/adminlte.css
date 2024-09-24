@@ -937,6 +937,17 @@ pre code {
     flex: 0 0 50%;
     max-width: 50%;
   }
+  #title {
+    color: #fff; /* Color del texto */
+    text-shadow: 
+        0 0 10px #3700ff,  /* Brillo suave */
+        0 0 15px #0400ff, /* Brillo más fuerte */
+        0 0 20px #0066ff; /* Brillo aún más fuerte */
+    font-weight: bold; /* Negrita para más efecto */
+    /* text-align: center; */
+}
+
+
   .col-sm-7 {
     -ms-flex: 0 0 58.333333%;
     flex: 0 0 58.333333%;
@@ -12684,7 +12695,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 .user-panel img {
   height: auto;
-  width: 4.1rem;
+  width: 3.3rem;
 }
 
 .user-panel .info {
@@ -44594,7 +44605,7 @@ select.form-control-sm ~ .select2-container--default .select2-selection--multipl
 }
 
 .img-circle {
-  border-radius: 50%;
+  border-radius: 40%;
 }
 
 .img-size-64,

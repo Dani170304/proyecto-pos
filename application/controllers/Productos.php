@@ -25,42 +25,95 @@ class Productos extends CI_Controller
         
     
         // Pasar los datos a la vista
-        $data_u['user'] = $user_data;
+        $dataU['user'] = $user_data;
 
         $lista = $this->Productos_model->listaproductos();
         $data['productos'] = $lista;
 
         $this->load->view('inc/head');
-        $this->load->view('inc/menu', $data_u);
+        $this->load->view('inc/menu', $dataU);
         $this->load->view('admin_productos_view', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
     public function agregarproductos()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Productos_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+
+        $lista = $this->Productos_model->listaproductos();
+        $data['productos'] = $lista;
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
-        $this->load->view('form_agregar_productos');
+        $this->load->view('inc/menu',$dataU);
+        $this->load->view('form_agregar_productos',$data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
     public function modificarproducto()
     {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+
+
         $id_producto = $_POST['id_producto'];
         $data['infoproducto'] = $this->Productos_model->recuperarproducto($id_producto);
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
+        $this->load->view('inc/menu',$dataU);
         $this->load->view('form_modificar_productos', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
     public function eliminadosproductos()
     {
+
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $dataU['user'] = $user_data;
+
+
         $lista = $this->Productos_model->listaproductoseliminados();
         $data['productos'] = $lista;
 
         $this->load->view('inc/head');
-        $this->load->view('inc/menu');
+        $this->load->view('inc/menu',$dataU);
         $this->load->view('eliminadosproductos', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');

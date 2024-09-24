@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos/productos">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos_supervisor/productos">Home</a></li>
                         <li class="breadcrumb-item active">Modificar Producto</li>
                     </ol>
                 </div>
@@ -71,7 +71,7 @@
                     <div class="card">
                         <div class="card-body">
                             <?php foreach ($infoproducto->result() as $row): ?>
-                                <?php echo form_open_multipart("Productos/modificarproductodb"); ?>
+                                <?php echo form_open_multipart("Productos_supervisor/modificarproductodb"); ?>
 
 <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>" required>
 <input type="hidden" name="imagen_actual" value="<?php echo $row->imagen; ?>"> <!-- Imagen actual -->

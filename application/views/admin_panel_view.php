@@ -55,7 +55,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>LISTA DE USUARIOS</h1>
+            <h1 id="title">LISTA DE USUARIOS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -71,7 +71,7 @@
 <button type="button" class="btn btn-verde">Agregar usuario</button>
 </a>
 <a href="<?php echo base_url(); ?>index.php/Admin/eliminados">
-<button type="button" class="btn btn-warning">Ver eliminados</button>
+<button type="button" class="btn btn-warning">Ver deshabilitados</button>
 <br>
 <br>
 </a>
