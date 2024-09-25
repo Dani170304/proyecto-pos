@@ -18,6 +18,47 @@
     text-align: center;
   
   }
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .popup {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 2;
+    width: 710px;
+    height: 390px;
+    overflow-y: auto; /* Añade una barra de desplazamiento si el contenido es más alto que la ventana emergente */
+    box-shadow: 0 0 3px #015CFA, 0 0 10px #015CFA, 0 0 12px #015CFA;
+  }
+  
+  .popup button {
+    margin-top: 10px;
+  }
+  #popTitle{
+    margin-top: 0; /* Elimina cualquier margen superior predeterminado */
+    transform: translateY(-50px); /* Prueba con una transformación para moverlo hacia arriba */
+    font-family: 'GilroyBold', sans-serif;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 280px;
+    text-shadow: 0 0 3px #EF0074, 0 0 10px #EF0074, 0 0 12px #EF0074; /* Efecto de sombra */
+    font-size: 25px;
+  }
   
   /* darle el tamaño a lso iconos  */
   section.products {
