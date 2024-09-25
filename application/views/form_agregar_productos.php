@@ -72,37 +72,36 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <div style="position: relative;">
+                                <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-file-alt"></i></span>
-                                        <select class="form-control" name="categoria" required>
-                                            <option value="" disabled>Seleccione la categoria</option>
-                                            <option value="botella" >Botella</option>
-                                            <option value="coctel" >Coctel</option>
-                                            <option value="soda">Soda</option>
-                                            <option value="cerveza" >Cerveza</option>
-                                            <option value="piqueo" >Piqueo</option>
-
-                                        </select>
-                                    </div>
+                                    <select class="form-control" name="categoria" required>
+                                        <option value="" disabled>Seleccione la categoría</option>
+                                        <option value="botella">Botella</option>
+                                        <option value="coctel">Coctel</option>
+                                        <option value="soda">Soda</option>
+                                        <option value="cerveza">Cerveza</option>
+                                        <option value="piqueo">Piqueo</option>
+                                    </select>
                                 </div>
+                            </div>
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="stock" placeholder="Escriba el stock"  required>
+                                    <input type="number" class="form-control" name="stock" placeholder="Escriba el stock" required>
                                 </div>
                             </div>
                             <div style="position: relative;">
                                 <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                <input type="email" class="form-control" name="precio" placeholder="Escriba el precio" required>
+                                <input type="number" class="form-control" name="precio" placeholder="Escriba el precio" required>
                             </div>
                             <br>
                             <div style="position: relative;">
                                 <span class="input-icon"><i class="fa fa-image"></i></span>
-                                <input type="file" class="form-control" name="imagen" accept="image/*" placeholder="Seleccione la imagen" required>
+                                <input type="file" class="form-control" name="imagen" accept="image/png, image/jpeg, image/jpg" placeholder="Seleccione la imagen" required>
                             </div>
 
                             <br>
-                            <button type="submit" class="btn btn-morado">Agregar Usuario</button>
+                            <button type="submit" class="btn btn-morado">Agregar Producto</button>
 
                             <?php echo form_close(); ?>
                         </div>
@@ -114,57 +113,24 @@
 </div>
 
 <script>
-    function togglePasswordVisibility(id) {
-        var passwordInput = document.getElementById(id);
-        var toggleIcon = document.getElementById('password-toggle-icon');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleIcon.classList.remove('zmdi-eye');
-            toggleIcon.classList.add('zmdi-eye-off');
-        } else {
-            passwordInput.type = 'password';
-            toggleIcon.classList.remove('zmdi-eye-off');
-            toggleIcon.classList.add('zmdi-eye');
-        }
-    }
+    // Interceptar el envío del formulario
+    $('#formAgregar').on('submit', function(event) {
+        event.preventDefault(); // Evita el envío automático
 
-    $(document).ready(function() {
-        $('#formAgregar').on('submit', function(e) {
-            e.preventDefault(); 
-            
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: $(this).serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: response.message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1AEB01',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
-                            }
-                        }).then(() => {
-                            window.location.href = 'index'; 
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: response.message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1AEB01',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
-                            }
-                        });
-                    }
-                }
-            });
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Deseas agregar este producto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1AEB01',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, agregar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, envía el formulario
+                this.submit();
+            }
         });
     });
 </script>

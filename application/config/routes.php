@@ -56,6 +56,7 @@ $route['cerrar'] = 'cerrar';
 $route['logout'] = 'login/logout';
 $route['admin'] = 'admin/dash';
 
+$route['Productos/verificar_producto_ajax'] = 'Productos/verificar_producto_ajax';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -71,7 +71,7 @@
 <button type="button" class="btn btn-verde">Agregar producto</button>
 </a>
 <a href="<?php echo base_url(); ?>index.php/Productos/eliminadosproductos">
-<button type="button" class="btn btn-warning">Ver eliminados</button>
+<button type="button" class="btn btn-warning">Ver deshabilitados</button>
 <br>
 <br>
 </a>
@@ -121,22 +121,24 @@
                     <td><?php echo $row-> precio; ?></td>
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td class="text-center">
-                      <div class="btn-group-ac">
-                        <?php echo form_open_multipart("Productos/modificarproducto"); ?>
-                          <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
-                          <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
-                        <?php echo form_close(); ?>
-                        <?php echo form_open_multipart("Productos/eliminarproductodb"); ?>
-                          <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
-                          <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                        <?php echo form_close(); ?>
-                        <?php echo form_open_multipart("Productos/deshabilitarproductodb"); ?>
-                          <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
-                          <button type="submit" class="btn btn-info"><i class="fas fa-ban"></i></button>
-                        <?php echo form_close(); ?>
-                      </div>
-                      
-                    </td>
+  <div class="btn-group-ac">
+    <?php echo form_open_multipart("Productos/modificarproducto"); ?>
+      <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+      <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
+    <?php echo form_close(); ?>
+    
+    <?php echo form_open_multipart("Productos/eliminarproductodb"); ?>
+      <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+      <button type="button" class="btn btn-danger eliminar-btn"><i class="fas fa-trash-alt"></i></button>
+    <?php echo form_close(); ?>
+    
+    <?php echo form_open_multipart("Productos/deshabilitarproductodb"); ?>
+      <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+      <button type="button" class="btn btn-info deshabilitar-btn"><i class="fas fa-ban"></i></button>
+    <?php echo form_close(); ?>
+  </div>
+</td>
+
                 </tr>
                 <?php
                 $contador++;
@@ -160,5 +162,56 @@
   <!-- /.content-wrapper -->
   </div>
   <!-- ./wrapper -->
+<!-- Carga de jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-   
+<!-- Carga de SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Tu script personalizado -->
+<script>
+$(document).ready(function() {
+    // Confirmación de eliminación
+    $('.eliminar-btn').on('click', function(e) {
+        e.preventDefault(); // Prevenir el envío del formulario
+        const form = $(this).closest('form'); // Obtener el formulario más cercano
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Deseas eliminar este producto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // Enviar el formulario si el usuario confirma
+            }
+        });
+    });
+
+    // Confirmación de deshabilitación
+    $('.deshabilitar-btn').on('click', function(e) {
+        e.preventDefault(); // Prevenir el envío del formulario
+        const form = $(this).closest('form'); // Obtener el formulario más cercano
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Deseas deshabilitar este producto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ffbb33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, deshabilitar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit(); // Enviar el formulario si el usuario confirma
+            }
+        });
+    });
+});
+</script>
+

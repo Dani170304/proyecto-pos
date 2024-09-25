@@ -40,5 +40,9 @@ class Productos_model extends CI_Model {//INICIO CRUD PRODUCTOS
         $this->db->where('id_producto', $id_producto);
         $this->db->update('productos', $data);
     }
+    public function insertar_producto($data) {
+        // Intentar insertar los datos en la tabla 'productos'
+        return $this->db->insert('productos', $data);
+    }
 }
 ?>

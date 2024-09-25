@@ -71,7 +71,7 @@
                     <div class="card">
                         <div class="card-body">
                             <?php foreach ($infousuario->result() as $row): ?>
-                                <?php echo form_open_multipart("Admin/modificardb"); ?>
+                                <?php echo form_open_multipart("Admin/modificardb", ['id' => 'formModificar']); ?>
                                 
                                 <?php if ($this->session->flashdata('error_msg')): ?>
                                     <script>
@@ -119,17 +119,17 @@
                                 </div>
                                 <br>
                                 <div style="position: relative;">
-                                <span class="input-icon"><i class="fa fa-lock"></i></span>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Escriba su Password" required
-                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-                                <span class="password-toggle" onclick="togglePasswordVisibility('password')">
-                                    <i id="password-toggle-icon" class="zmdi zmdi-eye"></i>
-                                </span>
-                            </div>
-                            <small class="form-text text-muted">
-                                La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula y un número.
-                            </small>
-                            <br>
+                                    <span class="input-icon"><i class="fa fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Escriba su Password" required
+                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+                                    <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+                                        <i id="password-toggle-icon" class="zmdi zmdi-eye"></i>
+                                    </span>
+                                </div>
+                                <small class="form-text text-muted">
+                                    La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula y un número.
+                                </small>
+                                <br>
                                 <button type="submit" class="btn btn-morado">Modificar Usuario</button>
 
                                 <?php echo form_close(); ?>
@@ -148,6 +148,77 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<script>
+    function togglePasswordVisibility(id) {
+        var passwordInput = document.getElementById(id);
+        var toggleIcon = document.getElementById('password-toggle-icon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('zmdi-eye');
+            toggleIcon.classList.add('zmdi-eye-off');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('zmdi-eye-off');
+            toggleIcon.classList.add('zmdi-eye');
+        }
+    }
+
+    $(document).ready(function() {
+        $('#formModificar').on('submit', function(e) {
+            e.preventDefault(); 
+            
+            // Mostrar mensaje de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Deseas modificar este usuario!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#1AEB01',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, modificar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, enviar el formulario
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Éxito',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#1AEB01',
+                                    customClass: {
+                                        confirmButton: 'swal2-confirm'
+                                    }
+                                }).then(() => {
+                                    window.location.href = '<?php echo base_url(); ?>index.php/Admin/index'; 
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#1AEB01',
+                                    customClass: {
+                                        confirmButton: 'swal2-confirm'
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

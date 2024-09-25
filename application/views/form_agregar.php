@@ -137,37 +137,52 @@
         $('#formAgregar').on('submit', function(e) {
             e.preventDefault(); 
             
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: $(this).serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: response.message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1AEB01',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
+            // Mostrar mensaje de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Deseas agregar este usuario!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#1AEB01',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, agregar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, enviar el formulario
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Éxito',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#1AEB01',
+                                    customClass: {
+                                        confirmButton: 'swal2-confirm'
+                                    }
+                                }).then(() => {
+                                    window.location.href = 'index'; 
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#1AEB01',
+                                    customClass: {
+                                        confirmButton: 'swal2-confirm'
+                                    }
+                                });
                             }
-                        }).then(() => {
-                            window.location.href = 'index'; 
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: response.message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1AEB01',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
-                            }
-                        });
-                    }
+                        }
+                    });
                 }
             });
         });

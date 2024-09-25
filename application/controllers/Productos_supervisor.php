@@ -131,7 +131,50 @@ class Productos_supervisor extends CI_Controller
         $this->Productos_model->modificarproducto($id_producto, $data);
         redirect('Productos/productos', 'refresh');
     }
-    
+    public function agregarproductobd()
+{
+    // Obtener los datos del formulario
+    $data['nombre'] = strtoupper($this->input->post('nombre'));
+    $data['categoria'] = strtoupper($this->input->post('categoria'));
+    $data['stock'] = $this->input->post('stock');
+    $data['precio'] = $this->input->post('precio');
+
+    // Verificar si se subió una imagen
+    if (!empty($_FILES['imagen']['name'])) {
+        // Configuración para la subida de imagen
+        $config['upload_path'] = './assets/imagenes_bebidas/';  // Ruta a la carpeta donde se guardarán las imágenes
+        $config['allowed_types'] = 'jpg|jpeg|png';  // Tipos de archivos permitidos
+        $config['file_name'] = uniqid() . '_' . $_FILES['imagen']['name'];  // Generar un nombre único para la imagen
+        $config['max_size'] = 2048;  // Tamaño máximo de la imagen (2MB)
+
+        // Cargar la librería de carga de archivos
+        $this->load->library('upload', $config);
+
+        // Intentar subir la imagen
+        if ($this->upload->do_upload('imagen')) {
+            // Obtener los datos de la imagen subida
+            $uploadData = $this->upload->data();
+            $data['imagen'] = $uploadData['file_name'];  // Guardar el nombre de la imagen en el arreglo $data
+        } else {
+            // Manejar errores en la carga
+            $error = $this->upload->display_errors();
+            echo json_encode(array('status' => 'error', 'message' => $error));  // Retornar error en formato JSON
+            return;
+        }
+    } else {
+        echo json_encode(array('status' => 'error', 'message' => 'No se ha subido ninguna imagen.'));  // Retornar error si no se subió imagen
+        return;
+    }
+
+    // Guardar el nuevo producto en la base de datos
+    if ($this->Productos_model->insertar_producto($data)) {
+                // Redirigir a la página de productos
+                redirect('Productos/productos', 'refresh');
+    } else {
+        echo json_encode(array('status' => 'error', 'message' => 'Error al agregar el producto en la base de datos.'));  // Retornar error si falla la inserción
+    }
+}
+
     public function modificarproductodb()
     {
         $id_producto = $this->input->post('id_producto');  // Obtener ID del producto
