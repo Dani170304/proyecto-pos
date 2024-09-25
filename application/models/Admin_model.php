@@ -36,7 +36,11 @@ class Admin_model extends CI_Model {
     {
         $this->db->where('id_usuario', $id_usuario);
         $this->db->delete('usuarios');
+    
+        // Devolver true si se eliminó al menos una fila
+        return $this->db->affected_rows() > 0;
     }
+    
     public function recuperarusuario($id_usuario)
     {
         $this->db->select('*');
@@ -47,8 +51,10 @@ class Admin_model extends CI_Model {
     public function modificarusuario($id_usuario, $data)
     {
         $this->db->where('id_usuario', $id_usuario);
-        $this->db->update('usuarios', $data);
+        return $this->db->update('usuarios', $data); // Retorna true o false si fue exitoso
     }
+    
+
     public function get_user_by_id($user_id) {
         $this->db->where('id_usuario', $user_id);
         $query = $this->db->get('usuarios'); 

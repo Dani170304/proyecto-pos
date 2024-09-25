@@ -105,28 +105,64 @@
     <!-- /.content-wrapper -->
 
     <script>
-        $(document).ready(function() {
-            // Confirmación de habilitación
-            $('.habilitar-btn').on('click', function(e) {
-                e.preventDefault(); // Prevenir el comportamiento predeterminado del botón
-                const form = $(this).closest('form'); // Obtener el formulario más cercano
+$(document).ready(function() {
+    // Confirmación de habilitación
+    $('.habilitar-btn').on('click', function(e) {
+        e.preventDefault(); // Prevenir el comportamiento predeterminado del botón
+        const form = $(this).closest('form'); // Obtener el formulario más cercano
 
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "¡Deseas habilitar este usuario!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, habilitar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit(); // Enviar el formulario si el usuario confirma
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Deseas habilitar este usuario!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, habilitar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        if (res.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: res.message,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01'
+                            }).then(() => {
+                                window.location.href = '<?php echo base_url(); ?>index.php/Admin/index'; 
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: res.message,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#d33'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar la solicitud.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d33'
+                        });
                     }
                 });
-            });
+            }
         });
+    });
+});
+
     </script>
 </body>
 </html>

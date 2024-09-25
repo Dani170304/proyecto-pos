@@ -64,90 +64,82 @@
     </section>
 
     <section class="content">
-        <div class="container-fluid">
-            <!-- Main content -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <?php foreach ($infousuario->result() as $row): ?>
-                                <?php echo form_open_multipart("Admin/modificardb", ['id' => 'formModificar']); ?>
-                                
-                                <?php if ($this->session->flashdata('error_msg')): ?>
-                                    <script>
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: '<?php echo $this->session->flashdata('error_msg'); ?>',
-                                            confirmButtonText: 'OK',
-                                            confirmButtonColor: '#1AEB01',
-                                            customClass: {
-                                                confirmButton: 'swal2-confirm'
-                                            }
-                                        });
-                                    </script>
-                                <?php endif; ?>
+    <div class="container-fluid">
+        <!-- Main content -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <?php foreach ($infousuario->result() as $row): ?>
+                            <?php echo form_open_multipart("Admin/modificardb", ['id' => 'formModificar']); ?>
+                            
+                            <?php if ($this->session->flashdata('error_msg')): ?>
+                                <script>
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: '<?php echo $this->session->flashdata('error_msg'); ?>',
+                                        confirmButtonText: 'OK',
+                                        confirmButtonColor: '#1AEB01',
+                                        customClass: {
+                                            confirmButton: 'swal2-confirm'
+                                        }
+                                    });
+                                </script>
+                            <?php endif; ?>
 
-                                <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>" required>
+                            <input type="hidden" name="id_usuario" value="<?php echo $row->id_usuario; ?>" required>
 
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-user"></i></span>
-                                        <input type="text" class="form-control" name="nombres" placeholder="Escriba sus Nombres" maxlength="20" value="<?php echo $row->nombres; ?>" required>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-user"></i></span>
-                                        <input type="text" class="form-control" name="apellidos" placeholder="Escriba sus Apellidos" maxlength="20" value="<?php echo $row->apellidos; ?>" required>
-                                    </div>
-                                </div>
-                                <br>
+                            <div class="form-group">
                                 <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-file-alt"></i></span>
-                                    <select class="form-control" name="rol" required>
-                                        <option value="" disabled <?php echo ($row->rol == '') ? 'selected' : ''; ?>>Seleccione su rol</option>
-                                        <option value="administrador" <?php echo ($row->rol == 'administrador') ? 'selected' : ''; ?>>Administrador</option>
-                                        <option value="usuario" <?php echo ($row->rol == 'usuario') ? 'selected' : ''; ?>>Usuario/Cliente</option>
-                                    </select>
+                                    <span class="input-icon"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control" name="nombres" placeholder="Escriba sus Nombres" maxlength="20" value="<?php echo $row->nombres; ?>" required>
                                 </div>
-                                <br>
+                            </div>
+                            <br>
+                            <div class="form-group">
                                 <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Escriba su Email" value="<?php echo $row->email; ?>" required>
+                                    <span class="input-icon"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control" name="apellidos" placeholder="Escriba sus Apellidos" maxlength="20" value="<?php echo $row->apellidos; ?>" required>
                                 </div>
-                                <br>
-                                <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Escriba su Password" required
-                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-                                    <span class="password-toggle" onclick="togglePasswordVisibility('password')">
-                                        <i id="password-toggle-icon" class="zmdi zmdi-eye"></i>
-                                    </span>
-                                </div>
-                                <small class="form-text text-muted">
-                                    La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula y un número.
-                                </small>
-                                <br>
-                                <button type="submit" class="btn btn-morado">Modificar Usuario</button>
+                            </div>
+                            <br>
+                            <div style="position: relative;">
+                                <span class="input-icon"><i class="fa fa-file-alt"></i></span>
+                                <select class="form-control" name="rol" required>
+                                    <option value="" disabled <?php echo ($row->rol == '') ? 'selected' : ''; ?>>Seleccione su rol</option>
+                                    <option value="administrador" <?php echo ($row->rol == 'administrador') ? 'selected' : ''; ?>>Administrador</option>
+                                    <option value="usuario" <?php echo ($row->rol == 'usuario') ? 'selected' : ''; ?>>Usuario/Cliente</option>
+                                </select>
+                            </div>
+                            <br>
+                            <div style="position: relative;">
+                                <span class="input-icon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" class="form-control" name="email" placeholder="Escriba su Email" value="<?php echo $row->email; ?>" required>
+                            </div>
+                            <br>
+                            <div style="position: relative;">
+                                <span class="input-icon"><i class="fa fa-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Escriba su Password" 
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+                                    <i id="password-toggle-icon" class="zmdi zmdi-eye"></i>
+                                </span>
+                            </div>
+                            <small class="form-text text-muted">
+                                La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una letra minúscula y un número.
+                            </small>
+                            <br>
+                            <button type="submit" class="btn btn-morado">Modificar Usuario</button>
 
-                                <?php echo form_close(); ?>
-                            <?php endforeach; ?>
-                        </div>
-                        <!-- /.card-body -->
+                            <?php echo form_close(); ?>
+                        <?php endforeach; ?>
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+    </div>
+</section>
 
 <script>
     function togglePasswordVisibility(id) {
@@ -168,7 +160,6 @@
         $('#formModificar').on('submit', function(e) {
             e.preventDefault(); 
             
-            // Mostrar mensaje de confirmación
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¡Deseas modificar este usuario!",
@@ -180,38 +171,29 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Si el usuario confirma, enviar el formulario
                     $.ajax({
                         url: $(this).attr('action'),
                         type: 'POST',
                         data: $(this).serialize(),
-                        dataType: 'json',
                         success: function(response) {
-                            if (response.status === 'success') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Éxito',
-                                    text: response.message,
-                                    confirmButtonText: 'OK',
-                                    confirmButtonColor: '#1AEB01',
-                                    customClass: {
-                                        confirmButton: 'swal2-confirm'
-                                    }
-                                }).then(() => {
-                                    window.location.href = '<?php echo base_url(); ?>index.php/Admin/index'; 
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: response.message,
-                                    confirmButtonText: 'OK',
-                                    confirmButtonColor: '#1AEB01',
-                                    customClass: {
-                                        confirmButton: 'swal2-confirm'
-                                    }
-                                });
-                            }
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: 'Usuario modificado correctamente',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01'
+                            }).then(() => {
+                                window.location.href = '<?php echo base_url(); ?>index.php/Admin/index'; 
+                            });
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Ocurrió un error al modificar el usuario.',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01'
+                            });
                         }
                     });
                 }
@@ -219,6 +201,7 @@
         });
     });
 </script>
+
 
 </body>
 </html>

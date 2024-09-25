@@ -122,10 +122,19 @@ class Admin extends CI_Controller
 
     public function eliminardb()
     {
-        $id_usuario=$_POST['id_usuario'];
-        $this->Admin_model->eliminarusuario($id_usuario);
-        redirect('Admin/index', 'refresh');
+        $id_usuario = $this->input->post('id_usuario'); // Usar $this->input->post para seguridad
+        $success = $this->Admin_model->eliminarusuario($id_usuario); // Captura el resultado
+    
+        // Devolver una respuesta JSON
+        if ($success) {
+            echo json_encode(['success' => true, 'message' => 'Usuario eliminado correctamente.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al eliminar el usuario.']);
+        }
     }
+    
+    
+    
     public function agregarbd()
     {
         // Cargar el modelo de Usuario
@@ -215,21 +224,37 @@ class Admin extends CI_Controller
 
     public function deshabilitardb()
     {
-        $id_usuario = $_POST['id_usuario'];
+        $id_usuario = $this->input->post('id_usuario'); // Usar $this->input->post para seguridad
         $data['estado'] = '0';
-
-        $this->Admin_model->modificarusuario($id_usuario, $data);
-        redirect('Admin/index', 'refresh');
+    
+        $success = $this->Admin_model->modificarusuario($id_usuario, $data); // Cambiar para capturar el resultado
+    
+        // Devolver una respuesta JSON
+        if ($success) {
+            echo json_encode(['success' => true, 'message' => 'Usuario deshabilitado correctamente.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al deshabilitar el usuario.']);
+        }
     }
+    
+    
 
     public function habilitarbd()
     {
-        $id_usuario = $_POST['id_usuario'];
+        $id_usuario = $this->input->post('id_usuario'); // Usar el método de entrada de CodeIgniter
         $data['estado'] = '1';
-
-        $this->Admin_model->modificarusuario($id_usuario, $data);
-        redirect('Admin/eliminados', 'refresh');
+    
+        // Modificar el usuario y almacenar el resultado
+        $success = $this->Admin_model->modificarusuario($id_usuario, $data);
+    
+        // Devolver una respuesta JSON
+        if ($success) {
+            echo json_encode(['success' => true, 'message' => 'Usuario habilitado correctamente.']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error al habilitar el usuario.']);
+        }
     }
+    
 
     public function modificar()
     {
@@ -263,21 +288,23 @@ class Admin extends CI_Controller
     public function modificardb()
     {
         $password = $this->input->post('password');
-
-        $id_usuario = $this->input->post('id_usuario');  // Usar $this->input->post en lugar de $_POST para consistencia
+        $id_usuario = $this->input->post('id_usuario');
         $data['nombres'] = strtoupper($this->input->post('nombres'));
         $data['apellidos'] = strtoupper($this->input->post('apellidos'));
         $data['email'] = $this->input->post('email');
         $data['rol'] = $this->input->post('rol');
-        
+    
         if (!empty($password)) {
             $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
-        
+    
+        // Actualiza el usuario en la base de datos
         $this->Admin_model->modificarusuario($id_usuario, $data);
+    
+        // Redirige a la página de inicio o cualquier otra página
         redirect('Admin/index', 'refresh');
-        
     }
+    
     // FIN CRUD USUARIOS
 }
 ?>

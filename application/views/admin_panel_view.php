@@ -159,49 +159,101 @@
 <!-- /.content-wrapper -->
 
 <script>
-    $(document).ready(function() {
-        // Confirmación de eliminación
-        $('.eliminar-btn').on('click', function(e) {
-            e.preventDefault(); // Prevenir el envío del formulario
-            const form = $(this).closest('form'); // Obtener el formulario más cercano
+// Confirmación de eliminación
+$('.eliminar-btn').on('click', function(e) {
+    e.preventDefault();
+    const form = $(this).closest('form');
 
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡Deseas eliminar este usuario!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Enviar el formulario si el usuario confirma
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡Deseas eliminar este usuario!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(response) {
+                    const res = JSON.parse(response);
+                    if (res.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: res.message, // Mostrar mensaje de éxito
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#1AEB01'
+                        }).then(() => {
+                            window.location.href = '<?php echo base_url(); ?>index.php/Admin/index'; 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: res.message, // Mostrar mensaje de error
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d33'
+                        });
+                    }
                 }
             });
-        });
-
-        // Confirmación de deshabilitación
-        $('.deshabilitar-btn').on('click', function(e) {
-            e.preventDefault(); // Prevenir el envío del formulario
-            const form = $(this).closest('form'); // Obtener el formulario más cercano
-
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡Deseas deshabilitar este usuario!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ffbb33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, deshabilitar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Enviar el formulario si el usuario confirma
-                }
-            });
-        });
+        }
     });
+});
+
+// Confirmación de deshabilitación
+$('.deshabilitar-btn').on('click', function(e) {
+    e.preventDefault();
+    const form = $(this).closest('form');
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡Deseas deshabilitar este usuario!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ffbb33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, deshabilitar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: 'POST',
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(response) {
+                    const res = JSON.parse(response);
+                    if (res.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: res.message, // Mostrar mensaje de éxito
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#1AEB01'
+                        }).then(() => {
+                            window.location.href = '<?php echo base_url(); ?>index.php/Admin/index'; 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: res.message, // Mostrar mensaje de error
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d33'
+                        });
+                    }
+                }
+            });
+        }
+    });
+});
+
+
 </script>
 </body>
 </html>
