@@ -34,7 +34,7 @@
                              data-id="<?= $product['id_producto'] ?>" 
                              data-stock="<?= $product['stock'] ?>" 
                              data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
-                             data-category="<?= htmlspecialchars($product['categoria']) ?>" 
+                             data-category="<?= $product['categoria'] ?>" 
                              onclick="mostrarPopup('sodaComboPopup', <?= $product['stock'] ?>)">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
@@ -51,18 +51,15 @@
                 <span id="popTitle">TIPO DE SODA</span>
                 <section class="products">
                     <?php foreach ($products as $key => $product) : ?>
-                        <?php if ($product['categoria'] === 'SODA') : ?>
+                        <?php if ($product['categoria'] === 'COMBO') : ?>
                             <div class="product" data-index="<?= $key; ?>" 
                                  data-name="<?= $product['nombre']; ?>" 
                                  data-value="<?= $product['precio']; ?>" 
                                  data-id="<?= $product['id_producto']; ?>" 
                                  data-stock="<?= $product['stock']; ?>"
+                                 data-category="<?= $product['categoria'] ?>" 
                                  data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" >
-                                <?php
-                                $nombreArchivo = basename($product['imagen']);
-                                $rutaImagen = "assets/imagenes_bebidas/" . $nombreArchivo;
-                                ?>
-                                <img src="<?= base_url() . '/' . $rutaImagen; ?>" alt="<?= $product['nombre']; ?>">
+                                <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= $product['nombre']; ?>">
                                 <p class="product-name"><?= $product['nombre']; ?></p>
                                 <br>
                                 <p class="bold-text"><?= $product['precio'] . " Bs."; ?></p>
@@ -83,7 +80,8 @@
                              data-name="<?= htmlspecialchars($product['nombre']) ?>" 
                              data-value="<?= $product['precio'] ?>" 
                              data-id="<?= $product['id_producto'] ?>" 
-                             data-stock="<?= $product['stock'] ?>" 
+                             data-stock="<?= $product['stock'] ?>"
+                             data-category="<?= $product['categoria'] ?>" 
                              data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
@@ -97,7 +95,14 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'CERVEZA') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
+                        <div class="product" 
+                             data-index="<?= $product['id_producto'] ?>" 
+                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                             data-value="<?= $product['precio'] ?>" 
+                             data-id="<?= $product['id_producto'] ?>" 
+                             data-stock="<?= $product['stock'] ?>"
+                             data-category="<?= $product['categoria'] ?>" 
+                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
                             <p>Precio: Bs.<?= $product['precio'] ?></p>
@@ -110,7 +115,14 @@
             <section class="products">
                 <?php foreach ($products as $product) : ?>
                     <?php if ($product['categoria'] === 'PIQUEO') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
+                        <div class="product" 
+                             data-index="<?= $product['id_producto'] ?>" 
+                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                             data-value="<?= $product['precio'] ?>" 
+                             data-id="<?= $product['id_producto'] ?>" 
+                             data-stock="<?= $product['stock'] ?>"
+                             data-category="<?= $product['categoria'] ?>" 
+                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3><?= htmlspecialchars($product['nombre']) ?></h3>
                             <p>Precio: Bs.<?= $product['precio'] ?></p>
@@ -121,19 +133,22 @@
         </div>
         <div class="mostrar" id="D5">
             <section class="products">
-            <?php foreach ($products as $product) : ?>
-    <?php if ($product['categoria'] === 'SODA') : ?>
-        <div class="product" data-index="<?= $product['id_producto'] ?>" data-name="<?= htmlspecialchars($product['nombre']) ?>" data-value="<?= $product['precio'] ?>" data-id="<?= $product['id_producto'] ?>" data-stock="<?= $product['stock'] ?>" data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
-            <?php
-            $foto = $product['imagen'];
-            ?>
-            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $foto ?>" />
-            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-            <p>Precio: Bs.<?= $product['precio'] ?></p>
-        </div>
-    <?php endif; ?>
-<?php endforeach; ?>
-
+                <?php foreach ($products as $product) : ?>
+                    <?php if ($product['categoria'] === 'SODA') : ?>
+                        <div class="product" 
+                             data-index="<?= $product['id_producto'] ?>" 
+                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                             data-value="<?= $product['precio'] ?>" 
+                             data-id="<?= $product['id_producto'] ?>" 
+                             data-stock="<?= $product['stock'] ?>" 
+                             data-category="<?= $product['categoria'] ?>" 
+                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
+                            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
+                            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
+                            <p>Precio: Bs.<?= $product['precio'] ?></p>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </section>
         </div>
     </div>
@@ -176,172 +191,201 @@
                 </div>
             </div>
         </section>
-
-
     </div>
     <script>
-    (function() {
-        let productos = document.querySelectorAll('section.products > .product');
-        let listaCarrito = document.getElementById('cart-list');
-        let totalDisplay = document.getElementById('total');
-        let inputCarrito = document.getElementById('cart');
+(function() {
+    let productos = document.querySelectorAll('section.products > .product');
+    let listaCarrito = document.getElementById('cart-list');
+    let totalDisplay = document.getElementById('total');
+    let itemsCarrito = [];
+    let total = 0.00; // Inicializa el total en 0.00
 
-        let total = 0;
-        let itemsCarrito = [];
+    // Mostrar total inicial
+    totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`; // Mostrar el total como 0.00
 
-        // Function to initialize product click events
-        productos.forEach(producto => {
-            producto.addEventListener('click', function(e) {
-                let nombre = e.currentTarget.dataset.name;
-                let valor = parseFloat(e.currentTarget.dataset.value);
-                let id = e.currentTarget.dataset.index;
-                let imagen = e.currentTarget.dataset.image;
-                let categoria = e.currentTarget.dataset.category; // Añadir esta línea
-                let isFromPopup = e.currentTarget.closest('.popup') !== null; // Verificar si proviene de popup
+    productos.forEach(producto => {
+        producto.addEventListener('click', function(e) {
+            let nombre = e.currentTarget.dataset.name;
+            let valor = parseFloat(e.currentTarget.dataset.value);
+            let id = e.currentTarget.dataset.id;
+            let imagen = e.currentTarget.dataset.image;
+            let categoria = e.currentTarget.dataset.category; // Obtener la categoría
 
-                // Buscar si el producto ya está en el carrito
-                let itemExistente = itemsCarrito.find(item => item.id === id);
+            // Buscar si el producto ya está en el carrito
+            let itemExistente = itemsCarrito.find(item => item.id === id && item.categoria === categoria);
 
-                if (itemExistente) {
-                    itemExistente.cantidad += 1;
-                } else {
-                    itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria, isFromPopup });
-                }
-
-                total += valor;
-                actualizarCarrito();
-            });
-        });
-
-        function actualizarCarrito() {
-    listaCarrito.innerHTML = '';
-
-    itemsCarrito.forEach(item => {
-        let li = document.createElement('li');
-        li.style.display = 'table-row';
-        li.innerHTML = `
-            <span style="display: table-cell; width: 5%;">
-                <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
-            </span>
-            <span style="display: table-cell; width: 20%;">${item.nombre}</span>
-            <span style="display: table-cell; width: 13%; text-align: right;"><strong>Bs. ${item.valor.toFixed(2)}</strong></span>
-            <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
-        `;
-
-        // Si el producto proviene del popup, mostrar solo el botón de menos
-        if (item.isFromPopup) {
-            li.innerHTML += `
-                <span style="display: table-cell; width: 14%; text-align: right;">
-                    <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                </span>
-            `;
-        } else {
-            // Si el producto no proviene del popup, mostrar botones de más, menos y borrar
-            li.innerHTML += `
-                <span style="display: table-cell; width: 14%; text-align: right;">
-                    <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                    <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                    <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" style="cursor: pointer; width: 23px; height: auto;">
-                </span>
-            `;
-        }
-
-        listaCarrito.appendChild(li);
-
-        // Agregar los event listeners para los botones de menos
-        li.querySelector('.btn-menos').addEventListener('click', function() {
-            if (item.cantidad > 1) {
-                item.cantidad -= 1;
-                total -= item.valor;
+            if (itemExistente) {
+                // Incrementar la cantidad del producto existente
+                itemExistente.cantidad += 1;
             } else {
-                total -= item.valor;
-                itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
+                // Agregar artículo al carrito si no existe
+                itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria });
             }
+
+            // Actualizar total y la interfaz
+            total += valor;
             actualizarCarrito();
         });
-
-        // Agregar los event listeners para los botones de más y borrar solo si no es del popup
-// Agregar los event listeners para los botones de más y borrar solo si no es del popup
-if (!item.isFromPopup) {
-    li.querySelector('.btn-mas').addEventListener('click', function() {
-        console.log('Elemento actual:', item);
-        console.log('Categoría del producto:', item.categoria);
-        
-        // Verificar si el producto es de la categoría 'BOTELLA'
-        if (item.categoria === 'BOTELLA') {
-            item.cantidad += 1;
-            total += item.valor;
-            actualizarCarrito();
-
-            // Habilitar el popup solo para productos de la categoría 'BOTELLA'
-            mostrarPopup('sodaComboPopup', item.stock);
-        } else {
-            console.log('El producto no es de la categoría BOTELLA, no se mostrará el popup.');
-        }
     });
 
+    function actualizarCarrito() {
+        // Limpiar la lista del carrito
+        listaCarrito.innerHTML = '';
 
+        // Agregar cada producto al carrito
+        itemsCarrito.forEach(item => {
+            let li = document.createElement('li');
+            li.style.display = 'table-row';
+            li.innerHTML = `
+                <span style="display: table-cell; width: 5%;">
+                    <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
+                </span>
+                <span style="display: table-cell; width: 20%;">${item.nombre}</span> 
+                <span style="display: table-cell; width: 13%; text-align: right;"><strong>Bs. ${item.valor.toFixed(2)}</strong></span>
+                <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
+                <span style="display: table-cell; width: 14%; text-align: right;">
+                    ${item.categoria === 'COMBO' ? '' : ` 
+                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" style="cursor: pointer; width: 23px; height: auto;">
+                    `}
+                </span>
+            `;
 
-            li.querySelector('.btn-borrar').addEventListener('click', function() {
-                total -= item.valor * item.cantidad;
-                itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
-                actualizarCarrito();
-            });
-        }
-    });
+            // Agregar eventos a los botones
+            if (item.categoria !== 'COMBO') {
+                li.querySelector('.btn-mas').addEventListener('click', function() {
+                    item.cantidad += 1;
+                    total += item.valor;
 
-    totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
-    inputCarrito.value = JSON.stringify(itemsCarrito);
-}
+                    // Verificar si el producto es de la categoría "BOTELLA"
+                    if (item.categoria === 'BOTELLA') {
+                        mostrarPopup('sodaComboPopup', item.stock); // Muestra el popup
+                    }
 
+                    actualizarCarrito();
+                });
+                
+                li.querySelector('.btn-menos').addEventListener('click', function() {
+                    // Verificar si el producto es de la categoría "BOTELLA"
+                    if (item.categoria === 'BOTELLA') {
+                        // Buscar el item de combo correspondiente
+                        let itemCombo = itemsCarrito.find(i => i.categoria === 'COMBO');
 
-        // Expose the function mostrarPopup to be accessible globally
-        window.mostrarPopup = function(popupId, stock) {
-            if (stock <= 0) {
-                return;
-            }
-            cerrarPopup();
-
-            var popup = document.getElementById(popupId);
-            var overlay = document.getElementById('popupOverlay');
-
-            if (popup && overlay) {
-                overlay.style.display = 'block';
-                popup.style.display = 'block';
-
-                var productos = popup.querySelectorAll('.product');
-                productos.forEach(function(producto) {
-                    producto.addEventListener('click', function() {
-                        let nombre = producto.dataset.name;
-                        let valor = parseFloat(producto.dataset.value);
-                        let id = producto.dataset.index;
-                        let imagen = producto.dataset.image;
-
-                        let itemExistente = itemsCarrito.find(item => item.id === id);
-
-                        if (itemExistente) {
-                            itemExistente.cantidad += 0; // Cambié de 0 a 1
+                        // Reducir cantidad de BOTELLA
+                        if (item.cantidad > 1) {
+                            item.cantidad -= 1;
+                            total -= item.valor;
                         } else {
-                            itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, isFromPopup: true });
+                            total -= (item.valor * item.cantidad); // Restar el total del producto
+                            itemsCarrito = itemsCarrito.filter(i => i.id !== item.id); // Eliminar del carrito
                         }
 
-                        actualizarCarrito();
-                        cerrarPopup();
-                    });
+                        // Reducir la cantidad del combo solo si existe
+                        if (itemCombo) {
+                            itemCombo.cantidad -= 1; // Reducir la cantidad de combo
+                            if (itemCombo.cantidad <= 0) {
+                                itemsCarrito = itemsCarrito.filter(i => i.id !== itemCombo.id); // Eliminar el combo si es necesario
+                            }
+                            total -= itemCombo.valor; // Restar el valor del combo del total
+                        }
+                    } else {
+                        if (item.cantidad > 1) {
+                            item.cantidad -= 1;
+                            total -= item.valor;
+                        } else {
+                            itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
+                            total -= item.valor;
+                        }
+                    }
+                    actualizarCarrito();
+                });
+
+                li.querySelector('.btn-borrar').addEventListener('click', function() {
+                    if (item.categoria === 'BOTELLA') {
+                        // Verificar cuántos combos (SPRITE) hay en el carrito
+                        let itemCombo = itemsCarrito.find(i => i.categoria === 'COMBO');
+
+                        // Restar del total
+                        total -= (item.valor * item.cantidad);
+                        itemsCarrito = itemsCarrito.filter(i => i.id !== item.id); // Eliminar el BOTELLA
+
+                        // Reducir la cantidad del combo solo si existe
+                        if (itemCombo) {
+                            itemCombo.cantidad -= item.cantidad; // Reducir la cantidad del combo según el número de BOTELLA eliminados
+                            if (itemCombo.cantidad <= 0) {
+                                itemsCarrito = itemsCarrito.filter(i => i.id !== itemCombo.id); // Eliminar el combo si es necesario
+                            }
+                            total -= itemCombo.valor * item.cantidad; // Restar el valor del combo del total
+                        }
+                    } else {
+                        total -= (item.valor * item.cantidad);
+                        itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
+                    }
+                    actualizarCarrito();
                 });
             }
-        }
 
-        function cerrarPopup() {
-            var overlay = document.getElementById('popupOverlay');
-            var popups = document.querySelectorAll('.popup');
+            listaCarrito.appendChild(li);
+        });
 
-            overlay.style.display = 'none';
-            popups.forEach(function(popup) {
-                popup.style.display = 'none';
+        // Actualizar total
+        totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
+
+        // Actualizar el input oculto para el envío del formulario
+        document.getElementById('cart').value = JSON.stringify(itemsCarrito);
+    }
+
+})();
+</script>
+
+
+
+
+<script>
+
+function mostrarPopup(popupId, stock) {
+    // Verificar si el stock es mayor que cero
+    if (stock <= 0) {
+        return;
+    }
+
+    // Cerrar cualquier ventana emergente abierta
+    cerrarPopup();
+
+    var popup = document.getElementById(popupId);
+    var overlay = document.getElementById('popupOverlay');
+
+    if (popup && overlay) {
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+
+        // Agrega un evento de clic a todos los elementos del producto dentro de la ventana emergente
+        var productos = popup.querySelectorAll('.product');
+        productos.forEach(function(producto) {
+            producto.addEventListener('click', function() {
+                // Aquí deberías agregar la lógica real para agregar el producto al carrito
+
+                // Cierra automáticamente la ventana después de agregar el producto al carrito
+                cerrarPopup();
             });
+        });
+    }
+}
+
+    function cerrarPopup() {
+        var overlay = document.getElementById('popupOverlay');
+        var popups = document.querySelectorAll('.popup');
+
+        if (overlay) {
+            overlay.style.display = 'none';
         }
-    })();
+
+        // Oculta todos los popups
+        popups.forEach(function (popup) {
+            popup.style.display = 'none';
+        });
+    }
 </script>
 
 

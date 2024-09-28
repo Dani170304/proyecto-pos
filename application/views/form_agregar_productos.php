@@ -81,6 +81,7 @@
                                         <option value="soda">Soda</option>
                                         <option value="cerveza">Cerveza</option>
                                         <option value="piqueo">Piqueo</option>
+                                        <option value="combo">Soda-Combo</option>
                                     </select>
                                 </div>
                             </div>
