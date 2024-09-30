@@ -213,7 +213,7 @@
   padding: 0.5rem 1.5rem;
   width: 100%;
   }
-  section.bill form input[type="submit"] {
+  section.bill form input[type="button"] {
   display: block;
   background: #56514B;
   border: 1px solid #56514B;
@@ -225,10 +225,11 @@
   transition: 0.3s ease-in-out;
   width: 100%;
   }
-  section.bill form input[type="submit"]:hover {
+  section.bill form input[type="button"]:hover {
   background: #E7E5DD;
   border: 1px solid #56514B;
   color: #56514B;
+  cursor: pointer;
   }
   
   section.bill-print {

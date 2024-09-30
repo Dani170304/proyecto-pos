@@ -11,6 +11,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="icon" href="<?php echo base_url(); ?>assets/img/logo_drink.jpg" type="image/png">
+        <!-- Incluye SweetAlert CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Incluye SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="index">
@@ -153,46 +157,49 @@
         </div>
     </div>
     <div class="orden">
-        <section class="bill">
-            <div class="bill-products">
-                <h2 class="bold-text-orden"><b>ORDEN</b></h2>
+    <section class="bill">
+        <div class="bill-products">
+            <h2 class="bold-text-orden"><b>ORDEN</b></h2>
 
-                <ul id="cart-list" class="cart-items-list"></ul>
+            <ul id="cart-list" class="cart-items-list"></ul>
 
-                <p class="bold-text-total" id="total">Total: Bs. 0</p>
-            </div>
-            <div class="bill-client">
-                <form method="POST" action="./bill.php" id="checkout-form">
-                    <div class="hidden">
-                        <label for="cart">Carrito</label>
-                        <input type="hidden" name="cart" id="cart" value="">
-                    </div>
-                    <div class="hidden">
-                        <label for="cart">CarritoCombo</label>
-                        <input type="hidden" name="cartCombo" id="cartCombo" value="">
-                    </div>
-
-                    <br>
-
-                    <div>
-                        <input class="submit-confirmar" type="submit" value="CONFIRMAR">
-                    </div>
-                    <br>
-                    <?php if (isset($nombres)) : ?>
-                        <div class="bold-text-info">
-                            <span>NOMBRE DE USUARIO</span>
-                            <input type="text" value="<?= htmlspecialchars($nombres) ?>" readonly>
-                        </div>
-                    <?php endif; ?>
-                    <br>
-                </form>
-                <div>
-                    <a class="close" href="<?php echo site_url('CerrarDrink'); ?>">Cerrar Sesión</a>
+            <p class="bold-text-total" id="total">Total: Bs. 0</p>
+        </div>
+        <div class="bill-client">
+            <form method="POST" action="<?= site_url('menu/confirmar_orden') ?>" id="checkout-form">
+                <div class="hidden">
+                    <label for="cart">Carrito</label>
+                    <input type="hidden" name="cart" id="cart" value="">
                 </div>
+                <div class="hidden">
+                    <label for="cart">CarritoCombo</label>
+                    <input type="hidden" name="cartCombo" id="cartCombo" value="">
+                </div>
+
+                <br>
+
+                <div>
+                    <input class="submit-confirmar" type="button" value="CONFIRMAR" id="confirmar-btn">
+                </div>
+                <br>
+                <?php if (isset($nombres)) : ?>
+                    <div class="bold-text-info">
+                        <span>NOMBRE DE USUARIO</span>
+                        <input type="text" value="<?= htmlspecialchars($nombres) ?>" readonly>
+                        <input type="hidden" value="<?= htmlspecialchars($id_usuario) ?>" readonly>
+                        
+                    </div>
+                <?php endif; ?>
+                <br>
+            </form>
+            <div>
+                <a class="close" href="<?php echo site_url('CerrarDrink'); ?>">Cerrar Sesión</a>
             </div>
-        </section>
-    </div>
-    <script>
+        </div>
+    </section>
+</div>
+
+<script>
 (function() {
     let productos = document.querySelectorAll('section.products > .product');
     let listaCarrito = document.getElementById('cart-list');
@@ -336,10 +343,37 @@
         document.getElementById('cart').value = JSON.stringify(itemsCarrito);
     }
 
+    // Función para confirmar la orden con SweetAlert
+// Función para confirmar la orden con SweetAlert
+document.getElementById('confirmar-btn').addEventListener('click', function() {
+    if (itemsCarrito.length === 0) {
+        Swal.fire({
+            title: '¡Atención!',
+            text: "Por favor, selecciona al menos un producto antes de confirmar.",
+            icon: 'warning',
+            confirmButtonText: 'Aceptar'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Una vez confirmada, no podrás editar tu pedido.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, confirmar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Enviar el formulario si el usuario confirma
+            document.getElementById('checkout-form').submit();
+        }
+    });
+});
+
+
 })();
 </script>
-
-
 
 
 <script>
