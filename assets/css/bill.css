@@ -1,0 +1,211 @@
+
+.bold-text {
+    font-family: 'GilroyBold', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: -5px;
+    font-size: 12px;
+  
+}
+.finish-bill{
+    background-image: url("images/fondoFacturaAlas.jpg");
+    background-repeat: no-repeat;
+    padding: 20px;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho y alto del contenedor */
+    background-attachment: fixed; /* Fija el fondo para que no se desplace con el contenido */
+    background-position: center; /* Centra el fondo */
+    background-size: 100%; /* Ajusta el tamaño del fondo */  
+}
+
+.text-factura-orden{
+    margin-top: 0px;
+    font-family: 'GilroyBold', sans-serif;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 0 0 3px #015CFA, 0 0 10px #015CFA, 0 0 15px #015CFA, 0 0 15px #015CFA; /* Efecto de sombra */
+    text-align: center;
+    margin-bottom: -10px;
+}
+.bold-text-city p span{
+    margin-bottom: -25px;
+    margin-top: -15px;
+}
+section.bill-print {
+    background-color: #fff;
+    display: block;
+    border: none;
+    box-sizing: border-box;
+    margin: 1rem auto; /* Reducir el margen superior e inferior */
+    max-width: 8cm; /* Establece el ancho máximo del contenido */
+    width: 100%; /* Opcional: Puedes establecer un ancho máximo para la factura */
+    height: auto; /* Ajusta la altura automáticamente según el contenido */
+    padding: 0.1rem 0.9rem; /* Reducir el espacio interno del contenido */
+    font-family: 'Gilroy', sans-serif;
+    font-size: 1.1rem; /* Ajusta el tamaño de la fuente según sea necesario */
+}
+
+
+section.bill-print .bill-print-user p span:last-of-type,
+section.bill-print .bill-print-products p span:last-of-type,
+section.bill-print .bill-print-total p span:last-of-type {
+  font-weight: bold;
+  text-align: right;
+  float: right;
+  margin-bottom: -10px;
+}
+.bill-print-products p span{
+    font-size: 13px;
+}
+.bill-print-products p span.product-name {
+    display: block;
+    max-width: 80%; /* Ancho máximo del contenedor del nombre del producto */
+    word-wrap: break-word; /* Permitir el ajuste automático del texto en varias líneas */
+    font-size: 13px; /* Tamaño de la fuente */
+    line-height: 1.2; /* Espaciado entre líneas */
+    margin-bottom: 0; /* Espacio entre nombres de productos */
+    margin-left: 5px;
+}
+
+section.bill-print .bill-print-products p:first-of-type {
+    font-weight: bold;
+}
+
+section.bill-print .bill-print-header {
+    text-align: center;
+}
+  
+section.bill-print .bill-print-user {
+    border-top: 1px solid #564e4b;
+    border-bottom: 1px solid #56514B;
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+}
+
+section.bill-print .bill-print-total p {
+    border-top: 1px solid #56514B;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    font-size: 14px;
+}
+
+/* Botones */
+section.bill-actions button {
+    display: block;
+    background-color: #013CF0; /* Color de fondo predeterminado */
+    color: #000;
+    line-height: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 250px; /* Ancho del botón */
+    height: 30px; /* Altura del botón */
+    margin: 10px auto;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 0 5px #fff, 0 0 1px #fff, 0 0 5px #fff, 0 0 10px #fff;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Transición suave para el cambio de color y sombra */
+    font-weight: bold; /* Hacer el texto negrita */
+    font-size: 18px; /* Ajustar el tamaño de la fuente */
+    box-sizing: border-box;
+    max-width: 350px;
+    padding: 0.5rem 1.5rem;
+    transform: translateY(-5px); /* Prueba con una transformación para moverlo hacia arriba */
+
+}
+
+section.bill-actions button:hover {
+    background-color: #FC5138; /* Cambio de color al rojo cuando el cursor está sobre el botón */
+    color: #fff; /* Cambio de color del texto a blanco cuando el cursor está sobre el botón */
+    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Transición suave para el cambio de color y sombra */
+    box-shadow: none;
+}
+.com p span{
+    font-size: 0.9rem;
+    margin-bottom: -10px;
+}
+section.bill-print p {
+    line-height: 1; /* Establecer un line-height más pequeño */
+    margin-bottom: 0.2rem; /* Reducir el margen inferior entre elementos */
+}
+/* Reducir espacios interlineales en la cabecera de la factura */
+.bill-print-header p {
+    margin: 0.2rem 0; /* Ajustar el margen superior e inferior */
+}
+
+.bill-print-header p span {
+    line-height: 1; /* Establecer un line-height más pequeño */
+    font-size: 14px;
+}
+.bold-text-orden{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+
+/* Reducir espacios interlineales en la sección del usuario */
+.bill-print-user p {
+    margin:  0; /* Ajustar el margen superior e inferior */
+    font-size: 14px;
+}
+
+.bill-print-user p span {
+    line-height: 1; /* Establecer un line-height más pequeño */
+}
+
+.bill-print-products th {
+    padding-right: 15px; /* Ajusta este valor según tu preferencia */
+    font-size: 15px;
+}
+/* Estilos para las celdas de la tabla de productos */
+.bill-print-products .product-name {
+    font-size: 13px; /* Reducir el tamaño de la fuente para productName */
+    margin-right: 10px;
+    margin-left: -5px;
+}
+
+
+.bill-print-products .product-quantity,
+.bill-print-products .product-total {
+    text-align: center;
+    padding-right: 10px; /* Agregar espacio hacia la derecha */
+    padding-left: -15px;
+    font-size: 13px;
+}
+.product-value{
+    font-size: 14px;
+}
+.product-name{
+    margin-left: -5px
+}
+
+table tr {
+    margin-bottom: 1px; /* Ajusta el espacio vertical entre las filas */
+}
+
+/* Estilos adicionales */
+@media print {
+    body * {
+        visibility: hidden;
+
+    }
+    #bill-print, #bill-print * {
+        visibility: visible;
+    }
+    #bill-print {
+        position: absolute;
+        left: 0;
+        top: -15px;
+    }
+    body {
+        min-height: unset;
+    }
+    section.bill-actions {
+        display: none;
+    }
+    @page {
+        size: 80mm 100%; /* Ancho fijo de 80mm y altura automática */
+        margin: 0.4cm; /* Márgenes de impresión */
+    }
+}
+  
+/*  */
