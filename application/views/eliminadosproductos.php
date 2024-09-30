@@ -41,7 +41,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 id="title">LISTA DE productos</h1>
+            <h1 id="title">LISTA DE PRODUCTOS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -97,15 +97,17 @@
                     <td><?php echo $row-> precio; ?></td>
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td>
-                    <?php
-                    echo form_open_multipart("Productos/habilitarproductobd");
-                    ?>
-                    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
-                    <button type="submit" class="btn btn-morado"><i class="fas fa-check-circle"></i></button>
-                    <?php
-                    echo form_close();
-                    ?>
-                    </td>
+                    <td>
+    <?php
+    echo form_open_multipart("Productos/habilitarproductobd", ['class' => 'habilitar-form']); // Añadir una clase al formulario
+    ?>
+    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+    <button type="button" class="btn btn-morado habilitar-btn"><i class="fas fa-check-circle"></i></button>
+    <?php
+    echo form_close();
+    ?>
+</td>
+
                 </tr>
 
                 <?php
@@ -130,3 +132,56 @@
   <!-- /.content-wrapper -->
   </div>
   <!-- ./wrapper -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Agregar SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function() {
+    $('.habilitar-btn').on('click', function(e) {
+        e.preventDefault(); // Prevenir el envío del formulario
+        const form = $(this).closest('form'); // Obtener el formulario más cercano
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Deseas habilitar este producto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, habilitar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.fire({
+                            icon: response.success ? 'success' : 'error',
+                            title: response.success ? 'Éxito' : 'Error',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: response.success ? '#1AEB01' : '#d33'
+                        }).then(() => {
+                            window.location.href = '<?php echo base_url(); ?>index.php/Productos/productos'; 
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar la solicitud.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d33'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+
+</script>

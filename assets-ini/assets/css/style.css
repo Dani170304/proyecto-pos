@@ -129,7 +129,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   #header {
     width: 150px;
     /* background: #fff;
@@ -203,7 +203,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 790px;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .nav-menu a {
     width: 100%;
     margin-top: 20px;
@@ -232,9 +232,10 @@ h1, h2, h3, h4, h5, h6 {
     top: -450px;
   }
 }
-@media (min-width: 1920px) {
+
+@media (min-width: 1620px) {
   .nav-menu {
-    margin-top: -850px;
+    margin-top: -890px;
     display: flex;
     justify-content: center;
     /* background: #f2f3f5; */
@@ -245,19 +246,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-left: 1335px;
   }
 }
-@media (min-width: 1295px) {
-  .nav-menu {
-    margin-top: -850px;
-    display: flex;
-    justify-content: center;
-    /* background: #f2f3f5; */
-    padding: 10px 0;
-  }
-  .nav-menu > ul > li.right-align {
-    position: relative;
-    margin-left: 1270px;
-  }
-}
+
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
   color: #000;
   background: #bb0533;

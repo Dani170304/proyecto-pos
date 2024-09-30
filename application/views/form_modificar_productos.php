@@ -88,11 +88,12 @@
                                         <span class="input-icon"><i class="fa fa-file-alt"></i></span>
                                         <select class="form-control" name="categoria" required>
                                             <option value="" disabled <?php echo ($row->categoria == '') ? 'selected' : ''; ?>>Seleccione la categoria</option>
-                                            <option value="botella" <?php echo ($row->categoria == 'botella') ? 'selected' : ''; ?>>Botella</option>
-                                            <option value="coctel" <?php echo ($row->categoria == 'coctel') ? 'selected' : ''; ?>>Coctel</option>
-                                            <option value="soda" <?php echo ($row->categoria == 'soda') ? 'selected' : ''; ?>>Soda</option>
-                                            <option value="cerveza" <?php echo ($row->categoria == 'cerveza') ? 'selected' : ''; ?>>Cerveza</option>
-                                            <option value="piqueo" <?php echo ($row->categoria == 'piqueo') ? 'selected' : ''; ?>>Piqueo</option>
+                                            <option value="botella" <?php echo ($row->categoria == 'BOTELLA') ? 'selected' : ''; ?>>Botella</option>
+                                            <option value="coctel" <?php echo ($row->categoria == 'COCTEL') ? 'selected' : ''; ?>>Coctel</option>
+                                            <option value="soda" <?php echo ($row->categoria == 'SODA') ? 'selected' : ''; ?>>Soda</option>
+                                            <option value="cerveza" <?php echo ($row->categoria == 'CERVEZA') ? 'selected' : ''; ?>>Cerveza</option>
+                                            <option value="piqueo" <?php echo ($row->categoria == 'PIQUEO') ? 'selected' : ''; ?>>Piqueo</option>
+                                            <option value="combo" <?php echo ($row->categoria == 'COMBO') ? 'selected' : ''; ?>>Soda-Combo</option>
                                         </select>
                                     </div>
                                 </div>
@@ -157,11 +158,44 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // Si el usuario confirma, enviamos el formulario
-                this.submit();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: response.message,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01',
+                                customClass: {
+                                    confirmButton: 'swal2-confirm'
+                                }
+                            }).then(() => {
+                                window.location.href = 'productos'; 
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01',
+                                customClass: {
+                                    confirmButton: 'swal2-confirm'
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     });
 </script>
+
 
 </body>
 </html>

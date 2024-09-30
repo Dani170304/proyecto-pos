@@ -187,7 +187,25 @@ $(document).ready(function() {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                form.submit(); // Enviar el formulario si el usuario confirma
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.fire({
+                            title: response.success ? 'Éxito' : 'Error',
+                            text: response.message,
+                            icon: response.success ? 'success' : 'error'
+                        }).then(() => {
+                            // Recargar la página o realizar alguna acción adicional
+                            location.reload();
+                        });
+                    },
+                    error: function() {
+                        Swal.fire('Error', 'Hubo un problema al procesar la solicitud.', 'error');
+                    }
+                });
             }
         });
     });
@@ -208,10 +226,29 @@ $(document).ready(function() {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                form.submit(); // Enviar el formulario si el usuario confirma
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.fire({
+                            title: response.success ? 'Éxito' : 'Error',
+                            text: response.message,
+                            icon: response.success ? 'success' : 'error'
+                        }).then(() => {
+                            // Recargar la página o realizar alguna acción adicional
+                            location.reload();
+                        });
+                    },
+                    error: function() {
+                        Swal.fire('Error', 'Hubo un problema al procesar la solicitud.', 'error');
+                    }
+                });
             }
         });
     });
 });
+
 </script>
 

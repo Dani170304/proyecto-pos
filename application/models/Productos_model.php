@@ -33,13 +33,16 @@ class Productos_model extends CI_Model {//INICIO CRUD PRODUCTOS
     public function eliminarproducto($id_producto)
     {
         $this->db->where('id_producto', $id_producto);
-        $this->db->delete('productos');
+        return $this->db->delete('productos'); // Esto debería devolver true o false
     }
+    
     public function modificarproducto($id_producto, $data)
     {
+        // Suponiendo que estás utilizando Active Record de CodeIgniter
         $this->db->where('id_producto', $id_producto);
-        $this->db->update('productos', $data);
+        return $this->db->update('productos', $data); // Esto devuelve true o false
     }
+    
     public function insertar_producto($data) {
         // Intentar insertar los datos en la tabla 'productos'
         return $this->db->insert('productos', $data);

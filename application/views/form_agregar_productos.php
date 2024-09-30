@@ -63,6 +63,8 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+
+
                             <?php echo form_open_multipart("Productos/agregarproductobd", ['id' => 'formAgregar']); ?>
 
                             <div class="form-group">
@@ -128,12 +130,58 @@
             confirmButtonText: 'Sí, agregar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
-            if (result.isConfirmed) {
-                // Si el usuario confirma, envía el formulario
-                this.submit();
-            }
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, enviar el formulario
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'POST',
+                        data: new FormData(this), // Enviar los datos del formulario
+                        processData: false, // Evitar que jQuery procese los datos
+                        contentType: false, // No establecer tipo de contenido
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Éxito',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#1AEB01',
+                                    customClass: {
+                                        confirmButton: 'swal2-confirm'
+                                    }
+                                }).then(() => {
+                                    window.location.href = 'productos'; // Redirigir después de agregar el producto
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message,
+                                    confirmButtonText: 'OK',
+                                    confirmButtonColor: '#1AEB01',
+                                    customClass: {
+                                        confirmButton: 'swal2-confirm'
+                                    }
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Ocurrió un error al procesar la solicitud.',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01',
+                                customClass: {
+                                    confirmButton: 'swal2-confirm'
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         });
-    });
 </script>
 
 </body>
