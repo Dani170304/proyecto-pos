@@ -19,7 +19,7 @@ class Menu extends CI_Controller {
         $this->load->view('menu_view', $data); // Pasar datos a la vista
     }
 
-    public function confirmar_orden() {
+    public function ticket_orden() {
         $cart = json_decode($this->input->post('cart'), true);
         $id_usuario = $this->session->userdata('id_usuario');
         $id_mesero = $this->session->userdata('id_usuario');

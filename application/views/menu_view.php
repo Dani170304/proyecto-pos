@@ -166,7 +166,7 @@
             <p class="bold-text-total" id="total">Total: Bs. 0</p>
         </div>
         <div class="bill-client">
-            <form method="POST" action="<?= site_url('menu/confirmar_orden') ?>" id="checkout-form">
+            <form method="POST" action="<?= site_url('menu/ticket_orden') ?>" id="checkout-form">
                 <div class="hidden">
                     <label for="cart">Carrito</label>
                     <input type="hidden" name="cart" id="cart" value="">
