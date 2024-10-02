@@ -47,5 +47,25 @@ class Productos_model extends CI_Model {//INICIO CRUD PRODUCTOS
         // Intentar insertar los datos en la tabla 'productos'
         return $this->db->insert('productos', $data);
     }
+    public function verificar_producto_existente($nombre, $categoria, $id_producto = null,)
+    {
+        $this->db->where('nombre', $nombre);
+        $this->db->where('categoria', $categoria);
+        $this->db->where('estado',1);
+        
+        // Si estamos en el caso de modificación, excluimos el producto actual de la búsqueda
+        if ($id_producto !== null) {
+            $this->db->where('id_producto !=', $id_producto);
+        }
+        
+        $query = $this->db->get('productos');
+        
+        if ($query->num_rows() > 0) {
+            return true; // El producto ya existe
+        } else {
+            return false; // El producto no existe
+        }
+    }
+
 }
 ?>
