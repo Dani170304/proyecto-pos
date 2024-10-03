@@ -111,7 +111,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Productos/productos" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Eventos/index" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>EVENTOS</p>
                 </a>
@@ -124,13 +124,13 @@
               <!-- <i class="fas fa-angle-right right"></i> -->
             </p>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Factura/index" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REC. FACTURA</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Factura/editar" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>EDITAR FACTURA</p>
                 </a>
@@ -155,9 +155,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Admin/reporteProducto" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Admin/reporteProductoMasVendido" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>REPORTE PRODUCTOS</p>
+                  <p>REPORTE PRODUCTO MAS VENDIDO</p>
                 </a>
               </li>
           </li>

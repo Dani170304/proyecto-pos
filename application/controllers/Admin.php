@@ -12,10 +12,10 @@ class Admin extends CI_Controller
     // usuarios
     public function dash()
     {
-        $data_g['ganancias'] = $this->Admin_model->get_ganancias();
-        $data_g['ventas'] = $this->Admin_model->get_ventas();
+        $data_g['ganancias'] = $this->Admin_model->get_total_ganancias();
+        $data_g['Nroventas'] = $this->Admin_model->get_ventas();
         $data_g['clientes'] = $this->Admin_model->get_clientes();
-        $data_v['ventas'] = $this->Admin_model->obtener_ultimas_ventas();
+        $data_g['ventas'] = $this->Admin_model->obtener_ultimas_ventas();
         $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
         $user_data = $this->Admin_model->get_user_by_id($user_id);
     
@@ -33,7 +33,7 @@ class Admin extends CI_Controller
         $data['user'] = $user_data;
         $this->load->view('inc/head');
         $this->load->view('inc/menu', $data);
-        $this->load->view('inc/dash',$data_g, $data_v); // Suponiendo que esta es la vista
+        $this->load->view('inc/dash',$data_g); // Suponiendo que esta es la vista
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
@@ -304,7 +304,96 @@ class Admin extends CI_Controller
         // Redirige a la página de inicio o cualquier otra página
         redirect('Admin/index', 'refresh');
     }
+    public function reporteDia()
+    {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
     
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener la lista de usuarios
+        $lista = $this->Admin_model->listausuarios();
+        $data['usuarios'] = $lista;
+        
+        // Obtener las ventas del día
+        $ventasDelDia = $this->Admin_model->obtenerVentasDelDia();
+        $data['ventas'] = $ventasDelDia; // Pasar los datos de ventas a la vista
+    
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_reportedia_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
+    
+    public function reporteMes()
+    {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        // Obtener las fechas desde el formulario
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+    
+        // Obtener las ventas dentro del rango de fechas
+        $ventas = $this->Admin_model->obtener_ventas_por_fecha($fecha_desde, $fecha_hasta);
+    
+        $data_u['user'] = $user_data;
+        $data['ventas'] = $ventas;
+    
+        $lista = $this->Admin_model->listausuarios();
+        $data['usuarios'] = $lista;
+    
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_reportemes_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
+    
+    
+    
+    
+    
+    public function reporteProductoMasVendido()
+    {
+        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            // Process the full name to get only the first and last names
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+        
+            // Combine the first and last names into one string
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+        
+    
+        // Pasar los datos a la vista
+        $data_u['user'] = $user_data;
+
+        $lista = $this->Admin_model->listausuarios();
+        $data['usuarios'] = $lista;
+
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_reporteproducto_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
     // FIN CRUD USUARIOS
 }
 ?>
