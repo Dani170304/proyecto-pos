@@ -150,22 +150,25 @@ class Productos extends CI_Controller
         $data['categoria'] = strtoupper($this->input->post('categoria'));
         $data['stock'] = $this->input->post('stock');
         $data['precio'] = $this->input->post('precio');
-
+    
+        // Incluir el ID del usuario que hizo la acción
+        $data['idUsuario'] = $this->session->userdata('id_usuario');
+    
         // Verificar si el producto ya existe en la misma categoría
         if ($this->Productos_model->verificar_producto_existente($data['nombre'], $data['categoria'])) {
             echo json_encode(array('status' => 'error', 'message' => 'El producto ya existe en la misma categoría.'));
             return;
         }
-
+    
         // Verificar si se subió una imagen
         if (!empty($_FILES['imagen']['name'])) {
             $config['upload_path'] = './assets/imagenes_bebidas/';
             $config['allowed_types'] = 'jpg|jpeg|png';
             $config['file_name'] = uniqid() . '_' . $_FILES['imagen']['name'];
             $config['max_size'] = 2048;
-
+    
             $this->load->library('upload', $config);
-
+    
             if ($this->upload->do_upload('imagen')) {
                 $uploadData = $this->upload->data();
                 $data['imagen'] = $uploadData['file_name'];
@@ -177,64 +180,67 @@ class Productos extends CI_Controller
             echo json_encode(array('status' => 'error', 'message' => 'No se ha subido ninguna imagen.'));
             return;
         }
-
+    
         if ($this->Productos_model->insertar_producto($data)) {
             echo json_encode(array('status' => 'success', 'message' => 'Producto agregado correctamente.'));
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'Error al agregar el producto en la base de datos.'));
         }
     }
+
     
     
     
     
-    public function modificarproductodb() {
-        $id_producto = $this->input->post('id_producto');
+    public function modificarproductodb()
+    {
+        $id_producto = $this->input->post('id_producto');  // Obtener ID del producto
         $data['nombre'] = strtoupper($this->input->post('nombre'));
         $data['categoria'] = strtoupper($this->input->post('categoria'));
         $data['stock'] = $this->input->post('stock');
         $data['precio'] = $this->input->post('precio');
-
-        // Verificar si el producto ya existe en la misma categoría
-        if ($this->Productos_model->verificar_producto_existente($data['nombre'], $data['categoria'])) {
-            echo json_encode(array('status' => 'error', 'message' => 'El producto ya existe en la misma categoría.'));
-            return;
-        }
-
-        // Manejo de la imagen
+    
+        // Verificar si se subió una nueva imagen
         if (!empty($_FILES['imagen']['name'])) {
-            $config['upload_path'] = './assets/imagenes_bebidas/';
-            $config['allowed_types'] = 'jpg|jpeg|png';
-            $config['file_name'] = uniqid() . '_' . $_FILES['imagen']['name'];
-            $config['max_size'] = 2048;
-
+            // Configuración para la subida de imagen
+            $config['upload_path'] = './assets/imagenes_bebidas/';  // Ruta a la carpeta donde se guardarán las imágenes
+            $config['allowed_types'] = 'jpg|jpeg|png';  // Tipos de archivos permitidos
+            $config['file_name'] = uniqid() . '_' . $_FILES['imagen']['name'];  // Generar un nombre único para la imagen
+            $config['max_size'] = 2048;  // Tamaño máximo de la imagen (2MB)
+    
+            // Cargar la librería de carga de archivos
             $this->load->library('upload', $config);
-
+    
+            // Intentar subir la imagen
             if ($this->upload->do_upload('imagen')) {
+                // Obtener los datos de la imagen subida
                 $uploadData = $this->upload->data();
-                $data['imagen'] = $uploadData['file_name'];
-
+                $data['imagen'] = $uploadData['file_name'];  // Guardar el nombre de la imagen en el arreglo $data
+    
                 // Borrar la imagen antigua si existe
                 $imagen_actual = $this->input->post('imagen_actual');
                 if (!empty($imagen_actual) && file_exists('./assets/imagenes_bebidas/' . $imagen_actual)) {
-                    unlink('./assets/imagenes_bebidas/' . $imagen_actual);
+                    unlink('./assets/imagenes_bebidas/' . $imagen_actual);  // Eliminar la imagen actual
                 }
             } else {
-                echo json_encode(['status' => 'error', 'message' => $this->upload->display_errors()]);
+                // Manejar errores en la carga
+                $error = $this->upload->display_errors();
+                echo json_encode(['success' => false, 'message' => $error]);  // Mostrar el error como respuesta JSON
                 return;
             }
         } else {
+            // Mantener la imagen actual si no se subió una nueva
             $data['imagen'] = $this->input->post('imagen_actual');
         }
-
+    
+        // Actualizar los datos en la base de datos
         if ($this->Productos_model->modificarproducto($id_producto, $data)) {
-            echo json_encode(['status' => 'success', 'message' => 'Producto modificado correctamente']);
+            echo json_encode(['success' => true, 'message' => 'Producto modificado correctamente.']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al modificar el producto en la base de datos.']);
+            echo json_encode(['success' => false, 'message' => 'Error al modificar el producto.']);
         }
     }
-    
-    
+
     
     public function habilitarproductobd()
     {

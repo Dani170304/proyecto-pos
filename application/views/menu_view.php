@@ -41,7 +41,7 @@
                              data-category="<?= $product['categoria'] ?>" 
                              onclick="mostrarPopup('sodaComboPopup', <?= $product['stock'] ?>)">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
-                            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
+                            <h3 class="title-beb"><?= htmlspecialchars($product['nombre']) ?></h3>
                             <p>Precio: Bs.<?= $product['precio'] ?></p>
                         </div>
                     <?php endif; ?>

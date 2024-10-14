@@ -220,7 +220,7 @@ class Productos_supervisor extends CI_Controller
         $this->Productos_model->modificarproducto($id_producto, $data);
     
         // Redirigir a la página de productos
-        redirect('Productos/productos', 'refresh');
+        redirect('Productos_supervisor/productos', 'refresh');
     }
     
     
@@ -230,7 +230,7 @@ class Productos_supervisor extends CI_Controller
         $data['estado'] = '1';
 
         $this->Productos_model->modificarproducto($id_producto, $data);
-        redirect('Productos/eliminadosproductos', 'refresh');
+        redirect('Productos_supervisor/eliminadosproductos', 'refresh');
     }
 }
 ?>

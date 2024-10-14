@@ -98,7 +98,7 @@
                 <table id="example1" class="table table-bordered table-striped table-neon">
                     <hr class="hr-ta">
                     <thead>
-                        <th>No.</th>
+                        <th>#</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
                         <th>Email</th>

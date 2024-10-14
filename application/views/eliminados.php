@@ -62,9 +62,9 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="example1" class="table table-bordered table-striped table-neon">
                     <thead>
-                        <th>No.</th>
+                        <th>#</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
                         <th>Email</th>
@@ -78,7 +78,7 @@
                         foreach ($usuarios->result() as $row) {
                         ?>
                             <tr>
-                                <td> <?php echo $contador ?></td>
+                                <td class="color-num"> <?php echo $contador ?></td>
                                 <td><?php echo $row->nombres; ?></td>
                                 <td><?php echo $row->apellidos; ?></td>
                                 <td><?php echo $row->email; ?></td>

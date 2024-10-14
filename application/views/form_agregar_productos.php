@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" required>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="35" required>
                                 </div>
                             </div>
                             <div class="form-group">

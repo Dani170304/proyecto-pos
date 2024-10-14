@@ -142,34 +142,51 @@ class Admin_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array(); // Devuelve un array con los resultados
     }
-    public function get_ventas_por_fecha($fecha_desde, $fecha_hasta)
-    {
-        $this->db->select('*');
-        $this->db->from('ventas'); // Cambia 'ventas' al nombre correcto de tu tabla
-        $this->db->where('fechaCreacion >=', $fecha_desde);
-        $this->db->where('fechaCreacion <=', $fecha_hasta);
+
+    public function obtenerVentasPorFecha($fecha_desde, $fecha_hasta) {
+        $this->db->select('vc.fechaCreacion, dc.id_orden, dc.nombre_producto, dc.cantidad, dc.precio');
+        $this->db->from('ventas_cabeza vc');
+        $this->db->join('detalle_ventas dc', 'vc.id_orden = dc.id_orden');
+        $this->db->where('DATE(vc.fechaCreacion) >=', $fecha_desde);
+        $this->db->where('DATE(vc.fechaCreacion) <=', $fecha_hasta);
+    
         $query = $this->db->get();
         return $query->result_array();
     }
     
-    public function obtener_ventas_por_fecha($fecha_desde, $fecha_hasta)
+    public function obtenerVentasDelMes()
     {
-        $this->db->select('*');
-        $this->db->from('detalle_ventas');
+        $fecha_hoy = date('Y-m-d'); // Obtiene la fecha actual
+        $fecha_ayer = date('Y-m-d', strtotime('-1 day')); // Obtiene la fecha de ayer
     
-        // Verifica si $fecha_desde no es nulo o vacío
-        if (!empty($fecha_desde)) {
-            $this->db->where('fechaCreacion >=', $fecha_desde);
-        }
-    
-        // Verifica si $fecha_hasta no es nulo o vacío
-        if (!empty($fecha_hasta)) {
-            $this->db->where('fechaCreacion <=', $fecha_hasta);
-        }
-    
+        // Selecciona las ventas de ayer y hoy
+        $this->db->select('vc.fechaCreacion, dc.id_orden, dc.nombre_producto, dc.cantidad, dc.precio');
+        $this->db->from('ventas_cabeza vc');
+        $this->db->join('detalle_ventas dc', 'vc.id_orden = dc.id_orden');
+        $this->db->where('DATE(vc.fechaCreacion) >=', $fecha_ayer);
+        $this->db->where('DATE(vc.fechaCreacion) <=', $fecha_hoy);
+        
         $query = $this->db->get();
-        return $query->result_array(); // O 'result()' según lo que necesites
+        return $query->result_array(); // Devuelve un array con los resultados
     }
+
+    public function obtenerProductosMasVendidos() {
+        $this->db->select('p.precio, p.nombre, p.categoria, SUM(dv.cantidad) AS total_vendido, (p.precio * SUM(dv.cantidad)) AS total_recaudado');
+        $this->db->from('detalle_ventas dv');
+        $this->db->join('productos p', 'dv.id_producto = p.id_producto');
+        $this->db->where('dv.estado', 1); // Considerar solo ventas activas
+        $this->db->group_by('dv.id_producto');
+        $this->db->order_by('total_vendido', 'DESC');
+        $this->db->limit(5); // Limitar a los 5 productos más vendidos
+        $query = $this->db->get();
+    
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); // Devuelve los 5 productos más vendidos
+        } else {
+            return []; // Retorna un arreglo vacío si no hay ventas
+        }
+    }
+    
     
     
     

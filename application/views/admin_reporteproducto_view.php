@@ -68,7 +68,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 id="title">REPORTE PRODUCTO MAS VENDIDO</h1>
+                        <h1 id="title">REPORTE PRODUCTOS MAS VENDIDOS</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -79,22 +79,42 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-
         <div class="card-info">
-            <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped table-neon">
-                    <hr class="hr-ta">
-                    <thead>
-                        <th>Fecha</th>
-                        <th>Nombre Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                    </thead>
-                    <tbody>
+    <div class="card-body">
+    <table id="example1" class="table table-bordered table-striped table-neon">
+    <hr class="hr-ta">
+    <thead>
+        <th>#</th>
+        <th>Nombre Producto</th>
+        <th>Categoria</th>
+        <th>Cantidad Vendida</th>
+        <th>Total Vendido</th>
+    </thead>
+    <tbody>
+        <?php if (!empty($producto_mas_vendido)): ?>
+            <?php $contador = 1; // Inicializa el contador ?>
+            <?php foreach ($producto_mas_vendido as $producto): ?>
+                <tr>
+                    <td class="color-num"><?php echo $contador++; ?></td> <!-- Muestra el número del producto -->
+                    <td><?php echo $producto['nombre']; ?></td>
+                    <td><?php echo $producto['categoria']; ?></td>
 
-                    </tbody>
-                </table>
-            </div>
+                    <td><?php echo $producto['total_vendido']; ?></td>
+                    <td><?php echo number_format($producto['total_recaudado'], 2); ?> Bs</td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5">No hay ventas registradas.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+
+    </div>
+</div>
+
             <!-- /.card-body -->
         </div>
         <!-- /.card -->

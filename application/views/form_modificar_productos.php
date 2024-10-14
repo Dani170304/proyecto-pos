@@ -71,59 +71,58 @@
                     <div class="card">
                         <div class="card-body">
                             <?php foreach ($infoproducto->result() as $row): ?>
-                                <?php echo form_open_multipart("Productos/modificarproductodb", ['id' => 'form-modificar-producto']); ?>
+                                <?php echo form_open('Productos/modificarproductodb', ['id' => 'formModificarProducto', 'enctype' => 'multipart/form-data']); ?>
+    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+    <input type="hidden" name="imagen_actual" value="<?php echo $row->imagen; ?>"> <!-- Imagen actual -->
 
-                                <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>" required>
-                                <input type="hidden" name="imagen_actual" value="<?php echo $row->imagen; ?>"> <!-- Imagen actual -->
-
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-user"></i></span>
-                                        <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" value="<?php echo $row->nombre; ?>" required>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-file-alt"></i></span>
-                                        <select class="form-control" name="categoria" required>
-                                            <option value="" disabled <?php echo ($row->categoria == '') ? 'selected' : ''; ?>>Seleccione la categoria</option>
-                                            <option value="botella" <?php echo ($row->categoria == 'BOTELLA') ? 'selected' : ''; ?>>Botella</option>
-                                            <option value="coctel" <?php echo ($row->categoria == 'COCTEL') ? 'selected' : ''; ?>>Coctel</option>
-                                            <option value="soda" <?php echo ($row->categoria == 'SODA') ? 'selected' : ''; ?>>Soda</option>
-                                            <option value="cerveza" <?php echo ($row->categoria == 'CERVEZA') ? 'selected' : ''; ?>>Cerveza</option>
-                                            <option value="piqueo" <?php echo ($row->categoria == 'PIQUEO') ? 'selected' : ''; ?>>Piqueo</option>
-                                            <option value="combo" <?php echo ($row->categoria == 'COMBO') ? 'selected' : ''; ?>>Soda-Combo</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                        <input type="number" class="form-control" name="stock" placeholder="Escriba el stock" value="<?php echo $row->stock; ?>" required>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-dollar-sign"></i></span>
-                                        <input type="number" class="form-control" name="precio" placeholder="Escriba el precio" value="<?php echo $row->precio; ?>" required>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <div style="position: relative;">
-                                        <span class="input-icon"><i class="fa fa-image"></i></span>
-                                        <input type="file" class="form-control" name="imagen" accept="image/*">
-                                        <?php if (isset($row->imagen) && !empty($row->imagen)): ?>
-                                            <p>Imagen actual: <?php echo $row->imagen; ?></p>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                <br>
-                                <button type="submit" class="btn btn-morado">Modificar Producto</button>
-                                <?php echo form_close(); ?>
+    <div class="form-group">
+        <div style="position: relative;">
+            <span class="input-icon"><i class="fa fa-user"></i></span>
+            <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" value="<?php echo $row->nombre; ?>" required>
+        </div>
+    </div>
+    <br>
+    <div class="form-group">
+        <div style="position: relative;">
+            <span class="input-icon"><i class="fa fa-file-alt"></i></span>
+            <select class="form-control" name="categoria" required>
+                <option value="" disabled <?php echo ($row->categoria == '') ? 'selected' : ''; ?>>Seleccione la categoria</option>
+                <option value="botella" <?php echo ($row->categoria == 'botella') ? 'selected' : ''; ?>>Botella</option>
+                <option value="coctel" <?php echo ($row->categoria == 'coctel') ? 'selected' : ''; ?>>Coctel</option>
+                <option value="soda" <?php echo ($row->categoria == 'soda') ? 'selected' : ''; ?>>Soda</option>
+                <option value="cerveza" <?php echo ($row->categoria == 'cerveza') ? 'selected' : ''; ?>>Cerveza</option>
+                <option value="piqueo" <?php echo ($row->categoria == 'piqueo') ? 'selected' : ''; ?>>Piqueo</option>
+                <option value="combo" <?php echo ($row->categoria == 'combo') ? 'selected' : ''; ?>>Soda-Combo</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="form-group">
+        <div style="position: relative;">
+            <span class="input-icon"><i class="fa fa-envelope"></i></span>
+            <input type="number" class="form-control" name="stock" placeholder="Escriba el stock" value="<?php echo $row->stock; ?>" required>
+        </div>
+    </div>
+    <br>
+    <div class="form-group">
+        <div style="position: relative;">
+            <span class="input-icon"><i class="fa fa-dollar-sign"></i></span>
+            <input type="number" class="form-control" name="precio" placeholder="Escriba el precio" value="<?php echo $row->precio; ?>" required>
+        </div>
+    </div>
+    <br>
+    <div class="form-group">
+        <div style="position: relative;">
+            <span class="input-icon"><i class="fa fa-image"></i></span>
+            <input type="file" class="form-control" name="imagen" accept="image/*">
+            <?php if (isset($row->imagen) && !empty($row->imagen)): ?>
+                <p>Imagen actual: <?php echo $row->imagen; ?></p>
+            <?php endif; ?>
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-morado">Modificar Producto</button>
+<?php echo form_close(); ?>
 
                             <?php endforeach; ?>
                         </div>
@@ -140,62 +139,58 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
 <script>
-    // Capturamos el evento submit del formulario
-    document.getElementById('form-modificar-producto').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evitamos que el formulario se envíe inmediatamente
+    $(document).ready(function() {
+    $('#formModificarProducto').on('submit', function(e) {
+        e.preventDefault(); // Prevenir el envío normal del formulario
+        const form = $(this);
 
         Swal.fire({
             title: '¿Estás seguro?',
             text: "¡Deseas modificar este producto!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#1AEB01',
+            confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, modificar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Si el usuario confirma, enviamos el formulario
                 $.ajax({
-                    url: $(this).attr('action'),
                     type: 'POST',
-                    data: $(this).serialize(),
+                    url: form.attr('action'),
+                    data: new FormData(form[0]), // Usar FormData para permitir la subida de archivos
+                    processData: false,
+                    contentType: false,
                     dataType: 'json',
                     success: function(response) {
-                        if (response.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Éxito',
-                                text: response.message,
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#1AEB01',
-                                customClass: {
-                                    confirmButton: 'swal2-confirm'
-                                }
-                            }).then(() => {
-                                window.location.href = 'productos'; 
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: response.message,
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#1AEB01',
-                                customClass: {
-                                    confirmButton: 'swal2-confirm'
-                                }
-                            });
-                        }
+                        Swal.fire({
+                            icon: response.success ? 'success' : 'error',
+                            title: response.success ? 'Éxito' : 'Error',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: response.success ? '#1AEB01' : '#d33'
+                        }).then(() => {
+                            if (response.success) {
+                                window.location.href = '<?php echo base_url(); ?>index.php/Productos/productos'; 
+                            }
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar la solicitud.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#d33'
+                        });
                     }
                 });
             }
         });
     });
+});
+
 </script>
-
-
 </body>
 </html>

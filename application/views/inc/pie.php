@@ -84,6 +84,16 @@ $(function () {
 <script>
 $(function () {
     // Configuración para la tabla #example1
+    $("#example3").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+    }).container().appendTo('#example3_wrapper .col-md-6:eq(0)');
+});
+</script>
+<script>
+$(function () {
+    // Configuración para la tabla #example1
     $("#example2").DataTable({
         "responsive": true,
         "lengthChange": false,

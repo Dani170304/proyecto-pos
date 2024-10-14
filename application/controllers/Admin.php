@@ -343,18 +343,15 @@ class Admin extends CI_Controller
             $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
         }
     
-        // Obtener las fechas desde el formulario
-        $fecha_desde = $this->input->post('fecha_desde');
-        $fecha_hasta = $this->input->post('fecha_hasta');
-    
-        // Obtener las ventas dentro del rango de fechas
-        $ventas = $this->Admin_model->obtener_ventas_por_fecha($fecha_desde, $fecha_hasta);
-    
         $data_u['user'] = $user_data;
-        $data['ventas'] = $ventas;
-    
+        
+        // Obtener la lista de usuarios
         $lista = $this->Admin_model->listausuarios();
         $data['usuarios'] = $lista;
+        
+        // Obtener las ventas del día
+        $ventasDelDia = $this->Admin_model->obtenerVentasDelMes();
+        $data['ventas'] = $ventasDelDia; // Pasar los datos de ventas a la vista
     
         $this->load->view('inc/head');
         $this->load->view('inc/menu', $data_u);
@@ -363,37 +360,108 @@ class Admin extends CI_Controller
         $this->load->view('inc/pie');
     }
     
+    public function reporteMesFiltrado() {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
     
+        if ($fecha_desde && $fecha_hasta) {
+            $ventas = $this->Admin_model->obtenerVentasPorFecha($fecha_desde, $fecha_hasta);
     
+            if (!empty($ventas)) {
+                $current_order = null;
+                $rowspan_count = 0;
+                $total_venta = 0;
+                $contador = 1; // Inicializa el contador fuera del bucle
     
+                foreach ($ventas as $index => $venta) {
+                    // Si el id_orden es diferente, reiniciar el conteo y calcular el total de la orden
+                    if ($venta['id_orden'] !== $current_order) {
+                        $current_order = $venta['id_orden'];
+                        $rowspan_count = 0;
+                        $total_venta = 0;
     
-    public function reporteProductoMasVendido()
-    {
-        $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
+                        // Contar cuántas veces aparece el mismo id_orden y calcular el total
+                        foreach ($ventas as $v) {
+                            if ($v['id_orden'] === $venta['id_orden']) {
+                                $rowspan_count++;
+                                $total_venta += $v['cantidad'] * $v['precio'];
+                            }
+                        }
+    
+                        // Mostrar primera fila con rowspan
+                        echo '<tr>';
+                        echo '<td   class="color-num" rowspan="' . $rowspan_count . '">' . $contador . '</td>'; // Mostrar contador actual
+    
+                        echo '<td rowspan="' . $rowspan_count . '">' . date('d-m-Y', strtotime($venta['fechaCreacion'])) . '</td>';
+                        echo '<td rowspan="' . $rowspan_count . '">' . $venta['id_orden'] . '</td>';
+                        echo '<td>' . $venta['nombre_producto'] . '</td>';
+                        echo '<td>' . $venta['cantidad'] . '</td>';
+                        echo '<td>' . number_format($venta['precio'], 2) . '</td>';
+                        echo '<td>' . number_format($venta['cantidad'] * $venta['precio'], 2) . '</td>';
+                        echo '<td rowspan="' . $rowspan_count . '">Bs. ' . number_format($total_venta, 2) . '</td>';
+                        echo '</tr>';
+    
+                        $contador++; // Incrementar el contador solo cuando se muestra una nueva orden
+                    } else {
+                        // Mostrar las filas restantes sin rowspan
+                        echo '<tr>';
+                        echo '<td>' . $venta['nombre_producto'] . '</td>';
+                        echo '<td>' . $venta['cantidad'] . '</td>';
+                        echo '<td>' . number_format($venta['precio'], 2) . '</td>';
+                        echo '<td>' . number_format($venta['cantidad'] * $venta['precio'], 2) . '</td>';
+                        echo '</tr>';
+                    }
+                }
+            } else {
+                echo '<tr><td colspan="7" style="text-align: center; font-weight: bold; font-size: 18px;">No hay ventas en el rango de fechas seleccionado.</td></tr>';
+            }
+    
+            echo '</tbody>';
+            echo '</table>';
+        } else {
+            echo '<table id="example3" class="table table-bordered table-striped table-neon">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>N° de Orden</th>
+                        <th>Nombre Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="8">Fechas inválidas.</td></tr>
+                </tbody>
+            </table>';
+        }
+    }
+    
+    public function reporteProductoMasVendido() {
+        $user_id = $this->session->userdata('id_usuario');
         $user_data = $this->Admin_model->get_user_by_id($user_id);
     
         if ($user_data) {
-            // Process the full name to get only the first and last names
             $nombres = explode(' ', $user_data['nombres']);
             $apellidos = explode(' ', $user_data['apellidos']);
-        
-            // Combine the first and last names into one string
             $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
         }
-        
     
-        // Pasar los datos a la vista
+        // Pasar los datos de usuario
         $data_u['user'] = $user_data;
-
-        $lista = $this->Admin_model->listausuarios();
-        $data['usuarios'] = $lista;
-
+    
+        // Obtener el producto más vendido
+        $producto_mas_vendido = $this->Admin_model->obtenerProductosMasVendidos();
+        $data['producto_mas_vendido'] = $producto_mas_vendido;
+    
         $this->load->view('inc/head');
         $this->load->view('inc/menu', $data_u);
         $this->load->view('admin_reporteproducto_view', $data);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
+    
     // FIN CRUD USUARIOS
 }
 ?>
