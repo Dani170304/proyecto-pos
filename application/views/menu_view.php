@@ -205,10 +205,9 @@
     let listaCarrito = document.getElementById('cart-list');
     let totalDisplay = document.getElementById('total');
     let itemsCarrito = [];
-    let total = 0.00; // Inicializa el total en 0.00
+    let total = 0.00;
 
-    // Mostrar total inicial
-    totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`; // Mostrar el total como 0.00
+    totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
 
     productos.forEach(producto => {
         producto.addEventListener('click', function(e) {
@@ -216,30 +215,45 @@
             let valor = parseFloat(e.currentTarget.dataset.value);
             let id = e.currentTarget.dataset.id;
             let imagen = e.currentTarget.dataset.image;
-            let categoria = e.currentTarget.dataset.category; // Obtener la categoría
+            let categoria = e.currentTarget.dataset.category;
+            let stock = parseInt(e.currentTarget.dataset.stock);
 
-            // Buscar si el producto ya está en el carrito
-            let itemExistente = itemsCarrito.find(item => item.id === id && item.categoria === categoria);
-
-            if (itemExistente) {
-                // Incrementar la cantidad del producto existente
-                itemExistente.cantidad += 1;
+            if (categoria === 'BOTELLA') {
+                mostrarPopup('sodaComboPopup', stock);
+                sessionStorage.setItem('tempBottle', JSON.stringify({ id, nombre, valor, imagen, categoria, stock }));
+            } else if (categoria === 'COMBO') {
+                let bottleInfo = JSON.parse(sessionStorage.getItem('tempBottle'));
+                if (bottleInfo) {
+                    let pairId = `${bottleInfo.id}-${id}`;
+                    agregarAlCarrito(bottleInfo.id, bottleInfo.nombre, bottleInfo.valor, bottleInfo.imagen, bottleInfo.categoria, pairId, bottleInfo.stock);
+                    agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId);
+                    sessionStorage.removeItem('tempBottle');
+                }
             } else {
-                // Agregar artículo al carrito si no existe
-                itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria });
+                agregarAlCarrito(id, nombre, valor, imagen, categoria, null, stock);
             }
 
-            // Actualizar total y la interfaz
-            total += valor;
             actualizarCarrito();
         });
     });
 
+    function agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId = null, stock = null) {
+        let itemExistente = pairId 
+            ? itemsCarrito.find(item => item.id === id && item.pairId === pairId)
+            : itemsCarrito.find(item => item.id === id && item.categoria === categoria);
+
+        if (itemExistente) {
+            itemExistente.cantidad += 1;
+        } else {
+            itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria, pairId, stock });
+        }
+
+        total += valor;
+    }
+
     function actualizarCarrito() {
-        // Limpiar la lista del carrito
         listaCarrito.innerHTML = '';
 
-        // Agregar cada producto al carrito
         itemsCarrito.forEach(item => {
             let li = document.createElement('li');
             li.style.display = 'table-row';
@@ -251,127 +265,168 @@
                 <span style="display: table-cell; width: 13%; text-align: right;"><strong>Bs. ${item.valor.toFixed(2)}</strong></span>
                 <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
                 <span style="display: table-cell; width: 14%; text-align: right;">
-                    ${item.categoria === 'COMBO' ? '' : ` 
-                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" style="cursor: pointer; width: 23px; height: auto;">
-                    `}
+                    ${item.categoria !== 'COMBO' ? `
+                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 23px; height: auto;">
+                    ` : ''}
                 </span>
             `;
 
-            // Agregar eventos a los botones
             if (item.categoria !== 'COMBO') {
                 li.querySelector('.btn-mas').addEventListener('click', function() {
-                    item.cantidad += 1;
-                    total += item.valor;
-
-                    // Verificar si el producto es de la categoría "BOTELLA"
-                    if (item.categoria === 'BOTELLA') {
-                        mostrarPopup('sodaComboPopup', item.stock); // Muestra el popup
-                    }
-
-                    actualizarCarrito();
+                    aumentarCantidad(item.id, item.pairId, item.stock);
                 });
                 
                 li.querySelector('.btn-menos').addEventListener('click', function() {
-                    // Verificar si el producto es de la categoría "BOTELLA"
-                    if (item.categoria === 'BOTELLA') {
-                        // Buscar el item de combo correspondiente
-                        let itemCombo = itemsCarrito.find(i => i.categoria === 'COMBO');
-
-                        // Reducir cantidad de BOTELLA
-                        if (item.cantidad > 1) {
-                            item.cantidad -= 1;
-                            total -= item.valor;
-                        } else {
-                            total -= (item.valor * item.cantidad); // Restar el total del producto
-                            itemsCarrito = itemsCarrito.filter(i => i.id !== item.id); // Eliminar del carrito
-                        }
-
-                        // Reducir la cantidad del combo solo si existe
-                        if (itemCombo) {
-                            itemCombo.cantidad -= 1; // Reducir la cantidad de combo
-                            if (itemCombo.cantidad <= 0) {
-                                itemsCarrito = itemsCarrito.filter(i => i.id !== itemCombo.id); // Eliminar el combo si es necesario
-                            }
-                            total -= itemCombo.valor; // Restar el valor del combo del total
-                        }
-                    } else {
-                        if (item.cantidad > 1) {
-                            item.cantidad -= 1;
-                            total -= item.valor;
-                        } else {
-                            itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
-                            total -= item.valor;
-                        }
-                    }
-                    actualizarCarrito();
+                    disminuirCantidad(item.id, item.pairId);
                 });
 
                 li.querySelector('.btn-borrar').addEventListener('click', function() {
-                    if (item.categoria === 'BOTELLA') {
-                        // Verificar cuántos combos (SPRITE) hay en el carrito
-                        let itemCombo = itemsCarrito.find(i => i.categoria === 'COMBO');
-
-                        // Restar del total
-                        total -= (item.valor * item.cantidad);
-                        itemsCarrito = itemsCarrito.filter(i => i.id !== item.id); // Eliminar el BOTELLA
-
-                        // Reducir la cantidad del combo solo si existe
-                        if (itemCombo) {
-                            itemCombo.cantidad -= item.cantidad; // Reducir la cantidad del combo según el número de BOTELLA eliminados
-                            if (itemCombo.cantidad <= 0) {
-                                itemsCarrito = itemsCarrito.filter(i => i.id !== itemCombo.id); // Eliminar el combo si es necesario
-                            }
-                            total -= itemCombo.valor * item.cantidad; // Restar el valor del combo del total
-                        }
-                    } else {
-                        total -= (item.valor * item.cantidad);
-                        itemsCarrito = itemsCarrito.filter(i => i.id !== item.id);
-                    }
-                    actualizarCarrito();
+                    eliminarDelCarrito(item.id, item.pairId);
                 });
             }
 
             listaCarrito.appendChild(li);
         });
 
-        // Actualizar total
         totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
-
-        // Actualizar el input oculto para el envío del formulario
         document.getElementById('cart').value = JSON.stringify(itemsCarrito);
     }
 
-    // Función para confirmar la orden con SweetAlert
-// Función para confirmar la orden con SweetAlert
-document.getElementById('confirmar-btn').addEventListener('click', function() {
-    if (itemsCarrito.length === 0) {
-        Swal.fire({
-            title: '¡Atención!',
-            text: "Por favor, selecciona al menos un producto antes de confirmar.",
-            icon: 'warning',
-            confirmButtonText: 'Aceptar'
-        });
-        return;
+    function aumentarCantidad(id, pairId, stock) {
+        let item = pairId 
+            ? itemsCarrito.find(i => i.id === id && i.pairId === pairId)
+            : itemsCarrito.find(i => i.id === id);
+        
+        if (item) {
+            if (item.categoria === 'BOTELLA') {
+                mostrarPopup('sodaComboPopup', stock); // Muestra el popup
+            }
+            
+            item.cantidad += 1;
+            total += item.valor;
+
+            if (item.categoria === 'BOTELLA' && pairId) {
+                let comboItem = itemsCarrito.find(i => i.pairId === pairId && i.categoria === 'COMBO');
+                if (comboItem) {
+                    comboItem.cantidad += 1;
+                    total += comboItem.valor;
+                }
+            }
+
+            actualizarCarrito();
+        }
     }
 
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Una vez confirmada, no podrás editar tu pedido.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, confirmar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Enviar el formulario si el usuario confirma
-            document.getElementById('checkout-form').submit();
+    function disminuirCantidad(id, pairId) {
+        let item = pairId 
+            ? itemsCarrito.find(i => i.id === id && i.pairId === pairId)
+            : itemsCarrito.find(i => i.id === id);
+
+        if (item) {
+            if (item.cantidad > 1) {
+                item.cantidad -= 1;
+                total -= item.valor;
+
+                if (item.categoria === 'BOTELLA' && pairId) {
+                    let comboItem = itemsCarrito.find(i => i.pairId === pairId && i.categoria === 'COMBO');
+                    if (comboItem) {
+                        comboItem.cantidad -= 1;
+                        total -= comboItem.valor;
+                    }
+                }
+            } else {
+                eliminarDelCarrito(id, pairId);
+            }
+
+            actualizarCarrito();
         }
+    }
+
+    function eliminarDelCarrito(id, pairId) {
+        let index = pairId 
+            ? itemsCarrito.findIndex(i => i.id === id && i.pairId === pairId)
+            : itemsCarrito.findIndex(i => i.id === id);
+
+        if (index !== -1) {
+            let item = itemsCarrito[index];
+            total -= item.valor * item.cantidad;
+            itemsCarrito.splice(index, 1);
+
+            if (item.categoria === 'BOTELLA' && pairId) {
+                let comboIndex = itemsCarrito.findIndex(i => i.pairId === pairId && i.categoria === 'COMBO');
+                if (comboIndex !== -1) {
+                    let comboItem = itemsCarrito[comboIndex];
+                    total -= comboItem.valor * comboItem.cantidad;
+                    itemsCarrito.splice(comboIndex, 1);
+                }
+            }
+
+            actualizarCarrito();
+        }
+    }
+
+    function mostrarPopup(popupId, stock) {
+        if (stock <= 0) {
+            return;
+        }
+
+        cerrarPopup();
+
+        var popup = document.getElementById(popupId);
+        var overlay = document.getElementById('popupOverlay');
+
+        if (popup && overlay) {
+            overlay.style.display = 'block';
+            popup.style.display = 'block';
+
+            var productos = popup.querySelectorAll('.product');
+            productos.forEach(function(producto) {
+                producto.addEventListener('click', function() {
+                    cerrarPopup();
+                });
+            });
+        }
+    }
+
+    function cerrarPopup() {
+        var overlay = document.getElementById('popupOverlay');
+        var popups = document.querySelectorAll('.popup');
+
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+
+        popups.forEach(function (popup) {
+            popup.style.display = 'none';
+        });
+    }
+
+    document.getElementById('confirmar-btn').addEventListener('click', function() {
+        if (itemsCarrito.length === 0) {
+            Swal.fire({
+                title: '¡Atención!',
+                text: "Por favor, selecciona al menos un producto antes de confirmar.",
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Una vez confirmada, no podrás editar tu pedido.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('checkout-form').submit();
+            }
+        });
     });
-});
-
-
 })();
 </script>
 
@@ -421,6 +476,8 @@ function mostrarPopup(popupId, stock) {
         });
     }
 </script>
+
+
 
 
     <script>

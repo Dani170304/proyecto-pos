@@ -41,7 +41,8 @@
         <li class="active"><a href="#hero"><i class="bx bx-home"></i> <span>INICIO</span></a></li>
         <li><a href="#resume"><i class="bx bx-file"></i> <span>NOSOTROS</span></a></li>
         <li><a href="#contact"><i class="bx bx-envelope"></i> <span>CONTACTO</span></a></li>
-        <li class="right-align"><a href="<?php echo site_url('login'); ?>"><i class="bx bx-user"></i> <span>LOG IN</span></a></li>
+        <li><a href="#contact"><i class="bx bx-envelope"></i> <span>EVENTOS</span></a></li>
+        <li ><a href="<?php echo site_url('login'); ?>"><i class="bx bx-user"></i> <span>LOG IN</span></a></li>
       </ul>
     </nav><!-- .nav-menu -->
   </header><!-- End Header -->
