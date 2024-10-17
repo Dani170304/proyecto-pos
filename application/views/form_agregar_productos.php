@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="35" required>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="50" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -94,9 +94,21 @@
                                 </div>
                             </div>
                             <div style="position: relative;">
-                                <span class="input-icon"><i class="fa fa-envelope"></i></span>
-                                <input type="number" class="form-control" name="precio" placeholder="Escriba el precio" required>
-                            </div>
+    <span class="input-icon"><i class="fa fa-envelope"></i></span>
+    <input type="text" 
+           class="form-control" 
+           name="precio" 
+           placeholder="Escriba el precio" 
+           required 
+           pattern="^\d+([,.]\d{1,2})?$" 
+           title="Ingrese un número válido con hasta dos decimales (use . o , como separador)" 
+           inputmode="decimal" 
+           oninput="this.value = this.value.replace(/[^0-9.,]/g, '');">
+</div>
+
+
+
+
                             <br>
                             <div style="position: relative;">
                                 <span class="input-icon"><i class="fa fa-image"></i></span>

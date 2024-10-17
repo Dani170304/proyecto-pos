@@ -78,7 +78,7 @@
     <div class="form-group">
         <div style="position: relative;">
             <span class="input-icon"><i class="fa fa-user"></i></span>
-            <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="20" value="<?php echo $row->nombre; ?>" required>
+            <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="50" value="<?php echo $row->nombre; ?>" required>
         </div>
     </div>
     <br>
@@ -87,12 +87,12 @@
             <span class="input-icon"><i class="fa fa-file-alt"></i></span>
             <select class="form-control" name="categoria" required>
                 <option value="" disabled <?php echo ($row->categoria == '') ? 'selected' : ''; ?>>Seleccione la categoria</option>
-                <option value="botella" <?php echo ($row->categoria == 'botella') ? 'selected' : ''; ?>>Botella</option>
-                <option value="coctel" <?php echo ($row->categoria == 'coctel') ? 'selected' : ''; ?>>Coctel</option>
-                <option value="soda" <?php echo ($row->categoria == 'soda') ? 'selected' : ''; ?>>Soda</option>
-                <option value="cerveza" <?php echo ($row->categoria == 'cerveza') ? 'selected' : ''; ?>>Cerveza</option>
-                <option value="piqueo" <?php echo ($row->categoria == 'piqueo') ? 'selected' : ''; ?>>Piqueo</option>
-                <option value="combo" <?php echo ($row->categoria == 'combo') ? 'selected' : ''; ?>>Soda-Combo</option>
+                <option value="botella" <?php echo ($row->categoria == 'BOTELLA') ? 'selected' : ''; ?>>Botella</option>
+                <option value="coctel" <?php echo ($row->categoria == 'COCTEL') ? 'selected' : ''; ?>>Coctel</option>
+                <option value="soda" <?php echo ($row->categoria == 'SODA') ? 'selected' : ''; ?>>Soda</option>
+                <option value="cerveza" <?php echo ($row->categoria == 'CERVEZA') ? 'selected' : ''; ?>>Cerveza</option>
+                <option value="piqueo" <?php echo ($row->categoria == 'PIQUEO') ? 'selected' : ''; ?>>Piqueo</option>
+                <option value="combo" <?php echo ($row->categoria == 'COMBO') ? 'selected' : ''; ?>>Soda-Combo</option>
             </select>
         </div>
     </div>
@@ -105,11 +105,21 @@
     </div>
     <br>
     <div class="form-group">
-        <div style="position: relative;">
-            <span class="input-icon"><i class="fa fa-dollar-sign"></i></span>
-            <input type="number" class="form-control" name="precio" placeholder="Escriba el precio" value="<?php echo $row->precio; ?>" required>
-        </div>
+    <div style="position: relative;">
+        <span class="input-icon"><i class="fa fa-dollar-sign"></i></span>
+        <input type="text" 
+               class="form-control" 
+               name="precio" 
+               placeholder="Escriba el precio" 
+               value="<?php echo htmlspecialchars($row->precio); ?>" 
+               required 
+               pattern="^\d+([,.]\d{1,2})?$" 
+               title="Ingrese un número válido con hasta dos decimales (use . o , como separador)" 
+               inputmode="decimal" 
+               oninput="this.value = this.value.replace(/[^0-9.,]/g, '');">
     </div>
+</div>
+
     <br>
     <div class="form-group">
         <div style="position: relative;">

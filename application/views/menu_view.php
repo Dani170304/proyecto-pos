@@ -66,7 +66,6 @@
                                 <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= $product['nombre']; ?>">
                                 <p class="product-name"><?= $product['nombre']; ?></p>
                                 <br>
-                                <p class="bold-text"><?= $product['precio'] . " Bs."; ?></p>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -206,6 +205,7 @@
     let totalDisplay = document.getElementById('total');
     let itemsCarrito = [];
     let total = 0.00;
+    let comboCounter = 0;
 
     totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
 
@@ -224,9 +224,20 @@
             } else if (categoria === 'COMBO') {
                 let bottleInfo = JSON.parse(sessionStorage.getItem('tempBottle'));
                 if (bottleInfo) {
-                    let pairId = `${bottleInfo.id}-${id}`;
-                    agregarAlCarrito(bottleInfo.id, bottleInfo.nombre, bottleInfo.valor, bottleInfo.imagen, bottleInfo.categoria, pairId, bottleInfo.stock);
-                    agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId);
+                    let existingCombo = itemsCarrito.find(item => 
+                        item.categoria === 'BOTELLA' && 
+                        item.id === bottleInfo.id && 
+                        item.comboId === id
+                    );
+
+                    if (existingCombo) {
+                        aumentarCantidad(existingCombo.id, existingCombo.pairId, existingCombo.stock);
+                    } else {
+                        comboCounter++;
+                        let pairId = `${bottleInfo.id}-${id}-${comboCounter}`;
+                        agregarAlCarrito(bottleInfo.id, bottleInfo.nombre, bottleInfo.valor, bottleInfo.imagen, bottleInfo.categoria, pairId, bottleInfo.stock, id);
+                        agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId);
+                    }
                     sessionStorage.removeItem('tempBottle');
                 }
             } else {
@@ -237,62 +248,88 @@
         });
     });
 
-    function agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId = null, stock = null) {
-        let itemExistente = pairId 
-            ? itemsCarrito.find(item => item.id === id && item.pairId === pairId)
-            : itemsCarrito.find(item => item.id === id && item.categoria === categoria);
-
-        if (itemExistente) {
-            itemExistente.cantidad += 1;
+    function agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId = null, stock = null, comboId = null) {
+        if (categoria === 'BOTELLA' || categoria === 'COMBO') {
+            itemsCarrito.push({ 
+                id, 
+                nombre, 
+                valor, 
+                cantidad: 1, 
+                imagen, 
+                categoria, 
+                pairId, 
+                stock,
+                comboId 
+            });
         } else {
-            itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria, pairId, stock });
+            let itemExistente = itemsCarrito.find(item => item.id === id && item.categoria === categoria);
+            if (itemExistente) {
+                itemExistente.cantidad += 1;
+            } else {
+                itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria, pairId, stock });
+            }
         }
-
         total += valor;
     }
 
     function actualizarCarrito() {
-        listaCarrito.innerHTML = '';
+    listaCarrito.innerHTML = '';
 
-        itemsCarrito.forEach(item => {
-            let li = document.createElement('li');
-            li.style.display = 'table-row';
-            li.innerHTML = `
-                <span style="display: table-cell; width: 5%;">
-                    <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
-                </span>
-                <span style="display: table-cell; width: 20%;">${item.nombre}</span> 
-                <span style="display: table-cell; width: 13%; text-align: right;"><strong>Bs. ${item.valor.toFixed(2)}</strong></span>
-                <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
-                <span style="display: table-cell; width: 14%; text-align: right;">
-                    ${item.categoria !== 'COMBO' ? `
-                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 23px; height: auto;">
-                    ` : ''}
-                </span>
-            `;
+    itemsCarrito.forEach(item => {
+        let li = document.createElement('li');
+        li.style.display = 'table-row';
+        li.innerHTML = `
+            <span style="display: table-cell; width: 5%;">
+                <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
+            </span>
+            <span style="display: table-cell; width: 20%;">${item.nombre}</span>
+            <span style="display: table-cell; width: 13%; text-align: right;">
+                ${item.valor > 0 ? `<strong>Bs. ${item.valor.toFixed(2)}</strong>` : ''}
+            </span>
+            <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
+            <span style="display: table-cell; width: 14%; text-align: right;">
+                ${item.categoria !== 'COMBO' ? `
+                    <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                    <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                    <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 23px; height: auto;">
+                ` : ''}
+            </span>
+        `;
 
-            if (item.categoria !== 'COMBO') {
-                li.querySelector('.btn-mas').addEventListener('click', function() {
+        if (item.categoria !== 'COMBO') {
+            li.querySelector('.btn-mas').addEventListener('click', function() {
+                if (item.categoria === 'BOTELLA') {
+                    mostrarPopup('sodaComboPopup', item.stock);
+                    sessionStorage.setItem('tempBottle', JSON.stringify({ 
+                        id: item.id, 
+                        nombre: item.nombre, 
+                        valor: item.valor, 
+                        imagen: item.imagen, 
+                        categoria: item.categoria, 
+                        stock: item.stock,
+                        existingComboId: item.comboId
+                    }));
+                } else {
                     aumentarCantidad(item.id, item.pairId, item.stock);
-                });
-                
-                li.querySelector('.btn-menos').addEventListener('click', function() {
-                    disminuirCantidad(item.id, item.pairId);
-                });
+                }
+            });
+            
+            li.querySelector('.btn-menos').addEventListener('click', function() {
+                disminuirCantidad(item.id, item.pairId);
+            });
 
-                li.querySelector('.btn-borrar').addEventListener('click', function() {
-                    eliminarDelCarrito(item.id, item.pairId);
-                });
-            }
+            li.querySelector('.btn-borrar').addEventListener('click', function() {
+                eliminarDelCarrito(item.id, item.pairId);
+            });
+        }
 
-            listaCarrito.appendChild(li);
-        });
+        listaCarrito.appendChild(li);
+    });
 
-        totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
-        document.getElementById('cart').value = JSON.stringify(itemsCarrito);
-    }
+    totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
+    document.getElementById('cart').value = JSON.stringify(itemsCarrito);
+}
+
 
     function aumentarCantidad(id, pairId, stock) {
         let item = pairId 
@@ -300,14 +337,15 @@
             : itemsCarrito.find(i => i.id === id);
         
         if (item) {
-            if (item.categoria === 'BOTELLA') {
-                mostrarPopup('sodaComboPopup', stock); // Muestra el popup
+            if (item.categoria === 'BOTELLA' && !pairId) {
+                mostrarPopup('sodaComboPopup', stock);
+                return;
             }
             
             item.cantidad += 1;
             total += item.valor;
 
-            if (item.categoria === 'BOTELLA' && pairId) {
+            if (pairId) {
                 let comboItem = itemsCarrito.find(i => i.pairId === pairId && i.categoria === 'COMBO');
                 if (comboItem) {
                     comboItem.cantidad += 1;
@@ -329,7 +367,7 @@
                 item.cantidad -= 1;
                 total -= item.valor;
 
-                if (item.categoria === 'BOTELLA' && pairId) {
+                if (pairId) {
                     let comboItem = itemsCarrito.find(i => i.pairId === pairId && i.categoria === 'COMBO');
                     if (comboItem) {
                         comboItem.cantidad -= 1;
@@ -345,26 +383,20 @@
     }
 
     function eliminarDelCarrito(id, pairId) {
-        let index = pairId 
-            ? itemsCarrito.findIndex(i => i.id === id && i.pairId === pairId)
-            : itemsCarrito.findIndex(i => i.id === id);
-
-        if (index !== -1) {
-            let item = itemsCarrito[index];
-            total -= item.valor * item.cantidad;
-            itemsCarrito.splice(index, 1);
-
-            if (item.categoria === 'BOTELLA' && pairId) {
-                let comboIndex = itemsCarrito.findIndex(i => i.pairId === pairId && i.categoria === 'COMBO');
-                if (comboIndex !== -1) {
-                    let comboItem = itemsCarrito[comboIndex];
-                    total -= comboItem.valor * comboItem.cantidad;
-                    itemsCarrito.splice(comboIndex, 1);
-                }
+        let indices = [];
+        
+        itemsCarrito.forEach((item, index) => {
+            if ((pairId && item.pairId === pairId) || (!pairId && item.id === id)) {
+                indices.push(index);
+                total -= item.valor * item.cantidad;
             }
+        });
 
-            actualizarCarrito();
-        }
+        indices.sort((a, b) => b - a).forEach(index => {
+            itemsCarrito.splice(index, 1);
+        });
+
+        actualizarCarrito();
     }
 
     function mostrarPopup(popupId, stock) {
@@ -398,7 +430,7 @@
             overlay.style.display = 'none';
         }
 
-        popups.forEach(function (popup) {
+        popups.forEach(function(popup) {
             popup.style.display = 'none';
         });
     }
