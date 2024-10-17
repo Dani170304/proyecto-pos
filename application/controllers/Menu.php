@@ -19,6 +19,7 @@ class Menu extends CI_Controller {
         $this->load->view('menu_view', $data); // Pasar datos a la vista
     }
 
+
     public function ticket_orden() {
         $cart = json_decode($this->input->post('cart'), true);
         $id_usuario = $this->session->userdata('id_usuario');
@@ -90,12 +91,15 @@ class Menu extends CI_Controller {
             $total += $item['valor'] * $item['cantidad']; // Multiplicar precio por cantidad
         }
     
+        // Asegúrate de que el total tenga dos decimales
+        $total_formateado = number_format($total, 2, '.', ''); // Formatear a dos decimales
+    
         // Convertir el total a literal
-        $literal_total = $this->convertir_numero_a_literal($total); // Usar la función que creaste
+        $literal_total = $this->convertir_numero_a_literal($total_formateado); // Usar la función que creaste
     
         // Cargar vista de recibo después de confirmar la orden
         $data['cart'] = $cart;
-        $data['total'] = $total; // Asignar el total calculado
+        $data['total'] = $total_formateado; // Usar el total formateado
         $data['literal_total'] = $literal_total; // Pasar el total en literal a la vista
         $data['mesero'] = $this->session->userdata('nombres');
         $data['id_orden'] = $nuevo_id_orden;
@@ -112,10 +116,19 @@ class Menu extends CI_Controller {
         redirect('menu');
     }
     public function convertir_numero_a_literal($numero) {
-        $formateador = new NumberFormatter('es_BO', NumberFormatter::SPELLOUT);
-        return ucfirst($formateador->format($numero)) . ' 00/100 BOLIVIANOS';
-    }
+        // Separar la parte entera y decimal
+        $parte_entera = floor($numero);
+        $parte_decimal = round(($numero - $parte_entera) * 100);
     
+        // Usar NumberFormatter para la parte entera
+        $formateador = new NumberFormatter('es_BO', NumberFormatter::SPELLOUT);
+        $literal_entero = ucfirst($formateador->format($parte_entera));
+        
+        // Formatear la parte decimal con ceros a la izquierda si es necesario
+        $literal_decimal = str_pad($parte_decimal, 2, '0', STR_PAD_LEFT);
+    
+        return "$literal_entero $literal_decimal/100 BOLIVIANOS";
+    }
     
 }
 

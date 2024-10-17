@@ -11,6 +11,8 @@ date_default_timezone_set('America/La_Paz');
     <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css'); ?>">
 </head>
 <body class="bill">
+<div id="preloader"></div>
+
 <section id="bill-print" class="bill-print">
     <div class="bill-print-header">
         <h1 class="bold-text">DRINKMASTER</h1>
@@ -40,8 +42,8 @@ date_default_timezone_set('America/La_Paz');
                 <tr>
                     <td class='product-quantity'>x<?php echo $item['cantidad']; ?></td> <!-- Mostrar cantidad real -->
                     <td class='product-name'><?php echo $item['nombre']; ?></td> 
-                    <td class='product-value'><?php echo $item['valor']; ?> Bs</td> <!-- Precio unitario -->
-                    <td class='product-total'><?php echo $subtotal; ?> Bs</td> <!-- Subtotal -->
+                    <td class='product-value'><?php echo number_format($item['valor'], 2); ?> Bs</td> <!-- Precio unitario -->
+                    <td class='product-total'><?php echo number_format($subtotal, 2); ?> Bs</td> <!-- Subtotal -->
                 </tr>
         <?php 
             } 
@@ -51,7 +53,7 @@ date_default_timezone_set('America/La_Paz');
 </div>
 
     <div class="bill-print-total">
-        <p><span>Importe TOTAL Bs:</span> <span><?php echo $total; ?></span></p>
+        <p><span>Importe TOTAL Bs:</span> <span><?php echo number_format($total, 2); ?></span></p> <!-- Total -->
         <p>Son: <?php echo $literal_total; ?></p>
     </div>
 </section>
@@ -71,5 +73,15 @@ date_default_timezone_set('America/La_Paz');
             });
         })();
     </script>
+    <script>
+    window.addEventListener('load', function () {
+        const preloader = document.getElementById('preloader');
+        preloader.classList.add('hidden'); // Agrega la clase 'hidden' para iniciar la transición
+        setTimeout(() => {
+            preloader.style.display = 'none'; // Oculta el preloader después de la transición
+        }, 500); // Este tiempo debe coincidir con la duración de la transición en CSS
+    });
+</script>
+
 </body>
 </html>

@@ -155,7 +155,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Desktop Navigation */
 .nav-menu {
   position: fixed;  /* Fija el menú a la ventana del navegador */
-  margin-top: -550px;
+  margin-top: -860px;
   display: flex;
   justify-content: center;
   /* background: #f2f3f5; */
@@ -235,7 +235,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 1620px) {
   .nav-menu {
-    margin-top: -890px;
+    margin-top: -860px;
     display: flex;
     justify-content: center;
     /* background: #f2f3f5; */

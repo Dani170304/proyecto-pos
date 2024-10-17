@@ -177,9 +177,12 @@ section.bill-print p {
 .product-name{
     margin-left: -5px
 }
+.bill-print-products table td {
+    padding-bottom: 10px; /* Espacio entre filas */
+}
 
 table tr {
-    margin-bottom: 1px; /* Ajusta el espacio vertical entre las filas */
+    margin-bottom: 15px; /* Ajusta el espacio vertical entre las filas */
 }
 
 /* Estilos adicionales */

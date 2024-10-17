@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
     <title>MENU</title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
@@ -18,6 +19,7 @@
 </head>
 
 <body class="index">
+
     <div class="contenedorTotal">
         <br><br>
         <section class="button-section">
@@ -197,6 +199,17 @@
         </div>
     </section>
 </div>
+<div id="preloader"></div>
+<script>
+    window.addEventListener('load', function () {
+        const preloader = document.getElementById('preloader');
+        preloader.classList.add('hidden'); // Agrega la clase 'hidden' para iniciar la transición
+        setTimeout(() => {
+            preloader.style.display = 'none'; // Oculta el preloader después de la transición
+        }, 500); // Este tiempo debe coincidir con la duración de la transición en CSS
+    });
+</script>
+
 
 <script>
 (function() {
@@ -218,12 +231,64 @@
             let categoria = e.currentTarget.dataset.category;
             let stock = parseInt(e.currentTarget.dataset.stock);
 
+            // Verificación inicial de stock
+            if (stock <= 0) {
+                Swal.fire({
+                    title: 'Producto Agotado',
+                    text: `Lo sentimos, ${nombre} está agotado.`,
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            // Advertencias de stock bajo
+            if (stock === 5) {
+                Swal.fire({
+                    title: '¡Stock Limitado!',
+                    text: `Quedan solo 5 unidades de ${nombre}`,
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            } else if (stock === 1) {
+                Swal.fire({
+                    title: '¡Última Unidad!',
+                    text: `Solo queda 1 unidad de ${nombre}`,
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            }
+    
+
             if (categoria === 'BOTELLA') {
+                // Verificar primero si hay stock disponible
+                if (stock === 0) {
+                    Swal.fire({
+                        title: 'Producto No Disponible',
+                        text: 'Lo sentimos, no hay stock disponible de esta botella.',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return; // Salir de la función si no hay stock
+                }
+                // Solo mostrar el popup si hay stock disponible
                 mostrarPopup('sodaComboPopup', stock);
                 sessionStorage.setItem('tempBottle', JSON.stringify({ id, nombre, valor, imagen, categoria, stock }));
             } else if (categoria === 'COMBO') {
                 let bottleInfo = JSON.parse(sessionStorage.getItem('tempBottle'));
                 if (bottleInfo) {
+                    // Verificar stock de la soda para el combo
+                    if (stock <= 0) {
+                        Swal.fire({
+                            title: 'Combo No Disponible',
+                            text: `Lo sentimos, no hay stock disponible de la soda para este combo.`,
+                            icon: 'error',
+                            confirmButtonText: 'Entendido'
+                        });
+                        sessionStorage.removeItem('tempBottle');
+                        return;
+                    }
+
                     let existingCombo = itemsCarrito.find(item => 
                         item.categoria === 'BOTELLA' && 
                         item.id === bottleInfo.id && 
@@ -245,10 +310,21 @@
             }
 
             actualizarCarrito();
+            actualizarStockVisual(id, stock - 1);
         });
     });
 
     function agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId = null, stock = null, comboId = null) {
+        if (stock !== null && stock <= 0) {
+            Swal.fire({
+                title: 'Stock Agotado',
+                text: `Lo sentimos, ${nombre} está agotado.`,
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+            return false;
+        }
+
         if (categoria === 'BOTELLA' || categoria === 'COMBO') {
             itemsCarrito.push({ 
                 id, 
@@ -264,78 +340,133 @@
         } else {
             let itemExistente = itemsCarrito.find(item => item.id === id && item.categoria === categoria);
             if (itemExistente) {
+                if (stock !== null && itemExistente.cantidad >= stock) {
+                    Swal.fire({
+                        title: 'Stock Insuficiente',
+                        text: `No hay suficiente stock de ${nombre}`,
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return false;
+                }
                 itemExistente.cantidad += 1;
             } else {
                 itemsCarrito.push({ id, nombre, valor, cantidad: 1, imagen, categoria, pairId, stock });
             }
         }
         total += valor;
+        return true;
     }
 
     function actualizarCarrito() {
-    listaCarrito.innerHTML = '';
+        listaCarrito.innerHTML = '';
 
-    itemsCarrito.forEach(item => {
-        let li = document.createElement('li');
-        li.style.display = 'table-row';
-        li.innerHTML = `
-            <span style="display: table-cell; width: 5%;">
-                <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
-            </span>
-            <span style="display: table-cell; width: 20%;">${item.nombre}</span>
-            <span style="display: table-cell; width: 13%; text-align: right;">
-                ${item.valor > 0 ? `<strong>Bs. ${item.valor.toFixed(2)}</strong>` : ''}
-            </span>
-            <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
-            <span style="display: table-cell; width: 14%; text-align: right;">
-                ${item.categoria !== 'COMBO' ? `
-                    <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                    <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                    <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 23px; height: auto;">
-                ` : ''}
-            </span>
-        `;
+        itemsCarrito.forEach(item => {
+            let li = document.createElement('li');
+            li.style.display = 'table-row';
+            li.innerHTML = `
+                <span style="display: table-cell; width: 5%;">
+                    <img src="${item.imagen}" alt="${item.nombre}" style="width: 30px; height: auto; margin-right: 5px;">
+                </span>
+                <span style="display: table-cell; width: 20%;">${item.nombre}</span>
+                <span style="display: table-cell; width: 13%; text-align: right;">
+                    ${item.valor > 0 ? `<strong>Bs. ${item.valor.toFixed(2)}</strong>` : ''}
+                </span>
+                <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
+                <span style="display: table-cell; width: 14%; text-align: right;">
+                    ${item.categoria !== 'COMBO' ? `
+                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 23px; height: auto;">
+                    ` : ''}
+                </span>
+            `;
 
-        if (item.categoria !== 'COMBO') {
-            li.querySelector('.btn-mas').addEventListener('click', function() {
-                if (item.categoria === 'BOTELLA') {
-                    mostrarPopup('sodaComboPopup', item.stock);
-                    sessionStorage.setItem('tempBottle', JSON.stringify({ 
-                        id: item.id, 
-                        nombre: item.nombre, 
-                        valor: item.valor, 
-                        imagen: item.imagen, 
-                        categoria: item.categoria, 
-                        stock: item.stock,
-                        existingComboId: item.comboId
-                    }));
-                } else {
-                    aumentarCantidad(item.id, item.pairId, item.stock);
-                }
-            });
-            
-            li.querySelector('.btn-menos').addEventListener('click', function() {
-                disminuirCantidad(item.id, item.pairId);
-            });
+            if (item.categoria !== 'COMBO') {
+                li.querySelector('.btn-mas').addEventListener('click', function() {
+                    // Obtener el stock actual del producto
+                    let producto = document.querySelector(`[data-id="${item.id}"]`);
+                    let stockActual = parseInt(producto.dataset.stock);
 
-            li.querySelector('.btn-borrar').addEventListener('click', function() {
-                eliminarDelCarrito(item.id, item.pairId);
-            });
-        }
+                    if (stockActual <= 0) {
+                        Swal.fire({
+                            title: 'Stock Agotado',
+                            text: `Lo sentimos, ${item.nombre} está agotado.`,
+                            icon: 'error',
+                            confirmButtonText: 'Entendido'
+                        });
+                        return;
+                    }
 
-        listaCarrito.appendChild(li);
-    });
+                    if (item.categoria === 'BOTELLA') {
+                        // Verificar si hay sodas disponibles antes de mostrar el popup
+                        let sodasDisponibles = false;
+                        let popupSodas = document.querySelectorAll('#sodaComboPopup .product');
+                        
+                        popupSodas.forEach(soda => {
+                            if (parseInt(soda.dataset.stock) > 0) {
+                                sodasDisponibles = true;
+                            }
+                        });
 
-    totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
-    document.getElementById('cart').value = JSON.stringify(itemsCarrito);
-}
+                        if (!sodasDisponibles) {
+                            Swal.fire({
+                                title: 'Sodas Agotadas',
+                                text: 'Lo sentimos, no hay stock disponible de sodas para combos.',
+                                icon: 'error',
+                                confirmButtonText: 'Entendido'
+                            });
+                            return;
+                        }
 
+                        mostrarPopup('sodaComboPopup', stockActual);
+                        sessionStorage.setItem('tempBottle', JSON.stringify({ 
+                            id: item.id, 
+                            nombre: item.nombre, 
+                            valor: item.valor, 
+                            imagen: item.imagen, 
+                            categoria: item.categoria, 
+                            stock: stockActual,
+                            existingComboId: item.comboId
+                        }));
+                    } else {
+                        aumentarCantidad(item.id, item.pairId, stockActual);
+                    }
+                });
+                
+                li.querySelector('.btn-menos').addEventListener('click', function() {
+                    disminuirCantidad(item.id, item.pairId);
+                });
+
+                li.querySelector('.btn-borrar').addEventListener('click', function() {
+                    eliminarDelCarrito(item.id, item.pairId);
+                });
+            }
+
+            listaCarrito.appendChild(li);
+        });
+
+        totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
+        document.getElementById('cart').value = JSON.stringify(itemsCarrito);
+    }
 
     function aumentarCantidad(id, pairId, stock) {
         let item = pairId 
             ? itemsCarrito.find(i => i.id === id && i.pairId === pairId)
             : itemsCarrito.find(i => i.id === id);
         
+        if (item && stock !== null) {
+            if (item.cantidad >= stock) {
+                Swal.fire({
+                    title: 'Stock Insuficiente',
+                    text: `No hay suficiente stock de ${item.nombre}`,
+                    icon: 'error',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+        }
+
         if (item) {
             if (item.categoria === 'BOTELLA' && !pairId) {
                 mostrarPopup('sodaComboPopup', stock);
@@ -354,6 +485,7 @@
             }
 
             actualizarCarrito();
+            actualizarStockVisual(id, stock - item.cantidad);
         }
     }
 
@@ -374,6 +506,10 @@
                         total -= comboItem.valor;
                     }
                 }
+                
+                // Actualizar stock visual al disminuir cantidad
+                let stockActual = parseInt(document.querySelector(`[data-id="${id}"]`).dataset.stock);
+                actualizarStockVisual(id, stockActual + 1);
             } else {
                 eliminarDelCarrito(id, pairId);
             }
@@ -384,13 +520,21 @@
 
     function eliminarDelCarrito(id, pairId) {
         let indices = [];
+        let stockDevuelto = 0;
         
         itemsCarrito.forEach((item, index) => {
             if ((pairId && item.pairId === pairId) || (!pairId && item.id === id)) {
                 indices.push(index);
                 total -= item.valor * item.cantidad;
+                stockDevuelto = item.cantidad;
             }
         });
+
+        // Actualizar stock visual al eliminar del carrito
+        if (stockDevuelto > 0) {
+            let stockActual = parseInt(document.querySelector(`[data-id="${id}"]`).dataset.stock);
+            actualizarStockVisual(id, stockActual + stockDevuelto);
+        }
 
         indices.sort((a, b) => b - a).forEach(index => {
             itemsCarrito.splice(index, 1);
@@ -399,28 +543,66 @@
         actualizarCarrito();
     }
 
-    function mostrarPopup(popupId, stock) {
-        if (stock <= 0) {
-            return;
-        }
-
-        cerrarPopup();
-
-        var popup = document.getElementById(popupId);
-        var overlay = document.getElementById('popupOverlay');
-
-        if (popup && overlay) {
-            overlay.style.display = 'block';
-            popup.style.display = 'block';
-
-            var productos = popup.querySelectorAll('.product');
-            productos.forEach(function(producto) {
-                producto.addEventListener('click', function() {
-                    cerrarPopup();
-                });
-            });
+    function actualizarStockVisual(id, nuevoStock) {
+        let producto = document.querySelector(`[data-id="${id}"]`);
+        if (producto) {
+            producto.dataset.stock = nuevoStock;
+            
+            // Actualizar visualización del stock si existe un elemento para mostrarlo
+            let stockDisplay = producto.querySelector('.stock-display');
+            if (stockDisplay) {
+                stockDisplay.textContent = `Stock: ${nuevoStock}`;
+            }
         }
     }
+
+    window.mostrarPopup = function(popupId, stock) {
+    if (stock <= 0) {
+        Swal.fire({
+            title: 'Stock Agotado',
+            text: 'Lo sentimos, este producto está agotado.',
+            icon: 'error',
+            confirmButtonText: 'Entendido'
+        });
+        return;
+    }
+
+    cerrarPopup();
+
+    var popup = document.getElementById(popupId);
+    var overlay = document.getElementById('popupOverlay');
+
+    if (popup && overlay) {
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
+
+        var productos = popup.querySelectorAll('.product');
+        productos.forEach(function(producto) {
+            let sodaStock = parseInt(producto.dataset.stock);
+            
+            if (sodaStock <= 0) {
+                producto.style.opacity = '0.5';
+                producto.style.cursor = 'not-allowed';
+            } else {
+                producto.style.opacity = '1';
+                producto.style.cursor = 'pointer';
+            }
+
+            producto.addEventListener('click', function() {
+                if (sodaStock <= 0) {
+                    Swal.fire({
+                        title: 'Soda No Disponible',
+                        text: 'Lo sentimos, no hay stock disponible de esta soda.',
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return;
+                }
+                cerrarPopup();
+            });
+        });
+    }
+}
 
     function cerrarPopup() {
         var overlay = document.getElementById('popupOverlay');
@@ -463,51 +645,7 @@
 </script>
 
 
-<script>
 
-function mostrarPopup(popupId, stock) {
-    // Verificar si el stock es mayor que cero
-    if (stock <= 0) {
-        return;
-    }
-
-    // Cerrar cualquier ventana emergente abierta
-    cerrarPopup();
-
-    var popup = document.getElementById(popupId);
-    var overlay = document.getElementById('popupOverlay');
-
-    if (popup && overlay) {
-        overlay.style.display = 'block';
-        popup.style.display = 'block';
-
-        // Agrega un evento de clic a todos los elementos del producto dentro de la ventana emergente
-        var productos = popup.querySelectorAll('.product');
-        productos.forEach(function(producto) {
-            producto.addEventListener('click', function() {
-                // Aquí deberías agregar la lógica real para agregar el producto al carrito
-
-                // Cierra automáticamente la ventana después de agregar el producto al carrito
-                cerrarPopup();
-            });
-        });
-    }
-}
-
-    function cerrarPopup() {
-        var overlay = document.getElementById('popupOverlay');
-        var popups = document.querySelectorAll('.popup');
-
-        if (overlay) {
-            overlay.style.display = 'none';
-        }
-
-        // Oculta todos los popups
-        popups.forEach(function (popup) {
-            popup.style.display = 'none';
-        });
-    }
-</script>
 
 
 
