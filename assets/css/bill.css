@@ -1,20 +1,130 @@
-
+.titulo{
+    font-family: 'GilroyBold', sans-serif;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 45px;
+    text-decoration: none;
+    margin-bottom: -10px;
+    margin-top: -5px;
+    /* Efecto de sombra y brillo inicial */
+    text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000, 0 0 40px #FF0000;
+    
+    /* Aplica la animación de parpadeo de luz */
+    animation: flicker 2s infinite;
+  }
+  
+  /* Animación para simular el parpadeo terrorífico */
+  @keyframes flicker {
+    0% {
+        opacity: 1; /* Brillo normal */
+        text-shadow: 0 0 10px #FF0000, 0 0 20px #FF0000, 0 0 30px #FF0000;
+    }
+    5% {
+        opacity: 0.6; /* Disminuye el brillo */
+        text-shadow: none; /* Apaga el brillo */
+    }
+    10% {
+        opacity: 0.8; /* Vuelve a encenderse parcialmente */
+        text-shadow: 0 0 15px #FF0000, 0 0 25px #FF0000;
+    }
+    15% {
+        opacity: 0.3; /* Se oscurece más */
+        text-shadow: none;
+    }
+    30% {
+        opacity: 1; /* Encendido total */
+        text-shadow: 0 0 20px #FF0000, 0 0 30px #FF0000;
+    }
+    40% {
+        opacity: 0; /* Se apaga */
+        text-shadow: none;
+    }
+    60% {
+        opacity: 0.9; /* Encendido parcial */
+        text-shadow: 0 0 15px #FF0000, 0 0 25px #FF0000;
+    }
+    70% {
+        opacity: 0.1; /* Casi apagado */
+        text-shadow: none;
+    }
+    100% {
+        opacity: 1; /* Encendido completo */
+        text-shadow: 0 0 20px #FF0000, 0 0 40px #FF0000, 0 0 60px #FF0000;
+    }
+  }
 .bold-text {
     font-family: 'GilroyBold', sans-serif;
     font-weight: bold;
     text-align: center;
     margin-bottom: -5px;
-    font-size: 12px;
+    font-size: 14px;
   
 }
-.finish-bill{
-    background-image: url("images/fondoFacturaAlas.jpg");
-    background-repeat: no-repeat;
-    padding: 20px;
-    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho y alto del contenedor */
-    background-attachment: fixed; /* Fija el fondo para que no se desplace con el contenido */
-    background-position: center; /* Centra el fondo */
-    background-size: 100%; /* Ajusta el tamaño del fondo */  
+body{
+    background-color: #000;
+}
+.logo-img {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 220px;
+    height: auto;
+    animation: scaleAnimation 3s infinite;
+}
+
+.logo-img-eben {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 250px;
+    height: auto;
+    animation: scaleAnimationEben 3s infinite;
+}
+
+@keyframes scaleAnimation {
+    0%, 100% { width: 220px; }
+    50% { width: 240px; }
+}
+
+@keyframes scaleAnimationEben {
+    0%, 100% { width: 250px; }
+    50% { width: 225px; }
+}
+
+/* Para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .logo-img {
+        width: 80px;
+        animation: scaleAnimationSmall 3s infinite;
+    }
+
+    .logo-img-eben {
+        width: 120px;
+        bottom: 5px;
+        animation: scaleAnimationEbenSmall 3s infinite;
+    }
+
+    @keyframes scaleAnimationSmall {
+        0%, 100% { width: 80px; }
+        50% { width: 88px; }
+    }
+
+    @keyframes scaleAnimationEbenSmall {
+        0%, 100% { width: 120px; }
+        50% { width: 108px; }
+    }
+}
+.close-ticket{
+    font-family: 'GilroyBold', sans-serif;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    text-decoration: none;
+    margin-left: 20px;
+    text-shadow: 0 0 10px #03009c, 0 0 20px #03009c, 0 0 30px #03009c, 0 0 40px #03009c;
+  
 }
 
 .text-factura-orden{
@@ -89,35 +199,9 @@ section.bill-print .bill-print-total p {
     font-size: 14px;
 }
 
-/* Botones */
-section.bill-actions button {
-    display: block;
-    background-color: #013CF0; /* Color de fondo predeterminado */
-    color: #000;
-    line-height: 10px;
-    border: none;
-    border-radius: 5px;
-    width: 250px; /* Ancho del botón */
-    height: 30px; /* Altura del botón */
-    margin: 10px auto;
-    font-size: 15px;
-    cursor: pointer;
-    box-shadow: 0 0 5px #fff, 0 0 1px #fff, 0 0 5px #fff, 0 0 10px #fff;
-    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Transición suave para el cambio de color y sombra */
-    font-weight: bold; /* Hacer el texto negrita */
-    font-size: 18px; /* Ajustar el tamaño de la fuente */
-    box-sizing: border-box;
-    max-width: 350px;
-    padding: 0.5rem 1.5rem;
-    transform: translateY(-5px); /* Prueba con una transformación para moverlo hacia arriba */
-
-}
-
-section.bill-actions button:hover {
-    background-color: #FC5138; /* Cambio de color al rojo cuando el cursor está sobre el botón */
-    color: #fff; /* Cambio de color del texto a blanco cuando el cursor está sobre el botón */
-    transition: background-color 0.5s ease, box-shadow 0.5s ease; /* Transición suave para el cambio de color y sombra */
-    box-shadow: none;
+.boton-bill
+{
+    width: 50px;
 }
 .com p span{
     font-size: 0.9rem;

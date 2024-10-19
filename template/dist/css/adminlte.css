@@ -1975,6 +1975,7 @@ tbody{
   background-color: rgba(255, 255, 255, 0.075);
 }
 
+
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     display: block;
@@ -31121,7 +31122,7 @@ html.maximized-card {
 }
 
 .dark-mode .card .card-footer {
-  background-color: #062D8F;
+  background-color: #e70069;
 }
 
 .dark-mode .card.card-outline-tabs {
@@ -53129,7 +53130,7 @@ font-size: 21px;
   margin-bottom: -5px;
 }
 .card-header{
-  background-color: #062D8F;
+  background-color: #e70069;
 
 }
 .card-title{
@@ -53189,4 +53190,29 @@ font-size: 21px;
 .card-header-h3
 {
   /* background-color: #000; */
+}
+.color-dark{
+  background-color: #000;
+  color: #ed545e;
+}
+.color-dark1{
+  background-color: #000;
+  color: #ffffff;
+}
+.orden-bg {
+  background-color: #5D002A;
+  color: #ffffff; /* Color del texto blanco */
+  text-shadow: 0 0 5px #FF073A;
+  font-weight: bold;
+  font-size: 18px;
+  width: 100px; /* Ajuste de ancho */
+  white-space: nowrap; /* Evita que el contenido se divida en varias líneas */
+  padding: 10px;
+
+}
+
+.total-align {
+  text-align: right;       /* Alinea el texto a la derecha */
+  vertical-align: bottom;  /* Alinea el texto a la parte inferior */
+  padding: 10px;          /* Ajusta el espaciado según sea necesario */
 }

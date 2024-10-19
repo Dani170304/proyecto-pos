@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>MENU</title>
+    <title>DRINK | MENU</title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="icon" href="<?php echo base_url(); ?>assets/img/logo_drink.jpg" type="image/png">
         <!-- Incluye SweetAlert CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- Incluye SweetAlert JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Carga de SweetAlert -->
+
 </head>
 
 <body class="index">
@@ -27,21 +27,35 @@
             <button type="button" class="centered-button submit-button" id="boton2" onclick="inicio_2()">COCTELES</button>
             <button type="button" class="centered-button submit-button" id="boton3" onclick="inicio_3()">CERVEZAS</button>
             <button type="button" class="centered-button submit-button" id="boton5" onclick="inicio_5()">SODAS</button>
-            <button type="button" class="centered-button submit-button" id="boton4" onclick="inicio_4()">PIQUEOS / SALADITOS</button>
+            <button type="button" class="centered-button submit-button" id="boton4" onclick="inicio_4()">OTROS</button>
         </section>
         <!-- Contenedor para mostrar productos -->
+    
+        <?php 
+        $neonColors = [
+            '#2ED411', '#FF007F', '#D1D12A', '#00D6D6', '#FF5F1F', '#E600E6', 
+            '#9400D3', '#46959E', '#87A800', '#FF073A', '#23998D', '#6F8A0E'
+        ];
+        ?>
+
         <div class="mostrar" id="D1">
             <section class="products">
-                <?php foreach ($products as $product) : ?>
+                <?php foreach ($products as $index => $product) : ?>
                     <?php if ($product['categoria'] === 'BOTELLA') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" 
-                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
-                             data-value="<?= $product['precio'] ?>" 
-                             data-id="<?= $product['id_producto'] ?>" 
-                             data-stock="<?= $product['stock'] ?>" 
-                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
-                             data-category="<?= $product['categoria'] ?>" 
-                             onclick="mostrarPopup('sodaComboPopup', <?= $product['stock'] ?>)">
+                        <?php 
+                        // Selecciona el color de la lista usando el índice del producto
+                        $color = $neonColors[$index % count($neonColors)]; 
+                        ?>
+                        <div class="product" 
+                            data-index="<?= $product['id_producto'] ?>" 
+                            data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                            data-value="<?= $product['precio'] ?>" 
+                            data-id="<?= $product['id_producto'] ?>" 
+                            data-stock="<?= $product['stock'] ?>" 
+                            data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
+                            data-category="<?= $product['categoria'] ?>" 
+                            style="background-color: <?= $color ?>;"
+                            onclick="mostrarPopup('sodaComboPopup', <?= $product['stock'] ?>)">
                             <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
                             <h3 class="title-beb"><?= htmlspecialchars($product['nombre']) ?></h3>
                             <p>Precio: Bs.<?= $product['precio'] ?></p>
@@ -51,117 +65,151 @@
             </section>
         </div>
 
+
         <!-- Popup para selección de sodas -->
         <div class="popup-overlay" id="popupOverlay">
-            <div class="popup" id="sodaComboPopup">
-                <span id="popTitle">TIPO DE SODA</span>
-                <section class="products">
-                    <?php foreach ($products as $key => $product) : ?>
-                        <?php if ($product['categoria'] === 'COMBO') : ?>
-                            <div class="product" data-index="<?= $key; ?>" 
-                                 data-name="<?= $product['nombre']; ?>" 
-                                 data-value="<?= $product['precio']; ?>" 
-                                 data-id="<?= $product['id_producto']; ?>" 
-                                 data-stock="<?= $product['stock']; ?>"
-                                 data-category="<?= $product['categoria'] ?>" 
-                                 data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" >
-                                <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= $product['nombre']; ?>">
-                                <p class="product-name"><?= $product['nombre']; ?></p>
-                                <br>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </section>
-            </div>
-        </div>
+    <div class="popup" id="sodaComboPopup">
+        <span id="popTitle">TIPO DE SODA</span>
+        <section class="products">
+            <?php foreach ($products as $key => $product) : ?>
+                <?php if ($product['categoria'] === 'COMBO') : ?>
+                    <?php 
+                    // Selecciona un color de la lista de colores neón
+                    $color = $neonColors[$key % count($neonColors)]; 
+                    ?>
+                    <div class="product" 
+                         data-index="<?= $key; ?>" 
+                         data-name="<?= $product['nombre']; ?>" 
+                         data-value="<?= $product['precio']; ?>" 
+                         data-id="<?= $product['id_producto']; ?>" 
+                         data-stock="<?= $product['stock']; ?>"
+                         data-category="<?= $product['categoria'] ?>" 
+                         data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
+                         style="background-color: <?= $color ?>;">
+                        <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= $product['nombre']; ?>">
+                        <p class="product-name"><?= $product['nombre']; ?></p>
+                        <br>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </section>
+    </div>
+</div>
         <!-- Fin del popup -->
 
         <!-- Otras secciones para mostrar productos según categoría -->
         <div class="mostrar" id="D2">
-            <section class="products">
-                <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'COCTEL') : ?>
-                        <div class="product" data-index="<?= $product['id_producto'] ?>" 
-                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
-                             data-value="<?= $product['precio'] ?>" 
-                             data-id="<?= $product['id_producto'] ?>" 
-                             data-stock="<?= $product['stock'] ?>"
-                             data-category="<?= $product['categoria'] ?>" 
-                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
-                            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
-                            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: Bs.<?= $product['precio'] ?></p>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </section>
-        </div>
-        <div class="mostrar" id="D3">
-            <section class="products">
-                <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'CERVEZA') : ?>
-                        <div class="product" 
-                             data-index="<?= $product['id_producto'] ?>" 
-                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
-                             data-value="<?= $product['precio'] ?>" 
-                             data-id="<?= $product['id_producto'] ?>" 
-                             data-stock="<?= $product['stock'] ?>"
-                             data-category="<?= $product['categoria'] ?>" 
-                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
-                            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
-                            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: Bs.<?= $product['precio'] ?></p>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </section>
-        </div>
-        <div class="mostrar" id="D4">
-            <section class="products">
-                <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'PIQUEO') : ?>
-                        <div class="product" 
-                             data-index="<?= $product['id_producto'] ?>" 
-                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
-                             data-value="<?= $product['precio'] ?>" 
-                             data-id="<?= $product['id_producto'] ?>" 
-                             data-stock="<?= $product['stock'] ?>"
-                             data-category="<?= $product['categoria'] ?>" 
-                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
-                            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
-                            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: Bs.<?= $product['precio'] ?></p>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </section>
-        </div>
-        <div class="mostrar" id="D5">
-            <section class="products">
-                <?php foreach ($products as $product) : ?>
-                    <?php if ($product['categoria'] === 'SODA') : ?>
-                        <div class="product" 
-                             data-index="<?= $product['id_producto'] ?>" 
-                             data-name="<?= htmlspecialchars($product['nombre']) ?>" 
-                             data-value="<?= $product['precio'] ?>" 
-                             data-id="<?= $product['id_producto'] ?>" 
-                             data-stock="<?= $product['stock'] ?>" 
-                             data-category="<?= $product['categoria'] ?>" 
-                             data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>">
-                            <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
-                            <h3><?= htmlspecialchars($product['nombre']) ?></h3>
-                            <p>Precio: Bs.<?= $product['precio'] ?></p>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </section>
-        </div>
+    <section class="products">
+        <?php foreach ($products as $index => $product) : ?>
+            <?php if ($product['categoria'] === 'COCTEL') : ?>
+                <?php 
+                // Selecciona un color de la lista de colores neón
+                $color = $neonColors[$index % count($neonColors)]; 
+                ?>
+                <div class="product" 
+                     data-index="<?= $product['id_producto'] ?>" 
+                     data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                     data-value="<?= $product['precio'] ?>" 
+                     data-id="<?= $product['id_producto'] ?>" 
+                     data-stock="<?= $product['stock'] ?>"
+                     data-category="<?= $product['categoria'] ?>" 
+                     data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
+                     style="background-color: <?= $color ?>;" >
+                    <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
+                    <h3><?= htmlspecialchars($product['nombre']) ?></h3>
+                    <p>Precio: Bs.<?= $product['precio'] ?></p>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </section>
+</div>
+<!-- CERVEZA -->
+<div class="mostrar" id="D3">
+    <section class="products">
+        <?php foreach ($products as $index => $product) : ?>
+            <?php if ($product['categoria'] === 'CERVEZA') : ?>
+                <?php 
+                // Selecciona un color de la lista de colores neón
+                $color = $neonColors[$index % count($neonColors)]; 
+                ?>
+                <div class="product" 
+                     data-index="<?= $product['id_producto'] ?>" 
+                     data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                     data-value="<?= $product['precio'] ?>" 
+                     data-id="<?= $product['id_producto'] ?>" 
+                     data-stock="<?= $product['stock'] ?>"
+                     data-category="<?= $product['categoria'] ?>" 
+                     data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
+                     style="background-color: <?= $color ?>;" >
+                    <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
+                    <h3><?= htmlspecialchars($product['nombre']) ?></h3>
+                    <p>Precio: Bs.<?= $product['precio'] ?></p>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </section>
+</div>
+
+<!-- PIQUEO -->
+<div class="mostrar" id="D4">
+    <section class="products">
+        <?php foreach ($products as $index => $product) : ?>
+            <?php if ($product['categoria'] === 'PIQUEO') : ?>
+                <?php 
+                // Selecciona un color de la lista de colores neón
+                $color = $neonColors[$index % count($neonColors)]; 
+                ?>
+                <div class="product" 
+                     data-index="<?= $product['id_producto'] ?>" 
+                     data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                     data-value="<?= $product['precio'] ?>" 
+                     data-id="<?= $product['id_producto'] ?>" 
+                     data-stock="<?= $product['stock'] ?>"
+                     data-category="<?= $product['categoria'] ?>" 
+                     data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
+                     style="background-color: <?= $color ?>;" >
+                    <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
+                    <h3><?= htmlspecialchars($product['nombre']) ?></h3>
+                    <p>Precio: Bs.<?= $product['precio'] ?></p>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </section>
+</div>
+
+<!-- SODA -->
+<div class="mostrar" id="D5">
+    <section class="products">
+        <?php foreach ($products as $index => $product) : ?>
+            <?php if ($product['categoria'] === 'SODA') : ?>
+                <?php 
+                // Selecciona un color de la lista de colores neón
+                $color = $neonColors[$index % count($neonColors)]; 
+                ?>
+                <div class="product" 
+                     data-index="<?= $product['id_producto'] ?>" 
+                     data-name="<?= htmlspecialchars($product['nombre']) ?>" 
+                     data-value="<?= $product['precio'] ?>" 
+                     data-id="<?= $product['id_producto'] ?>" 
+                     data-stock="<?= $product['stock'] ?>" 
+                     data-category="<?= $product['categoria'] ?>" 
+                     data-image="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" 
+                     style="background-color: <?= $color ?>;" >
+                    <img src="<?= base_url(); ?>/assets/imagenes_bebidas/<?= $product['imagen'] ?>" alt="<?= htmlspecialchars($product['nombre']) ?>">
+                    <h3><?= htmlspecialchars($product['nombre']) ?></h3>
+                    <p>Precio: Bs.<?= $product['precio'] ?></p>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </section>
+</div>
     </div>
     <div class="orden">
     <section class="bill">
+
+
         <div class="bill-products">
             <h2 class="bold-text-orden"><b>ORDEN</b></h2>
-
             <ul id="cart-list" class="cart-items-list"></ul>
 
             <p class="bold-text-total" id="total">Total: Bs. 0</p>
@@ -180,21 +228,24 @@
                 <br>
 
                 <div>
-                    <input class="submit-confirmar" type="button" value="CONFIRMAR" id="confirmar-btn">
+                    <input class="submit-confirmar" type="button" value="CONFIRMAR ORDEN" id="confirmar-btn">
                 </div>
                 <br>
-                <?php if (isset($nombres)) : ?>
+                <?php if (isset($nombres) && isset($apellidos)) : ?>
                     <div class="bold-text-info">
-                        <span>NOMBRE DE USUARIO</span>
-                        <input type="text" value="<?= htmlspecialchars($nombres) ?>" readonly>
+                        <span class="span-nmbre">CLIENTE: </span>
+                        <input type="text" value="<?= htmlspecialchars($nombres.'  '.$apellidos) ?>" readonly>
                         <input type="hidden" value="<?= htmlspecialchars($id_usuario) ?>" readonly>
                         
                     </div>
                 <?php endif; ?>
                 <br>
             </form>
+
             <div>
-                <a class="close" href="<?php echo site_url('CerrarDrink'); ?>">Cerrar Sesión</a>
+                <a class="close" href="<?php echo site_url('CerrarDrink'); ?>">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
             </div>
         </div>
     </section>
@@ -208,11 +259,14 @@
             preloader.style.display = 'none'; // Oculta el preloader después de la transición
         }, 500); // Este tiempo debe coincidir con la duración de la transición en CSS
     });
+
 </script>
 
 
 <script>
+    
 (function() {
+    
     let productos = document.querySelectorAll('section.products > .product');
     let listaCarrito = document.getElementById('cart-list');
     let totalDisplay = document.getElementById('total');
@@ -223,96 +277,100 @@
     totalDisplay.textContent = `Total: Bs. ${total.toFixed(2)}`;
 
     productos.forEach(producto => {
-        producto.addEventListener('click', function(e) {
-            let nombre = e.currentTarget.dataset.name;
-            let valor = parseFloat(e.currentTarget.dataset.value);
-            let id = e.currentTarget.dataset.id;
-            let imagen = e.currentTarget.dataset.image;
-            let categoria = e.currentTarget.dataset.category;
-            let stock = parseInt(e.currentTarget.dataset.stock);
+    producto.addEventListener('click', function(e) {
+        let nombre = e.currentTarget.dataset.name;
+        let valor = parseFloat(e.currentTarget.dataset.value);
+        let id = e.currentTarget.dataset.id;
+        let imagen = e.currentTarget.dataset.image;
+        let categoria = e.currentTarget.dataset.category;
+        let stock = parseInt(e.currentTarget.dataset.stock);
 
-            // Verificación inicial de stock
-            if (stock <= 0) {
+        // Verificación inicial de stock
+        if (stock <= 0) {
+            Swal.fire({
+                title: 'Producto Agotado',
+                text: `Lo sentimos, ${nombre} está agotado.`,
+                icon: 'error',
+                confirmButtonText: 'Entendido'
+            });
+            return;
+        }
+
+        // Advertencias de stock bajo
+        if (stock === 5) {
+            Swal.fire({
+                title: '¡Stock Limitado!',
+                text: `Quedan solo 5 unidades de ${nombre}`,
+                icon: 'warning',
+                confirmButtonText: 'Entendido'
+            });
+        } else if (stock === 1) {
+            Swal.fire({
+                title: '¡Última Unidad!',
+                text: `Solo queda 1 unidad de ${nombre}`,
+                icon: 'warning',
+                confirmButtonText: 'Entendido'
+            });
+        }
+
+        if (categoria === 'BOTELLA') {
+            // Buscar si el producto ya está en el carrito
+            let itemExistente = itemsCarrito.find(item => item.id === id && !item.pairId);
+            
+            // Verificar si hay suficiente stock considerando la cantidad actual
+            if (itemExistente && itemExistente.cantidad >= stock) {
                 Swal.fire({
-                    title: 'Producto Agotado',
-                    text: `Lo sentimos, ${nombre} está agotado.`,
+                    title: 'Stock Insuficiente',
+                    text: `No hay suficiente stock de ${nombre}`,
                     icon: 'error',
                     confirmButtonText: 'Entendido'
                 });
                 return;
             }
 
-            // Advertencias de stock bajo
-            if (stock === 5) {
-                Swal.fire({
-                    title: '¡Stock Limitado!',
-                    text: `Quedan solo 5 unidades de ${nombre}`,
-                    icon: 'warning',
-                    confirmButtonText: 'Entendido'
-                });
-            } else if (stock === 1) {
-                Swal.fire({
-                    title: '¡Última Unidad!',
-                    text: `Solo queda 1 unidad de ${nombre}`,
-                    icon: 'warning',
-                    confirmButtonText: 'Entendido'
-                });
-            }
-    
-
-            if (categoria === 'BOTELLA') {
-                // Verificar primero si hay stock disponible
-                if (stock === 0) {
+            // Si hay stock disponible, mostrar el popup y guardar información temporal
+            mostrarPopup('sodaComboPopup', stock);
+            sessionStorage.setItem('tempBottle', JSON.stringify({ id, nombre, valor, imagen, categoria, stock }));
+            
+        } else if (categoria === 'COMBO') {
+            let bottleInfo = JSON.parse(sessionStorage.getItem('tempBottle'));
+            if (bottleInfo) {
+                // Verificar stock de la soda para el combo
+                if (stock <= 0) {
                     Swal.fire({
-                        title: 'Producto No Disponible',
-                        text: 'Lo sentimos, no hay stock disponible de esta botella.',
+                        title: 'Combo No Disponible',
+                        text: `Lo sentimos, no hay stock disponible de la soda para este combo.`,
                         icon: 'error',
                         confirmButtonText: 'Entendido'
                     });
-                    return; // Salir de la función si no hay stock
-                }
-                // Solo mostrar el popup si hay stock disponible
-                mostrarPopup('sodaComboPopup', stock);
-                sessionStorage.setItem('tempBottle', JSON.stringify({ id, nombre, valor, imagen, categoria, stock }));
-            } else if (categoria === 'COMBO') {
-                let bottleInfo = JSON.parse(sessionStorage.getItem('tempBottle'));
-                if (bottleInfo) {
-                    // Verificar stock de la soda para el combo
-                    if (stock <= 0) {
-                        Swal.fire({
-                            title: 'Combo No Disponible',
-                            text: `Lo sentimos, no hay stock disponible de la soda para este combo.`,
-                            icon: 'error',
-                            confirmButtonText: 'Entendido'
-                        });
-                        sessionStorage.removeItem('tempBottle');
-                        return;
-                    }
-
-                    let existingCombo = itemsCarrito.find(item => 
-                        item.categoria === 'BOTELLA' && 
-                        item.id === bottleInfo.id && 
-                        item.comboId === id
-                    );
-
-                    if (existingCombo) {
-                        aumentarCantidad(existingCombo.id, existingCombo.pairId, existingCombo.stock);
-                    } else {
-                        comboCounter++;
-                        let pairId = `${bottleInfo.id}-${id}-${comboCounter}`;
-                        agregarAlCarrito(bottleInfo.id, bottleInfo.nombre, bottleInfo.valor, bottleInfo.imagen, bottleInfo.categoria, pairId, bottleInfo.stock, id);
-                        agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId);
-                    }
                     sessionStorage.removeItem('tempBottle');
+                    return;
                 }
-            } else {
-                agregarAlCarrito(id, nombre, valor, imagen, categoria, null, stock);
-            }
 
-            actualizarCarrito();
-            actualizarStockVisual(id, stock - 1);
-        });
+                let existingCombo = itemsCarrito.find(item => 
+                    item.categoria === 'BOTELLA' && 
+                    item.id === bottleInfo.id && 
+                    item.comboId === id
+                );
+
+                if (existingCombo) {
+                    aumentarCantidad(existingCombo.id, existingCombo.pairId, existingCombo.stock);
+                } else {
+                    comboCounter++;
+                    let pairId = `${bottleInfo.id}-${id}-${comboCounter}`;
+                    agregarAlCarrito(bottleInfo.id, bottleInfo.nombre, bottleInfo.valor, bottleInfo.imagen, bottleInfo.categoria, pairId, bottleInfo.stock, id);
+                    agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId);
+                }
+                sessionStorage.removeItem('tempBottle');
+            }
+        } else {
+            agregarAlCarrito(id, nombre, valor, imagen, categoria, null, stock);
+        }
+
+        actualizarCarrito();
+        actualizarStockVisual(id, stock - 1);
     });
+});
 
     function agregarAlCarrito(id, nombre, valor, imagen, categoria, pairId = null, stock = null, comboId = null) {
         if (stock !== null && stock <= 0) {
@@ -375,9 +433,9 @@
                 <span style="display: table-cell; width: 7%; text-align: center;">x ${item.cantidad}</span>
                 <span style="display: table-cell; width: 14%; text-align: right;">
                     ${item.categoria !== 'COMBO' ? `
-                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 30px; height: auto; margin-right: -2px;">
-                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 23px; height: auto;">
+                        <img src="<?php echo base_url(); ?>assets/img/mas.png" alt="Sumar" class="btn-mas" data-id="${item.id}" data-pair-id="${item.pairId || ''}" data-stock="${item.stock || 0}" style="cursor: pointer; width: 34px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/menos.png" alt="Restar" class="btn-menos" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 34px; height: auto; margin-right: -2px;">
+                        <img src="<?php echo base_url(); ?>assets/img/borrar.png" alt="Borrar" class="btn-borrar" data-id="${item.id}" data-pair-id="${item.pairId || ''}" style="cursor: pointer; width: 24px; height: auto;">
                     ` : ''}
                 </span>
             `;
@@ -643,12 +701,6 @@
     });
 })();
 </script>
-
-
-
-
-
-
 
     <script>
         let tipoBebidaContainer = document.getElementById('tipoBebidaContainer');

@@ -84,7 +84,7 @@
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table m-0">
-                <thead>
+                <thead class="color-dark">
                     <tr>
                         <th>N° de Orden</th>
                         <th>Usuario</th>
@@ -92,7 +92,7 @@
                         <th>Total</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="color-dark1">
                     <?php 
                     if (is_array($ventas) || is_object($ventas)):
                         $current_order = null;
@@ -115,12 +115,13 @@
                                     }
                                 }
                             ?>
-                                <tr>
-                                    <td rowspan="<?php echo $rowspan_count; ?>"><?php echo $venta->id_orden; ?></td>
-                                    <td rowspan="<?php echo $rowspan_count; ?>"><?php echo $venta->usuario; ?></td>
-                                    <td><?php echo $venta->producto; ?></td>
-                                    <td rowspan="<?php echo $rowspan_count; ?>"><?php echo number_format($total_venta, 2); ?> Bs.</td> <!-- Mostrar el total de la venta -->
-                                </tr>
+                            <tr>
+                                <td class="orden-bg" rowspan="<?php echo $rowspan_count; ?>"><?php echo $venta->id_orden; ?></td>
+                                <td rowspan="<?php echo $rowspan_count; ?>"><?php echo $venta->usuario; ?></td>
+                                <td><?php echo $venta->producto; ?></td>
+                                <td class="total-align" rowspan="<?php echo $rowspan_count; ?>"><?php echo number_format($total_venta, 2); ?> Bs.</td> <!-- Mostrar el total de la venta -->
+                            </tr>
+
                             <?php else: ?>
                                 <tr>
                                     <td><?php echo $venta->producto; ?></td>

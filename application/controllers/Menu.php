@@ -14,6 +14,7 @@ class Menu extends CI_Controller {
 
     public function index() {
         $data['nombres'] = $this->session->userdata('nombres');
+        $data['apellidos'] = $this->session->userdata('apellidos');
         $data['id_usuario'] = $this->session->userdata('id_usuario');
         $data['products'] = $this->Menu_model->get_all_products(); // Obtener productos desde el modelo
         $this->load->view('menu_view', $data); // Pasar datos a la vista

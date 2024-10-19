@@ -1,497 +1,666 @@
 @font-face {
-    font-family: 'Gilroy';
-    src: url('/POS-SELF/assets/fonts/Gilroy-Regular.ttf');
-    /* Puedes agregar más formatos si es necesario (e.g., ttf, svg, etc.) */
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  
-  @font-face {
-    font-family: 'GilroyBold';
-    src: url('/POS-SELF/assets/fonts/Gilroy-Bold.ttf');
-  }
-  
-  .bold-text {
-    font-family: 'GilroyBold';
-    font-weight: bold;
-    text-align: center;
-  
-  }
-  .popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-  }
-  
-  .popup {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #000;
-    padding: 20px;
-    border-radius: 5px;
-    z-index: 2;
-    width: 800px;
-    height: 400px;
-    overflow-y: auto; /* Añade una barra de desplazamiento si el contenido es más alto que la ventana emergente */
-    box-shadow: 0 0 3px #015CFA, 0 0 10px #015CFA, 0 0 12px #015CFA;
-  }
-  
-  .popup button {
-    margin-top: 10px;
-  }
-  #popTitle{
-    margin-top: 0; /* Elimina cualquier margen superior predeterminado */
-    transform: translateY(-50px); /* Prueba con una transformación para moverlo hacia arriba */
-    font-family: 'GilroyBold', sans-serif;
-    color: #fff;
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 280px;
-    text-shadow: 0 0 3px #EF0074, 0 0 10px #EF0074, 0 0 12px #EF0074; /* Efecto de sombra */
-    font-size: 25px;
-  }
-  
-  /* darle el tamaño a lso iconos  letra */
-  section.products {
-  flex: 0 0 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
   font-family: 'Gilroy';
-  font-size:18px;
-  margin-top: 10px;
-  
-  }
-  body {
-  color: #56514B;
-  font-size: 20px;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
-  }
-  
-  body.bill {
-  flex-direction: column;
-  
-  
-  }
-  
-  /* par adarle la posicion a los iconos */
-  .contenedorTotal {
-     /* background-color: red;  */
-    width: 70%;
-    float: left;
-    position: relative;
-  
-  
-  }
-  
-  
-  .orden {
-     /* background-color: green;  */
-    width: 30%;
-    float: right;
-    position: relative;
-  
-  }
-  
-  
-  section.products > div {
-  background-color: #e7dfdd;
-  border-radius: 10px;
-  box-sizing: border-box;
-  padding: 1rem;
-  position: relative;
-  margin: 1rem;
-  flex: 0 0 20%;
+  src: url('/POS-SELF/assets/fonts/Gilroy-Regular.ttf');
+  /* Puedes agregar más formatos si es necesario (e.g., ttf, svg, etc.) */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'GilroyBold';
+  src: url('/POS-SELF/assets/fonts/Gilroy-Bold.ttf');
+}
+.swal2-title, 
+.swal2-content, 
+.swal2-confirm {
+    font-family: 'Gilroy', sans-serif;
+}
+
+.product {
+  background-color: #000000; /* Color de fondo inicial oscuro */
+  color: #000000; /* Color del texto inicial */
+  box-shadow: none; /* Sin brillo por defecto */
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza las transiciones */
+}
+
+.product:hover {
+  background-color: #FFFFFF; /* Cambia el fondo al hacer hover */
+  color: #ffffff; /* Cambia el color del texto */
+  box-shadow: 0px 0px 15px 5px rgba(255, 255, 255, 0.7); /* Efecto de brillo neón al hacer hover */
+  transform: scale(1.05); /* Agranda ligeramente al hacer hover */
+  font-weight: bold;
+}
+
+
+.bold-text {
+  font-family: 'GilroyBold';
+  font-weight: bold;
   text-align: center;
-  cursor: pointer;
-  width: 70%;
-  float: right;
-  
-  }
-  
-  /* para dar forma a lso dibuos */
-  .mostrar > div {
-  background-color: #E7E5DD;
-  border-radius: 40px;
-  box-sizing: border-box;
-  padding: 1rem;
-  position: relative;
-  margin: 1rem;
-  flex: 0 0 20%;
-  text-align: center;
-  cursor: pointer;
-  
-  }
-  /* Solving click event bug */
-  section.products > div:after {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
+
+}
+.popup-overlay {
+  display: none;
+  position: fixed;
   top: 0;
   left: 0;
-  }
-  
-  
-  /* para definir el tamaño de los dibujitos */
-  section.products > div > img {
-  max-height: 12rem;
-  max-width: 6rem;
-  margin-bottom: 1px;
-  }
-  /* tamanio precio de abajo */
-  section.products > div > p {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.popup {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #000;
+  padding: 20px;
+  border-radius: 5px;
+  z-index: 2;
+  width: 800px;
+  height: 400px;
+  overflow-y: auto; /* Añade una barra de desplazamiento si el contenido es más alto que la ventana emergente */
+  box-shadow: 0 0 3px #015CFA, 0 0 10px #015CFA, 0 0 12px #015CFA;
+}
+
+.popup button {
+  margin-top: 10px;
+}
+#popTitle{
+  margin-top: 0; /* Elimina cualquier margen superior predeterminado */
+  transform: translateY(-50px); /* Prueba con una transformación para moverlo hacia arriba */
+  font-family: 'GilroyBold', sans-serif;
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 280px;
+  text-shadow: 0 0 3px #EF0074, 0 0 10px #EF0074, 0 0 12px #EF0074; /* Efecto de sombra */
+  font-size: 25px;
+}
+
+/* darle el tamaño a lso iconos  letra */
+section.products {
+flex: 0 0 100%;
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-between;
+font-family: 'Gilroy';
+font-size:18px;
+margin-top: 10px;
+
+}
+body {
+color: #000000;
+font-size: 20px;
+margin: 0;
+padding: 0;
+display: flex;
+flex-direction: row;
+min-height: 100vh;
+background-color: #000;
+font-weight: bold;
+}
+
+body.bill {
+flex-direction: column;
+
+
+}
+
+/* par adarle la posicion a los iconos */
+.contenedorTotal {
+   /* background-color: red;  */
+  width: 70%;
+  float: left;
+  position: relative;
+
+
+}
+
+
+.orden {
+   /* background-color: green;  */
+  width: 30%;
+  float: right;
+  position: relative;
+  box-shadow: 0px 0px 15px 5px rgba(17, 0, 255, 0.7); /* Efecto de brillo neón */
+
+}
+
+
+section.products > div {
+background-color: #e7dfdd;
+border-radius: 15px;
+box-sizing: border-box;
+padding: 0.50rem;
+position: relative;
+margin: 1.7rem;
+flex: 0 0 20%;
+text-align: center;
+cursor: pointer;
+width: 50%;
+float: right;
+
+}
+
+
+/* para dar forma a lso dibuos */
+.mostrar > div {
+background-color: #E7E5DD;
+border-radius: 40px;
+box-sizing: border-box;
+padding: 1rem;
+position: relative;
+margin: 1rem;
+flex: 0 0 20%;
+text-align: center;
+cursor: pointer;
+
+}
+/* Solving click event bug */
+section.products > div:after {
+content: '';
+display: block;
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+}
+
+
+/* para definir el tamaño de los dibujitos */
+section.products > div > img {
+max-height: 12rem;
+max-width: 6rem;
+margin-bottom: 1px;
+}
+/* tamanio precio de abajo */
+section.products > div > p {
   margin: 0;
   padding: 0;
   font-size: 20px;
-  }
-  /* nombre principal del producto */
-  .title-beb{
-    margin-bottom: 10px;
-    font-size: 20px;
-  }
-  section.bill {
-  background-color: #E7E5DD;
-  box-sizing: border-box;
-  flex: 0 0 30%;
-  padding: 2rem;
-  font-family: 'Gilroy';
-  
-  /* position: fixed; */
-  top: 0;
-  right: 0;
-  width: 400px; /* O ajusta el ancho que desees */
-  height: 100%; /* O ajusta la altura que desees */
-  overflow-y: auto; /* Agrega un desplazamiento vertical si es necesario */
-  background-color: #fff; /* Fondo blanco o el color que desees */
-  padding: 20px; /* Agrega espaciado interno si es necesario */
-  box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para un aspecto visual */
-  
-  
-  width: 100%;
-  float: right;
-  position: absolute;
-  }
-  
-  
-  
-  section.bill > .bill-products {
-  border-bottom: 1px solid #BDBBAD;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  }
-  section.bill > .bill-products p {
-  margin: 0;
-  }
-  section.bill form .hidden {
-  display: none;
-  }
-  section.bill form > div {
-  margin-bottom: 0.5rem;
-  }
-  section.bill form label {
-  display: none;
-  }
-  section.bill form input[type="text"] {
-  display: block;
-  background: transparent;
-  border: 1px solid #BDBBAD;
-  border-radius: 5px;
-  box-sizing: border-box;
-  color: #56514B;
-  font-size: 1rem;
-  padding: 0.5rem 1.5rem;
-  width: 100%;
-  }
-  section.bill form input[type="button"] {
-  display: block;
-  background: #56514B;
-  border: 1px solid #56514B;
-  border-radius: 5px;
-  box-sizing: border-box;
-  color: #E7E5DD;
-  font-size: 1rem;
-  padding: 0.5rem 1.5rem;
-  transition: 0.3s ease-in-out;
-  width: 100%;
-  }
-  section.bill form input[type="button"]:hover {
-  background: #E7E5DD;
-  border: 1px solid #56514B;
-  color: #56514B;
-  cursor: pointer;
-  }
-  
-  section.bill-print {
-  display: block;
-  border: 1px solid #56514B;
-  box-sizing: border-box;
-  margin: 2rem auto;
-  max-width: 330px;
-  padding: 2rem 1.5rem;
-  width: 100%;
-  font-family: 'Gilroy';
-  /* //AQUI FUENTE */
-  
-  
-  
-  
-  }
-  section.bill-print h1 {
-  margin: 0;
-  }
-  section.bill-print p {
-  margin: 0;
-  }
-  section.bill-print p span {
-  display: inline-block;
-  }
-  section.bill-print .bill-print-user p span:last-of-type,
-  section.bill-print .bill-print-products p span:last-of-type,
-  section.bill-print .bill-print-total p span:last-of-type {
-  font-weight: bold;
-  text-align: right;
-  float: right;
-  
-  }
-  section.bill-print .bill-print-products p:first-of-type {
-  font-weight: bold;
-  }
-  section.bill-print .bill-print-header {
-  text-align: center;
-  }
-  section.bill-print .bill-print-user {
-  border-top: 1px solid #564e4b;
-  border-bottom: 1px solid #56514B;
-  margin: 1rem 0;
-  padding: 0.5rem 0;
-  }
-  section.bill-print .bill-print-total p {
-  border-top: 1px solid #56514B;
-  margin-top: 1rem;
-  padding-top: 0.5rem;
-  }
-  section.bill-actions button {
-  display: block;
-  background: #56514B;
-  border: 1px solid #56514B;
-  border-radius: 5px;
-  box-sizing: border-box;
-  color: #E7E5DD;
-  font-size: 1rem;
-  margin: 1rem auto;
-  max-width: 350px;
-  padding: 0.5rem 1.5rem;
-  transition: 0.3s ease-in-out;
-  width: 100%;
-  }
-  section.bill-actions button:hover {
-  background: #E7E5DD;
-  border: 1px solid #56514B;
-  color: #56514B;
-  }
-  @media print {
-  body {
-    min-height: unset;
-  }
-  section.bill-actions {
-    display: none;
-  }
-  }
-  
-  /* Estilos CSS existentes */
-  /* Estilos CSS existentes */
-  #D1,#D2, #D3,#D4{
-    display: none;
+  color: #ffffff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
-  
-  .button-section {
-    display: flex;
-    justify-content: flex-start; /* Alinea los botones a la izquierda */
-    position: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2; /* Asegura que los botones estén encima de la sección de productos */
+
+
+
+/* nombre principal del producto */
+.title-beb{
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+section.bill {
+background-color: #E7E5DD;
+box-sizing: border-box;
+flex: 0 0 30%;
+padding: 2rem;
+font-family: 'Gilroy';
+
+/* position: fixed; */
+top: 0;
+right: 0;
+width: 400px; /* O ajusta el ancho que desees */
+height: 100%; /* O ajusta la altura que desees */
+overflow-y: auto; /* Agrega un desplazamiento vertical si es necesario */
+background-color: #111111;
+padding: 20px; /* Agrega espaciado interno si es necesario */
+box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para un aspecto visual */
+
+
+width: 100%;
+float: right;
+position: absolute;
+}
+.background-video {
+  position: absolute; /* Posición absoluta para cubrir el fondo */
+  top: 0;
+  left: 0;
+  width: 100%; /* Asegura que cubra todo el ancho */
+  height: 100%; /* Asegura que cubra toda la altura */
+  object-fit: cover; /* Asegura que el video mantenga su proporción */
+  z-index: -1; /* Envía el video al fondo */
+  filter: brightness(0.4); /* Ajusta el brillo: 1 es normal, menos de 1 reduce el brillo */
+}
+
+
+.bold-text-orden{
+  font-family: 'GilroyBold', sans-serif;
+  color: #fff;
+  text-align: center;
+  font-size: 40px;
+  text-shadow: 0 0 3px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 15px #ff0000; /* Efecto de sombra */
+}
+
+
+section.bill > .bill-products {
+  border-bottom: 2px solid #ffffff;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  width: 95%; /* Ajusta el porcentaje del ancho que desees */
+  margin-left: auto; /* Centra horizontalmente */
+  margin-right: auto; /* Centra horizontalmente */
+}
+
+section.bill > .bill-products p {
+margin: 0;
+}
+section.bill form .hidden {
+display: none;
+}
+section.bill form > div {
+margin-bottom: 0.5rem;
+}
+section.bill form label {
+display: none;
+}
+section.bill form input[type="text"] {
+display: block;
+background: transparent;
+border: none;
+box-sizing: border-box;
+color: #ffffff;
+font-size: 1.3rem;
+padding: 0.5rem 1.5rem;
+width: 80%;
+margin-left: 35px;
+font-weight: 550;
+}
+.span-nmbre {
+  margin-left: 35px;
+  color: #fff;
+  font-size: 18px;
+  text-shadow: 0 0 3px #0041b3, 0 0 5px #0041b3, 0 0 10px #0041b3, 0 0 15px #0041b3; /* Efecto de sombra */
+  font-weight: bold;
+  text-decoration: underline; /* Subrayado básico */
+}
+.close {
+  font-family: 'GilroyBold', sans-serif;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  text-decoration: none;
+  margin-right: 20px;
+  position: absolute;   /* Posicionamiento absoluto */
+  right: 0;             /* Alinea el elemento con el borde derecho */
+  /* Efecto de sombra y brillo inicial */
+  margin-top: -20px;
+  text-shadow: 0 0 10px #b60046, 0 0 20px #b60046, 0 0 30px #b60046, 0 0 40px #b60046;
+
+  /* Aplica la animación de parpadeo de luz */
+  animation: flicker 2s infinite;
+}
+
+/* Animación para simular el parpadeo terrorífico */
+@keyframes flicker {
+  0% {
+      opacity: 1; /* Brillo normal */
+      text-shadow: 0 0 10px #b60046, 0 0 20px #b60046, 0 0 30px #b60046;
   }
-  
-  .centered-button {
-    margin: 0 15px; /* Reduje el margen para hacer espacio para más botones */
-    position: center;
-    width: 70%;
-    float: left;
-    position: relative;
-    
+  5% {
+      opacity: 0.6; /* Disminuye el brillo */
+      text-shadow: none; /* Apaga el brillo */
   }
-  
-  .submit-button {
-    display: block;
-    background: #56514B;
-    border: 1px solid #56514B;
-    border-radius: 5px;
-    box-sizing: border-box;
-    color: #E7E5DD;
-    font-size: 0.8rem; /* Ajusta el tamaño de la fuente según sea necesario */
-    padding: 0.3rem 1rem; /* Ajusta el relleno según sea necesario */
-    transition: 0.3s ease-in-out;
-    width: 100%; /* Ancho automático según el contenido */
-  height: 40px;
+  10% {
+      opacity: 0.8; /* Vuelve a encenderse parcialmente */
+      text-shadow: 0 0 15px #b60046, 0 0 25px #b60046;
+  }
+  15% {
+      opacity: 0.3; /* Se oscurece más */
+      text-shadow: none;
+  }
+  30% {
+      opacity: 1; /* Encendido total */
+      text-shadow: 0 0 20px #b60046, 0 0 30px #b60046;
+  }
+  40% {
+      opacity: 0; /* Se apaga */
+      text-shadow: none;
+  }
+  60% {
+      opacity: 0.9; /* Encendido parcial */
+      text-shadow: 0 0 15px #b60046, 0 0 25px #b60046;
+  }
+  70% {
+      opacity: 0.1; /* Casi apagado */
+      text-shadow: none;
+  }
+  100% {
+      opacity: 1; /* Encendido completo */
+      text-shadow: 0 0 20px #b60046, 0 0 40px #b60046, 0 0 60px #b60046;
+  }
+}
+
+
+
+section.bill form input[type="button"] {
+  display: block;
+  background: #D20058;
+  border: 1px solid #D20058;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.6rem 0.7rem;
+  transition: 0.3s ease-in-out;
+  width: 60%;
+  margin: 0 auto; /* Esto centra el botón */
+  margin-bottom: 20px;
+}
+
+section.bill form input[type="button"]:hover {
+background: #008DEB;
+border: 1px solid #008DEB;
+color: #000;
+cursor: pointer;
+transform: scale(0.95);
+  transition: transform 0.2s
+}
+
+section.bill-print {
+display: block;
+border: 1px solid #56514B;
+box-sizing: border-box;
+margin: 2rem auto;
+max-width: 330px;
+padding: 2rem 1.5rem;
+width: 100%;
+font-family: 'Gilroy';
+/* //AQUI FUENTE */
+
+
+
+
+}
+section.bill-print h1 {
+margin: 0;
+}
+section.bill-print p {
+margin: 0;
+}
+section.bill-print p span {
+display: inline-block;
+}
+section.bill-print .bill-print-user p span:last-of-type,
+section.bill-print .bill-print-products p span:last-of-type,
+section.bill-print .bill-print-total p span:last-of-type {
+font-weight: bold;
+text-align: right;
+float: right;
+
+}
+section.bill-print .bill-print-products p:first-of-type {
+font-weight: bold;
+}
+section.bill-print .bill-print-header {
+text-align: center;
+}
+section.bill-print .bill-print-user {
+border-top: 1px solid #564e4b;
+border-bottom: 1px solid #56514B;
+margin: 1rem 0;
+padding: 0.5rem 0;
+}
+section.bill-print .bill-print-total p {
+border-top: 1px solid #56514B;
+margin-top: 1rem;
+padding-top: 0.5rem;
+}
+section.bill-actions button {
+display: block;
+background: #D20058;
+border: 1px solid #D20058;
+border-radius: 5px;
+box-sizing: border-box;
+color: #ffffff;
+font-size: 1rem;
+margin: 1rem auto;
+max-width: 350px;
+padding: 0.5rem 1.5rem;
+transition: 0.3s ease-in-out;
+width: 100%;
+font-weight: bold;
+}
+section.bill-actions button:hover {
+background: #008DEB;
+border: 1px solid #008DEB;
+color: #000;
+transform: scale(0.9); /* Hacer el botón un 5% más pequeño */
+transition: transform 0.2s ease-in-out; /* Suavizar la transición */
+}
+@media print {
+body {
+  min-height: unset;
+}
+section.bill-actions {
+  display: none;
+}
+}
+
+/* Estilos CSS existentes */
+/* Estilos CSS existentes */
+#D1,#D2, #D3,#D4{
+  display: none;
+}
+
+.button-section {
+  display: flex;
+  justify-content: flex-start; /* Alinea los botones a la izquierda */
   position: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2; /* Asegura que los botones estén encima de la sección de productos */
+}
+
+.centered-button {
+  margin: 0 15px; /* Reduje el margen para hacer espacio para más botones */
+  position: center;
+  width: 70%;
+  float: left;
+  position: relative;
   
-  }
-  
-  .submit-button:hover {
-    background: #E7E5DD;
-    border: 1px solid #56514B;
-    color: #56514B;
-  }
+}
+
+.submit-button {
+  display: block;
+  background: #D20058;
+  border: 1px solid #D20058;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  font-size: 1.2rem; /* Ajusta el tamaño de la fuente según sea necesario */
+  font-weight: bold;
+  padding: 0.2rem 1rem; /* Ajusta el relleno según sea necesario */
+  transition: 0.3s ease-in-out;
+  width: 100%; /* Ancho automático según el contenido */
+  height: 50px;
+  position: center;
+  margin-bottom: 15px;
+}
+
+.submit-button:hover {
+  background: #008DEB;
+  border: 1px solid #008DEB;
+  font-weight: bold;
+  color: #000;
+  transform: scale(0.9); /* Hacer el botón un 5% más pequeño */
+  transition: transform 0.2s ease-in-out; /* Suavizar la transición */
+}
+/* Estilo para el botón activo */
+.active-button {
+background: #008DEB; /* El mismo color que el hover */
+border: 1px solid #008DEB; /* El mismo borde del hover */
+color: #000; /* El mismo color de texto del hover */
+transform: scale(0.9); /* Hacer el botón un 5% más pequeño */
+transition: transform 0.2s ease-in-out; /* Suavizar la transición */
+}
 
 
 
-  /* Otros estilos de la sección de productos existentes */
 
-  /* Responsividad */
-  @media (max-width: 768px) {
-    section.products {
-      flex-wrap: wrap;
-      justify-content: space-around;
-      font-size: 15px;
-      margin-top: 30px;
-    }
-  
-    body {
-      flex-direction: column;
-    }
-  
-    .contenedorTotal {
-      width: 100%;
-      float: none;
-      margin-bottom: 20px;
-    }
-  
-    .orden {
-      width: 100%;
-      float: none;
-    }
-  
-    section.products > div {
-      flex: 0 0 45%;
-      width: 100%;
-    }
-  
-    section.bill {
-      flex: 0 0 100%;
-      position: relative;
-      width: 100%;
-    }
-    body {
-        font-size: 16px; /* Ajusta el tamaño de fuente base para móviles */
-    }
+/* Otros estilos de la sección de productos existentes */
 
-    section.products {
-        flex-direction: column; /* Cambia la dirección de los productos a columna */
-        align-items: center; /* Centra los elementos */
-    }
-
-    section.products > div {
-        flex: 0 0 100%; /* Ocupa todo el ancho disponible */
-        margin: 10px 0; /* Añade un margen entre los productos */
-    }
-
-    section.bill {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        flex: 1; /* Ajusta la altura para que ocupe el espacio restante */
-    }
-
-    section.bill > .bill-products {
-        padding-bottom: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    section.bill-print {
-        margin: 1rem auto; /* Centra el recibo */
-        padding: 1rem;
-    }
-
-    .contenedorTotal, .orden {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        float: none; /* Elimina el flotado */
-    }
-
-    .submit-button {
-        font-size: 14px; /* Ajusta el tamaño de la fuente del botón */
-        padding: 0.3rem 1rem; /* Ajusta el relleno del botón */
-        height: auto; /* Ajusta la altura automáticamente */
-    }
-
-    .centered-button {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        margin: 10px 0; /* Añade un margen entre botones */
-    }
-    .button-section {
-      flex-direction: column;
-      align-items: center;
-    }
-    .centered-button {
-      padding: 8px 16px;
-      margin: 3px;
-      font-size: 14px;
-      width: 100%;
-      height: 70%;
-      max-width: 250px;
-    }
-    section.products {
-      margin-top: 20px; /* Ajusta según sea necesario */
-    }
-    section.products > div {
-      flex: 0 0 90%;
-      width: 80%;
-    }
-    .contenedorTotal {
-      width: 100%;
-      float: none;
-    }
+/* Responsividad */
+@media (max-width: 768px) {
+  section.products {
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: 15px;
+    margin-top: 30px;
   }
 
+  body {
+    flex-direction: column;
+  }
 
-  #cart-list {
-    display: table;
+  .contenedorTotal {
     width: 100%;
-    border-collapse: collapse;
+    float: none;
+    margin-bottom: 20px;
+  }
+
+  .orden {
+    width: 100%;
+    float: none;
+  }
+
+  section.products > div {
+    flex: 0 0 45%;
+    width: 100%;
+  }
+
+  section.bill {
+    flex: 0 0 100%;
+    position: relative;
+    width: 100%;
+  }
+  body {
+      font-size: 16px; /* Ajusta el tamaño de fuente base para móviles */
+  }
+
+  section.products {
+      flex-direction: column; /* Cambia la dirección de los productos a columna */
+      align-items: center; /* Centra los elementos */
+  }
+
+  section.products > div {
+      flex: 0 0 100%; /* Ocupa todo el ancho disponible */
+      margin: 10px 0; /* Añade un margen entre los productos */
+  }
+
+  section.bill {
+      width: 100%; /* Ocupa todo el ancho disponible */
+      flex: 1; /* Ajusta la altura para que ocupe el espacio restante */
+  }
+
+  section.bill > .bill-products {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+  }
+
+  section.bill-print {
+      margin: 1rem auto; /* Centra el recibo */
+      padding: 1rem;
+  }
+
+  .contenedorTotal, .orden {
+      width: 100%; /* Ocupa todo el ancho disponible */
+      float: none; /* Elimina el flotado */
+  }
+
+  .submit-button {
+      font-size: 14px; /* Ajusta el tamaño de la fuente del botón */
+      padding: 0.3rem 1rem; /* Ajusta el relleno del botón */
+      height: auto; /* Ajusta la altura automáticamente */
+  }
+
+  .centered-button {
+      width: 100%; /* Ocupa todo el ancho disponible */
+      margin: 10px 0; /* Añade un margen entre botones */
+  }
+  .button-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  .centered-button {
+    padding: 8px 16px;
+    margin: 3px;
+    font-size: 14px;
+    width: 100%;
+    height: 70%;
+    max-width: 250px;
+  }
+  section.products {
+    margin-top: 20px; /* Ajusta según sea necesario */
+  }
+  section.products > div {
+    flex: 0 0 90%;
+    width: 80%;
+  }
+  .contenedorTotal {
+    width: 100%;
+    float: none;
+  }
+}
+
+
+#cart-list {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Esto añade espacio entre las filas */
+  padding-left: 0;
 }
 
 #cart-list li {
-    display: table-row;
+  display: table-row;
 }
 
 #cart-list li span {
-    display: table-cell;
-    padding: 6px; /* Espaciado entre celdas */
+  display: table-cell;
+  padding: 6px;
+  color: #ffffff;
+  vertical-align: middle; /* Esto alinea verticalmente el contenido en el centro */
+}
+
+/* Estilo específico para la imagen */
+#cart-list li span:first-child {
+  width: 60px; /* Ajusta este valor según el tamaño de tus imágenes */
+}
+
+#cart-list li span:first-child img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Estilo para el nombre del producto */
+#cart-list li span:nth-child(2) {
+  padding-left: 10px; /* Añade un poco de espacio entre la imagen y el nombre */
+  font-size: 20px;
+}
+
+/* Nuevo estilo para el precio */
+#cart-list li span:nth-child(3) {
+  color: #e2c000; /* Color dorado para el precio */
+  font-weight: bold;
 }
 
 .bold-text-total {
-    text-align: center; /* Alinear el total a la derecha */
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-#cart-list li {
-  padding: 10px 0; /* Espaciado entre filas */
+  text-align: center; /* Alinear el total a la derecha */
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 24px;
+  color: #ffffff;
 }
 
 #cart-list button {
@@ -502,53 +671,53 @@
 # Preloader
 --------------------------------------------------------------*/
 #preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  overflow: hidden;
-  background: linear-gradient(45deg, rgb(170, 0, 68), #380016);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1; /* Asegúrate de que la opacidad inicial sea 1 */
-  transition: opacity 0.5s ease; /* Transición suave para la opacidad */
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+z-index: 9999;
+overflow: hidden;
+background: linear-gradient(45deg, rgb(170, 0, 68), #380016);
+display: flex;
+justify-content: center;
+align-items: center;
+opacity: 1; /* Asegúrate de que la opacidad inicial sea 1 */
+transition: opacity 0.5s ease; /* Transición suave para la opacidad */
 }
 
 #preloader.hidden {
-  opacity: 0; /* Cambiar a 0 para la transición */
-  pointer-events: none; /* Evitar interacciones con el preloader mientras se oculta */
+opacity: 0; /* Cambiar a 0 para la transición */
+pointer-events: none; /* Evitar interacciones con el preloader mientras se oculta */
 }
 
 #preloader:before {
-  content: "";
-  border: 6px solid transparent;
-  border-top-color: #fff;
-  border-bottom-color: #fff;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  -webkit-animation: animate-preloader 1s linear infinite;
-  animation: animate-preloader 1s linear infinite;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+content: "";
+border: 6px solid transparent;
+border-top-color: #fff;
+border-bottom-color: #fff;
+border-radius: 50%;
+width: 60px;
+height: 60px;
+-webkit-animation: animate-preloader 1s linear infinite;
+animation: animate-preloader 1s linear infinite;
+box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 @-webkit-keyframes animate-preloader {
 0% {
-    transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 100% {
-    transform: rotate(360deg);
+  transform: rotate(360deg);
 }
 }
 
 @keyframes animate-preloader {
 0% {
-    transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 100% {
-    transform: rotate(360deg);
+  transform: rotate(360deg);
 }
 }

@@ -6,13 +6,28 @@ date_default_timezone_set('America/La_Paz');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recibo</title>
+    <title>DRINK | TICKET</title>
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bill.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css'); ?>">
+    <link rel="icon" href="<?php echo base_url(); ?>assets/img/logo_drink.jpg" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 </head>
 <body class="bill">
+    <br>
+<div>
+    <a class="close-ticket" href="<?php echo site_url('CerrarDrink'); ?>">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+    </a>
+</div>
+<img src="<?php echo base_url(); ?>assets/img/logo_drink_sinFondo2.png" type="image/png" alt="" class="logo-img">
+<img src="<?php echo base_url(); ?>assets/img/logo.png" type="image/png" alt="" class="logo-img-eben">
+
+
 <div id="preloader"></div>
 
+<h1 class="titulo">TICKET</h1>
 <section id="bill-print" class="bill-print">
     <div class="bill-print-header">
         <h1 class="bold-text">DRINKMASTER</h1>
