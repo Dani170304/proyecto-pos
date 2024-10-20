@@ -107,7 +107,6 @@
                 ?>
                 <tr>
                     <td  class="color-num"> <?php echo $contador ?></td>
-                    </td>
                     <td>
                         <?php
                         $foto=$row->imagen;

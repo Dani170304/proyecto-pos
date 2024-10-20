@@ -458,22 +458,20 @@ section {
 --------------------------------------------------------------*/
 .services .icon-box {
   text-align: center;
-  padding: 70px 20px 80px 20px;
+  padding: 70px 20px 20px 20px;
   transition: all ease-in-out 0.3s;
   background: #bb0533;
   border-radius: 90px;
-  box-shadow: 0px 5px 90px 0px rgba(110, 123, 131, 0.05);
 }
-
-.services .icon-box .icon {
-  margin: 0 auto;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: ease-in-out 0.3s;
-  position: relative;
+/* Efecto hover */
+.services .icon-box:hover {
+  transform: scale(0.9); /* Cambia 0.9 al valor que desees para ajustar el tamaño */
+}
+.imagen_evento {
+  border-radius: 30%; /* Bordes redondeados */
+  width: 250px; /* Aumentar el ancho de la imagen */
+  height: auto; /* Mantiene la proporción de la imagen */
+  margin-top: -60px; /* Ajusta el margen superior según sea necesario */
 }
 
 .services .icon-box .icon i {
@@ -482,16 +480,6 @@ section {
   position: relative;
 }
 
-.services .icon-box .icon svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.services .icon-box .icon svg path {
-  transition: 0.5s;
-  fill: #f5f5f5;
-}
 
 .services .icon-box h4 {
   font-weight: 600;
@@ -500,92 +488,22 @@ section {
 }
 
 .services .icon-box h4 a {
-  color: #45505b;
+  color: #ffffff;
+  font-weight: bold;
   transition: ease-in-out 0.3s;
 }
-
-.services .icon-box p {
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
+.fecha{
+  color: #fffb00;
+}
+.descripcion{
+  color: #000;
+  font-weight: bold;
 }
 
-.services .icon-box:hover {
-  border-color: #fff;
-  box-shadow: 0px 0 35px 0 rgba(0, 0, 0, 0.08);
-}
 
-.services .iconbox-blue i {
-  color: #47aeff;
-}
 
-.services .iconbox-blue:hover .icon i {
-  color: #fff;
-}
 
-.services .iconbox-blue:hover .icon path {
-  fill: #47aeff;
-}
 
-.services .iconbox-orange i {
-  color: #ffa76e;
-}
-
-.services .iconbox-orange:hover .icon i {
-  color: #fff;
-}
-
-.services .iconbox-orange:hover .icon path {
-  fill: #ffa76e;
-}
-
-.services .iconbox-pink i {
-  color: #e80368;
-}
-
-.services .iconbox-pink:hover .icon i {
-  color: #fff;
-}
-
-.services .iconbox-pink:hover .icon path {
-  fill: #e80368;
-}
-
-.services .iconbox-yellow i {
-  color: #ffbb2c;
-}
-
-.services .iconbox-yellow:hover .icon i {
-  color: #fff;
-}
-
-.services .iconbox-yellow:hover .icon path {
-  fill: #ffbb2c;
-}
-
-.services .iconbox-red i {
-  color: #ff5828;
-}
-
-.services .iconbox-red:hover .icon i {
-  color: #fff;
-}
-
-.services .iconbox-red:hover .icon path {
-  fill: #ff5828;
-}
-
-.services .iconbox-teal i {
-  color: #11dbcf;
-}
-
-.services .iconbox-teal:hover .icon i {
-  color: #fff;
-}
-
-.services .iconbox-teal:hover .icon path {
-  fill: #11dbcf;
-}
 
 /*--------------------------------------------------------------
 # Resume
@@ -683,19 +601,19 @@ section {
   color: #fffb00;
 }
 
-.contact .info , .contact .info {
+.contact .info .email, .contact .info .phone {
   margin-top: 40px;
 }
-.email{
+
+.contact .info .email {
   margin-left: 850px;
   margin-top: -50px;
-
 }
-.phone
-{
+
+.contact .info .phone {
   margin-left: 450px;
-
 }
+
 .contact .info .email:hover i, .contact .info .address:hover i, .contact .info .phone:hover i {
   background: #22a1a1;
   color: #fff;
@@ -805,6 +723,35 @@ section {
   }
 }
 
+/* Media queries para responsividad en pantallas pequeñas */
+@media (max-width: 991px) {
+  .contact .info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact .info .email,
+  .contact .info .phone {
+    margin-left: 0;
+    margin-top: 40px;
+  }
+
+  .contact .info .email {
+    margin-top: 40px;
+  }
+}
+
+/* Media query adicional para pantallas muy pequeñas */
+@media (max-width: 767px) {
+  .contact .info i {
+    margin-bottom: 10px;
+  }
+
+  .contact .info h4,
+  .contact .info p {
+    padding-left: 0;
+  }
+}
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/

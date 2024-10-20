@@ -41,11 +41,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 id="title">LISTA DE PRODUCTOS</h1>
+            <h1 id="title">LISTA DE EVENTOS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos/productos">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Eventos/index">Home</a></li>
               <li class="breadcrumb-item active">Tablas</li>
             </ol>
           </div>
@@ -53,7 +53,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <br>
-<a href="<?php echo base_url(); ?>index.php/Productos/productos">
+<a href="<?php echo base_url(); ?>index.php/Eventos/index">
 <button type="button" class="btn btn-warning">Ver lista</button>
 <br>
 <br>
@@ -64,43 +64,41 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped table-neon">
+              <table id="example1" class="table table-bordered table-striped table-neon">
+<hr class="hr-ta">
             <thead>
-            <th>No.</th>
+
+                <th>#</th>
                 <th>Imagen</th>
                 <th>Nombre</th>
-                <th>Categoria</th>
-                <th>Stock</th>
-                <th>Precio</th>
+                <th>Descripcion</th>
+                <th>fecha del evento</th>
                 <th>Estado</th>
                 <th>Acciones</th>
+
             </thead>
             <tbody>
                 <?php
-                $contador=1;
-                foreach($productos->result() as $row)
-                {
+                $contador = 1;
+                foreach ($eventos->result() as $row) {
                 ?>
-                                <tr>
-                    <td  class="color-num"> <?php echo $contador ?></td>
-                    </td>
-                    <td>
-                        <?php
-                        $foto=$row->imagen;
-                        ?>
-                        <img src="<?php echo base_url()?>/assets/imagenes_bebidas/<?php echo $foto ?>" width="40"/>
-                    </td>
-
-                    <td><?php echo $row-> nombre; ?></td>
-                    <td><?php echo $row-> categoria; ?></td>
-                    <td><?php echo $row-> stock; ?></td>
-                    <td><?php echo $row-> precio; ?></td>
+                    <tr>
+                        <td class="color-num"><?php echo $contador ?></td>
+                        <td>
+                            <?php
+                            $foto=$row->imagen_evento;
+                            ?>
+                            <img src="<?php echo base_url()?>/assets/imagenes_eventos/<?php echo $foto ?>" width="100"/>
+                        </td>
+                        <td><?php echo $row-> nombre_evento; ?></td>
+                        <td><?php echo $row-> descripcion; ?></td>
+                        <td><?php echo $row-> fecha_inicio; ?></td>
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td>
     <?php
-    echo form_open_multipart("Productos/habilitarproductobd", ['class' => 'habilitar-form']); // Añadir una clase al formulario
+    echo form_open_multipart("Eventos/habilitareventobd", ['class' => 'habilitar-form']); // Añadir una clase al formulario
     ?>
-    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+    <input type="hidden" name="id_evento" value="<?php echo $row->id_evento; ?>">
     <button type="button" class="btn btn-morado habilitar-btn"><i class="fas fa-check-circle"></i></button>
     <?php
     echo form_close();
@@ -143,7 +141,7 @@
 
         Swal.fire({
             title: '¿Estás seguro?',
-            text: "¡Deseas habilitar este producto!",
+            text: "¡Deseas habilitar este evento!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -165,7 +163,7 @@
                             confirmButtonText: 'OK',
                             confirmButtonColor: response.success ? '#1AEB01' : '#d33'
                         }).then(() => {
-                            window.location.href = '<?php echo base_url(); ?>index.php/Productos/productos'; 
+                            window.location.href = '<?php echo base_url(); ?>index.php/Eventos/index'; 
                         });
                     },
                     error: function() {

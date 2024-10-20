@@ -44,18 +44,17 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 id="title">Agregar Producto</h1>
+                    <h1 id="title">Agregar Evento</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Productos/productos">Home</a></li>
-                        <li class="breadcrumb-item active">Agregar Producto</li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Eventos/index">Home</a></li>
+                        <li class="breadcrumb-item active">Agregar Evento</li>
                     </ol>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -64,58 +63,37 @@
                         <div class="card-body">
 
 
-                            <?php echo form_open_multipart("Productos/agregarproductobd", ['id' => 'formAgregar']); ?>
+                            <?php echo form_open_multipart("Eventos/agregareventobd", ['id' => 'formAgregar']); ?>
 
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del producto" maxlength="50" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div style="position: relative;">
-                                    <span class="input-icon"><i class="fa fa-file-alt"></i></span>
-                                    <select class="form-control" name="categoria" required>
-                                        <option value="" disabled>Seleccione la categoría</option>
-                                        <option value="botella">Botella</option>
-                                        <option value="coctel">Coctel</option>
-                                        <option value="soda">Soda</option>
-                                        <option value="cerveza">Cerveza</option>
-                                        <option value="piqueo">Piqueo</option>
-                                        <option value="combo">Soda-Combo</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Escriba nombre del evento" maxlength="50" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div style="position: relative;">
                                     <span class="input-icon"><i class="fa fa-user"></i></span>
-                                    <input type="number" class="form-control" name="stock" placeholder="Escriba el stock" required>
+                                    <input type="text" class="form-control" name="descripcion" placeholder="Escriba una descripcion" required>
                                 </div>
                             </div>
-                            <div style="position: relative;">
-    <span class="input-icon"><i class="fa fa-envelope"></i></span>
-    <input type="text" 
-           class="form-control" 
-           name="precio" 
-           placeholder="Escriba el precio" 
-           required 
-           pattern="^\d+([,.]\d{1,2})?$" 
-           title="Ingrese un número válido con hasta dos decimales (use . o , como separador)" 
-           inputmode="decimal" 
-           oninput="this.value = this.value.replace(/[^0-9.,]/g, '');">
-</div>
 
+                            <div class="form-group">
 
-
-
-                            <br>
-                            <div style="position: relative;">
-                                <span class="input-icon"><i class="fa fa-image"></i></span>
-                                <input type="file" class="form-control" name="imagen" accept="image/png, image/jpeg, image/jpg" placeholder="Seleccione la imagen" required>
+                                <div style="position: relative;">
+                                    <span class="input-icon"><i class="fa fa-image"></i></span>
+                                    <input type="file" class="form-control" name="imagen" accept="image/png, image/jpeg, image/jpg" placeholder="Seleccione la imagen" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div style="position: relative;" onclick="this.querySelector('input').focus();">
+                                    <span class="input-icon"><i class="fa fa-calendar"></i></span> <!-- Icono para fecha de inicio -->
+                                    <input type="date" class="form-control" name="fecha" placeholder="Selecciona una fecha" required>
+                                </div>
                             </div>
 
                             <br>
-                            <button type="submit" class="btn btn-morado">Agregar Producto</button>
+                            <button type="submit" class="btn btn-morado">Agregar Evento</button>
 
                             <?php echo form_close(); ?>
                         </div>
@@ -133,7 +111,7 @@
 
         Swal.fire({
             title: '¿Estás seguro?',
-            text: "¡Deseas agregar este producto!",
+            text: "¡Deseas agregar este evento!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#1AEB01',
@@ -162,7 +140,7 @@
                                         confirmButton: 'swal2-confirm'
                                     }
                                 }).then(() => {
-                                    window.location.href = 'productos'; // Redirigir después de agregar el producto
+                                    window.location.href = 'index'; // Redirigir después de agregar el evento
                                 });
                             } else {
                                 Swal.fire({
