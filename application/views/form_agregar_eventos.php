@@ -77,6 +77,18 @@
                                     <input type="text" class="form-control" name="descripcion" placeholder="Escriba una descripcion" required>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div style="position: relative;">
+                                    <span class="input-icon"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control" name="ubicacion" placeholder="Escriba una ubicacion" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div style="position: relative;">
+                                    <span class="input-icon"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control" name="telefono" placeholder="Escriba un telefono" required>
+                                </div>
+                            </div>
 
                             <div class="form-group">
 
@@ -88,7 +100,7 @@
                             <div class="form-group">
                                 <div style="position: relative;" onclick="this.querySelector('input').focus();">
                                     <span class="input-icon"><i class="fa fa-calendar"></i></span> <!-- Icono para fecha de inicio -->
-                                    <input type="date" class="form-control" name="fecha" placeholder="Selecciona una fecha" required>
+                                    <input type="datetime-local" class="form-control" name="fecha" placeholder="Selecciona una fecha" required>
                                 </div>
                             </div>
 
@@ -119,47 +131,41 @@
             confirmButtonText: 'Sí, agregar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
-                if (result.isConfirmed) {
-                    // Si el usuario confirma, enviar el formulario
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: 'POST',
-                        data: new FormData(this), // Enviar los datos del formulario
-                        processData: false, // Evitar que jQuery procese los datos
-                        contentType: false, // No establecer tipo de contenido
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.status === 'success') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Éxito',
-                                    text: response.message,
-                                    confirmButtonText: 'OK',
-                                    confirmButtonColor: '#1AEB01',
-                                    customClass: {
-                                        confirmButton: 'swal2-confirm'
-                                    }
-                                }).then(() => {
-                                    window.location.href = 'index'; // Redirigir después de agregar el evento
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: response.message,
-                                    confirmButtonText: 'OK',
-                                    confirmButtonColor: '#1AEB01',
-                                    customClass: {
-                                        confirmButton: 'swal2-confirm'
-                                    }
-                                });
-                            }
-                        },
-                        error: function() {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, enviar el formulario
+                var formData = new FormData(this);
+                
+                console.log("Datos enviados:", formData); // Ver los datos que se están enviando
+                
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData, // Enviar los datos del formulario
+                    processData: false, // Evitar que jQuery procese los datos
+                    contentType: false, // No establecer tipo de contenido
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Respuesta del servidor:", response); // Ver respuesta del servidor
+                        
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: response.message,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#1AEB01',
+                                customClass: {
+                                    confirmButton: 'swal2-confirm'
+                                }
+                            }).then(() => {
+                                window.location.href = 'index'; // Redirigir después de agregar el evento
+                            });
+                        } else {
+                            console.log("Error de la respuesta:", response); // Ver mensaje de error del servidor
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
-                                text: 'Ocurrió un error al procesar la solicitud.',
+                                text: response.message,
                                 confirmButtonText: 'OK',
                                 confirmButtonColor: '#1AEB01',
                                 customClass: {
@@ -167,11 +173,30 @@
                                 }
                             });
                         }
-                    });
-                }
-            });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error al enviar solicitud:", error); // Ver detalles del error
+                        console.error("Estado del servidor:", xhr.status); // Código de estado
+                        console.error("Texto de estado:", status); // Texto de estado
+                        console.error("Respuesta completa del servidor:", xhr.responseText); // Ver la respuesta completa
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar la solicitud.',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#1AEB01',
+                            customClass: {
+                                confirmButton: 'swal2-confirm'
+                            }
+                        });
+                    }
+                });
+            }
         });
+    });
 </script>
+
 
 </body>
 </html>

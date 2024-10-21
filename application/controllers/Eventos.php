@@ -90,6 +90,9 @@ class Eventos extends CI_Controller
     public function agregareventobd() {
         $data['nombre_evento'] = strtoupper($this->input->post('nombre'));
         $data['descripcion'] = strtoupper($this->input->post('descripcion'));
+        $data['ubicacion_evento'] = strtoupper($this->input->post('ubicacion'));
+        $data['telefono_evento'] = $this->input->post('telefono');
+
         $data['fecha_inicio'] = $this->input->post('fecha');
     
         // Incluir el ID del usuario que hizo la acción
