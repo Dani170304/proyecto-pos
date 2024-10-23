@@ -88,16 +88,35 @@ class Eventos extends CI_Controller
         $this->load->view('inc/pie');
     }
     public function agregareventobd() {
-        $data['nombre_evento'] = strtoupper($this->input->post('nombre'));
-        $data['descripcion'] = strtoupper($this->input->post('descripcion'));
-        $data['ubicacion_evento'] = strtoupper($this->input->post('ubicacion'));
-        $data['telefono_evento'] = $this->input->post('telefono');
-
-        $data['fecha_inicio'] = $this->input->post('fecha');
+        // Primero verificamos que tengamos una sesión válida
+        if (!$this->session->userdata('id_usuario')) {
+            echo json_encode(array('status' => 'error', 'message' => 'No hay una sesión activa.'));
+            return;
+        }
     
-        // Incluir el ID del usuario que hizo la acción
-        $data['idUsuario'] = $this->session->userdata('id_usuario');
+        // Obtenemos el ID del usuario de la sesión
+        $id_usuario = $this->session->userdata('id_usuario');
     
+        $data = array(
+            'nombre_evento' => strtoupper($this->input->post('nombre')),
+            'descripcion' => strtoupper($this->input->post('descripcion')),
+            'ubicacion_evento' => strtoupper($this->input->post('ubicacion')),
+            'telefono_evento' => $this->input->post('telefono'),
+            'fecha_inicio' => $this->input->post('fecha'),
+            'id_usuario' => $id_usuario, // Usamos el ID de la sesión
+            'idUsuario' => $id_usuario  // Para auditoría
+        );
+    
+        // Verificar que el usuario existe y está activo
+        $usuario_existe = $this->db->where('id_usuario', $id_usuario)
+                                  ->where('estado', 1)
+                                  ->get('usuarios')
+                                  ->num_rows() > 0;
+        
+        if (!$usuario_existe) {
+            echo json_encode(array('status' => 'error', 'message' => 'Usuario no autorizado o inactivo.'));
+            return;
+        }
     
         // Verificar si se subió una imagen
         if (!empty($_FILES['imagen']['name'])) {
@@ -120,10 +139,17 @@ class Eventos extends CI_Controller
             return;
         }
     
+        // Intentar insertar el evento
         if ($this->Eventos_model->insertar_evento($data)) {
-            echo json_encode(array('status' => 'success', 'message' => 'Evento agregado correctamente.'));
+            echo json_encode(array(
+                'status' => 'success', 
+                'message' => 'Evento agregado correctamente.'
+            ));
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Error al agregar el evento en la base de datos.'));
+            echo json_encode(array(
+                'status' => 'error', 
+                'message' => 'Error al agregar el evento en la base de datos.'
+            ));
         }
     }
 

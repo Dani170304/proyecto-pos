@@ -46,6 +46,13 @@
 <script src="<?php echo base_url(); ?>template/dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
+    $(document).ready(function() {
+    $('.nav-link[data-widget="pushmenu"]').on('click', function() {
+        $('body').toggleClass('sidebar-collapse');
+        // Puedes agregar más clases aquí si es necesario
+    });
+});
+
 $(function () {
     // Configuración para la tabla #example1
     $("#example1").DataTable({
