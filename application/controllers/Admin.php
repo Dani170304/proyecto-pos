@@ -461,6 +461,81 @@ class Admin extends CI_Controller
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
+        
+    public function reporteMesero() {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener el reporte de meseros
+        $reporteMeseros = $this->Admin_model->obtenerReporteMeseros();
+        
+        // Calcular el total general
+        $total_general = 0;
+        foreach($reporteMeseros as $mesero) {
+            $total_general += $mesero['total_venta'];
+        }
+        
+        $data['reporteMeseros'] = $reporteMeseros;
+        $data['total_general'] = $total_general;
+        
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_reportemesero_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
+    
+    public function reporteOrdenesEliminadas()
+    {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener las órdenes eliminadas
+        $data['ordenesEliminadas'] = $this->Admin_model->obtenerOrdenesEliminadas();
+        
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_reporteordenes_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
+    public function reporteEventos() {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener el reporte de eventos
+        $data['reporteEventos'] = $this->Admin_model->obtenerReporteEventos();
+        
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_reporteeventos_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
     //RECUPERAR
     public function recuperarTicket() {
         $user_id = $this->session->userdata('id_usuario');

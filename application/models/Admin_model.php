@@ -188,7 +188,49 @@ class Admin_model extends CI_Model {
             return []; // Retorna un arreglo vacío si no hay ventas
         }
     }
+    public function obtenerReporteMeseros() {
+        $this->db->select('u.id_usuario, 
+                           CONCAT(u.nombres, " ", u.apellidos) as nombre_mesero,
+                           COUNT(DISTINCT vc.id_orden) as total_ordenes,
+                           SUM(dv.cantidad * dv.precio) as total_venta');
+        $this->db->from('ventas_cabeza vc');
+        $this->db->join('usuarios u', 'u.id_usuario = vc.id_mesero');
+        $this->db->join('detalle_ventas dv', 'dv.id_orden = vc.id_orden');
+        $this->db->where('vc.estado', 1);
+        $this->db->group_by('u.id_usuario, u.nombres, u.apellidos');
+        $this->db->order_by('u.nombres', 'ASC');
+        
+        return $this->db->get()->result_array();
+    }
+
+    public function obtenerOrdenesEliminadas() {
+        $this->db->select('vc.id_orden, 
+                           vc.fechaCreacion as fecha_eliminacion,
+                           CONCAT(u.nombres, " ", u.apellidos) as nombre_usuario');
+        $this->db->from('ventas_cabeza vc');
+        $this->db->join('usuarios u', 'u.id_usuario = vc.idUsuario');
+        $this->db->where('vc.estado', 0);
+        $this->db->order_by('vc.fechaCreacion', 'DESC');
+        
+        return $this->db->get()->result_array();
+    }
+
+
+public function obtenerReporteEventos() {
+    $this->db->select('e.id_evento,
+                       e.nombre_evento,
+                       e.fechaCreacion,
+                       e.descripcion,
+                       e.fecha_inicio,
+                       CONCAT(u.nombres, " ", u.apellidos) as nombre_usuario');
+    $this->db->from('eventos e');
+    $this->db->join('usuarios u', 'u.id_usuario = e.idUsuario', 'left');
+    $this->db->where('e.estado', 1);
+    $this->db->order_by('e.fecha_inicio', 'DESC');
     
+    return $this->db->get()->result_array();
+}
+
     public function get_user_by_id_2($id) {
         return $this->db->get_where('usuarios', ['id_usuario' => $id])->row_array();
     }
@@ -239,38 +281,53 @@ class Admin_model extends CI_Model {
         $formatter = new NumberFormatter('es', NumberFormatter::SPELLOUT);
         return $formatter->format($numero) . ' Bolivianos';
     }
-    public function eliminarOrdenYRestaurarStock($orden_id) {
-        try {
-            // 1. Obtener los detalles de la venta antes de eliminar
-            $detalles = $this->db->where('id_orden', $orden_id)
-                                ->where('estado', 1)
-                                ->get('detalle_ventas')
-                                ->result_array();
-    
-            if (empty($detalles)) {
-                return ['success' => false, 'message' => 'No se encontraron detalles de la orden'];
-            }
-    
-            // 2. Restaurar el stock de cada producto
-            foreach ($detalles as $detalle) {
-                $this->db->set('stock', 'stock + ' . $detalle['cantidad'], false)
-                         ->where('id_producto', $detalle['id_producto'])
-                         ->update('productos');
-            }
-    
-            // 3. Marcar los detalles como eliminados (estado = 0)
-            $this->db->where('id_orden', $orden_id)
-                     ->update('detalle_ventas', ['estado' => 0]);
-    
-            // 4. Marcar la cabecera como eliminada (estado = 0)
-            $this->db->where('id_orden', $orden_id)
-                     ->update('ventas_cabeza', ['estado' => 0]);
-    
-            return ['success' => true, 'message' => 'Orden eliminada y stock restaurado correctamente'];
-        } catch (Exception $e) {
-            return ['success' => false, 'message' => 'Error al procesar la eliminación: ' . $e->getMessage()];
+public function eliminarOrdenYRestaurarStock($orden_id) {
+    try {
+        // Obtener el ID del usuario de la sesión
+        $usuario_id = $this->session->userdata('id_usuario');
+        
+        if (!$usuario_id) {
+            return ['success' => false, 'message' => 'No hay una sesión de usuario válida'];
         }
+
+        // 1. Obtener los detalles de la venta antes de eliminar
+        $detalles = $this->db->where('id_orden', $orden_id)
+                            ->where('estado', 1)
+                            ->get('detalle_ventas')
+                            ->result_array();
+
+        if (empty($detalles)) {
+            return ['success' => false, 'message' => 'No se encontraron detalles de la orden'];
+        }
+
+        // 2. Restaurar el stock de cada producto
+        foreach ($detalles as $detalle) {
+            $this->db->set('stock', 'stock + ' . $detalle['cantidad'], false)
+                     ->where('id_producto', $detalle['id_producto'])
+                     ->update('productos');
+        }
+
+        // 3. Marcar los detalles como eliminados (estado = 0) y registrar quien lo eliminó
+        $this->db->where('id_orden', $orden_id)
+                 ->update('detalle_ventas', [
+                     'estado' => 0,
+                     'idUsuario' => $usuario_id,
+                     'ultimaActualizacion' => date('Y-m-d H:i:s')
+                 ]);
+
+        // 4. Marcar la cabecera como eliminada (estado = 0) y registrar quien lo eliminó
+        $this->db->where('id_orden', $orden_id)
+                 ->update('ventas_cabeza', [
+                     'estado' => 0,
+                     'idUsuario' => $usuario_id,
+                     'ultimaActualizacion' => date('Y-m-d H:i:s')
+                 ]);
+
+        return ['success' => true, 'message' => 'Orden eliminada y stock restaurado correctamente'];
+    } catch (Exception $e) {
+        return ['success' => false, 'message' => 'Error al procesar la eliminación: ' . $e->getMessage()];
     }
+}
     
 
 }
