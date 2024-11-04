@@ -163,15 +163,15 @@
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>index.php/Admin/reporteOrdenesEliminadas" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>REPORTE ORDENES ELIMINADAS</p>
+                  <p>REPORTE TICKETS ELIMINADAS</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="<?php echo base_url(); ?>index.php/Admin/reporteEventos" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REPORTE EVENTOS</p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="<?php echo base_url(); ?>index.php/Admin/reporteProductoMasVendido" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>

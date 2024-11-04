@@ -83,38 +83,38 @@
             <div class="card-body">
                 <hr class="hr-ta">
                 
-                <table id="example1" class="table table-bordered table-striped table-neon">
-            <thead>
+                <table id="tablaMeseros" class="table table-bordered table-striped table-neon">
+    <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">Mesero</th>
+            <th class="text-center">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        if(isset($reporteMeseros) && !empty($reporteMeseros)) {
+            $contador = 1;
+            foreach($reporteMeseros as $mesero) { ?>
                 <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Mesero</th>
-                    <th class="text-center">Total</th>
+                    <td class="text-center"><?php echo $contador++; ?></td>
+                    <td><?php echo $mesero['nombre_mesero']; ?></td>
+                    <td class="text-right">Bs. <?php echo number_format($mesero['total_venta'], 2); ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php 
-                if(isset($reporteMeseros) && !empty($reporteMeseros)) {
-                    $contador = 1;
-                    foreach($reporteMeseros as $mesero) { ?>
-                        <tr>
-                            <td class="text-center"><?php echo $contador++; ?></td>
-                            <td><?php echo $mesero['nombre_mesero']; ?></td>
-                            <td class="text-right">Bs. <?php echo number_format($mesero['total_venta'], 2); ?></td>
-                        </tr>
-                    <?php }
-                } else { ?>
-                    <tr>
-                        <td colspan="3" class="text-center">No hay registros disponibles</td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="2" class="text-right">Total General:</th>
-                    <th class="text-right">Bs. <?php echo number_format($total_general, 2); ?></th>
-                </tr>
-            </tfoot>
-        </table>
+            <?php }
+        } else { ?>
+            <tr>
+                <td colspan="3" class="text-center">No hay registros disponibles</td>
+            </tr>
+        <?php } ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="2" class="text-right">Total General:</th>
+            <th class="text-right">Bs. <?php echo number_format($total_general, 2); ?></th>
+        </tr>
+    </tfoot>
+</table>
 
             </div>
             <!-- /.card-body -->

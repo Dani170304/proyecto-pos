@@ -67,7 +67,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 id="title">REPORTE MESERO</h1>
+                        <h1 id="title">REPORTE TICKETS ELIMINADAS</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -83,9 +83,10 @@
             <div class="card-body">
                 <hr class="hr-ta">
                 
-                <table id="example1" class="table table-bordered table-striped table-neon">
+                <table id="ordenesELiminadas" class="table table-bordered table-striped table-neon">
                     <thead>
                         <tr>
+                            
                             <th class="text-center">#</th>
                             <th class="text-center">N° de Orden</th>
                             <th class="text-center">Fecha eliminación</th>

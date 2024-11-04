@@ -80,7 +80,7 @@
         </section>
         <div class="card-info">
     <div class="card-body">
-    <table id="example1" class="table table-bordered table-striped table-neon">
+    <table id="tablaProductosVendidos" class="table table-bordered table-striped table-neon">
     <hr class="hr-ta">
     <thead>
         <th>#</th>

@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Carga de jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Carga de SweetAlert -->
+        <!-- Agregar estas librerías -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>template/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>template/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <script src="<?php echo base_url(); ?>template/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo base_url(); ?>template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+
     <style>
         .btn {
             font-weight: bold;
@@ -61,6 +71,33 @@
         .date-picker {
             margin: 5px; /* Margen entre campos */
         }
+        .btn-secondary-excel {
+            background-color: #4CAF50;
+            color: white;
+            margin-right: 5px;
+        }
+        
+        .btn-secondary-pdf {
+            background-color: #FF0000;
+            color: white;
+            margin-right: 5px;
+        }
+        
+        .btn-secondary-print {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary-excel:hover,
+        .btn-secondary-pdf:hover,
+        .btn-secondary-print:hover {
+            opacity: 0.9;
+            color: white;
+        }
+
+        .export-buttons {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -93,10 +130,21 @@
                     <input type="date" id="fecha-hasta" class="date-picker">
                     <button class="btn btn-verde" onclick="filtrarFechas()">Filtrar</button>
                 </div>
+                <div class="export-buttons">
+    <button class="btn btn-secondary-excel" onclick="exportToExcel()">
+        <i class="fas fa-file-excel"></i> Excel
+    </button>
+    <button class="btn btn-secondary-pdf" onclick="exportToPDF()">
+        <i class="fas fa-file-pdf"></i> PDF
+    </button>
+    <button class="btn btn-secondary-print" onclick="printTable()">
+        <i class="fas fa-print"></i> Print
+    </button>
+</div>
                 <br>
                 <hr class="hr-ta">
                 
-                <table id="example3" class="table table-bordered table-striped table-neon">
+                <table id="example7" class="table table-bordered table-striped table-neon">
                 <thead>
     <th>#</th>
     <th>Fecha</th>
@@ -189,7 +237,7 @@
                 fecha_hasta: fechaHasta
             },
             success: function(response) {
-                $('#example3 tbody').html(response); // Actualiza el cuerpo de la tabla con los nuevos datos
+                $('#example7 tbody').html(response); // Actualiza el cuerpo de la tabla con los nuevos datos
             },
             error: function() {
                 alert('Error al obtener los datos.');
@@ -201,3 +249,296 @@
 }
 
  </script>
+<script>
+// Inicialización de DataTable
+$(document).ready(function() {
+    let table = $('#example7').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "pageLength": 10,
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron registros",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+});
+
+// Función para filtrar fechas (actualizada para trabajar con DataTables)
+function filtrarFechas() {
+    var fechaDesde = document.getElementById('fecha-desde').value;
+    var fechaHasta = document.getElementById('fecha-hasta').value;
+
+    if (fechaDesde && fechaHasta) {
+        $.ajax({
+            url: '<?= base_url("index.php/admin/reporteMesFiltrado") ?>',
+            type: 'POST',
+            data: {
+                fecha_desde: fechaDesde,
+                fecha_hasta: fechaHasta
+            },
+            success: function(response) {
+                $('#example7 tbody').html(response);
+                // Destruir y reinicializar DataTable
+                $('#example7').DataTable().destroy();
+                $('#example7').DataTable({
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                    "language": {
+                        "lengthMenu": "Mostrar _MENU_ registros por página",
+                        "zeroRecords": "No se encontraron registros",
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "No hay registros disponibles",
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                        "search": "Buscar:",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    }
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al obtener los datos.'
+                });
+            }
+        });
+    } else {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atención',
+            text: 'Por favor, selecciona ambas fechas.'
+        });
+    }
+}
+
+function exportToExcel() {
+    let table = document.getElementById('example7');
+    let ws = XLSX.utils.table_to_sheet(table, {
+        raw: true,
+        display: true,
+        origin: 'A2' // Deja espacio para el título
+    });
+    
+    // Obtener las fechas
+    let fechaDesde = document.getElementById('fecha-desde').value;
+    let fechaHasta = document.getElementById('fecha-hasta').value;
+    
+    // Crear el título incluyendo el rango de fechas si están disponibles
+    let titulo = 'Reporte de Ventas Mensual';
+    if(fechaDesde && fechaHasta) {
+        titulo += ` (${fechaDesde} a ${fechaHasta})`;
+    }
+    
+    // Agregar el título
+    XLSX.utils.sheet_add_aoa(ws, [[titulo]], { origin: 'A1' });
+    
+    // Combinar celdas para el título (ajusta el número de columnas según tu tabla)
+    if(!ws['!merges']) ws['!merges'] = [];
+    ws['!merges'].push(
+        {s: {r:0, c:0}, e: {r:0, c:7}} // Ajusta c:7 según el número de columnas
+    );
+    
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Reporte");
+    
+    // Nombre del archivo con fechas
+    let fileName = "reporte_ventas_mes";
+    if(fechaDesde && fechaHasta) {
+        fileName += `_${fechaDesde}_a_${fechaHasta}`;
+    }
+    
+    XLSX.writeFile(wb, `${fileName}.xlsx`);
+}
+
+function exportToPDF() {
+    let table = document.getElementById('example7');
+    let rows = Array.from(table.getElementsByTagName('tr'));
+    
+    let docDefinition = {
+        pageOrientation: 'landscape',
+        content: [{
+            text: 'Reporte de Ventas Mensual',
+            style: 'header',
+            alignment: 'center',
+            margin: [0, 0, 0, 10]
+        }],
+        styles: {
+            header: {
+                fontSize: 18,
+                bold: true,
+                margin: [0, 0, 0, 10]
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 10,
+                fillColor: '#f2f2f2'
+            },
+            tableCell: {
+                fontSize: 9
+            }
+        }
+    };
+
+    // Agregar fechas al título si están seleccionadas
+    let fechaDesde = document.getElementById('fecha-desde').value;
+    let fechaHasta = document.getElementById('fecha-hasta').value;
+    if(fechaDesde && fechaHasta) {
+        docDefinition.content.push({
+            text: `Período: ${fechaDesde} a ${fechaHasta}`,
+            alignment: 'center',
+            margin: [0, 0, 0, 10]
+        });
+    }
+
+    let tableBody = [];
+    let headerCells = Array.from(rows[0].cells).map(cell => ({
+        text: cell.textContent.trim(),
+        style: 'tableHeader'
+    }));
+    tableBody.push(headerCells);
+
+    let currentRowspan = 0;
+    let savedValues = null;
+
+    for (let i = 1; i < rows.length; i++) {
+        if (!rows[i].classList.contains('d-none')) {  // Solo procesar filas visibles
+            let cells = Array.from(rows[i].cells);
+            let rowData = [];
+
+            if (cells[0].hasAttribute('rowspan')) {
+                currentRowspan = parseInt(cells[0].getAttribute('rowspan'));
+                savedValues = [
+                    cells[0].textContent.trim(),
+                    cells[1].textContent.trim(),
+                    cells[2].textContent.trim(),
+                    cells[7].textContent.trim()
+                ];
+                rowData = [
+                    {text: savedValues[0], rowSpan: currentRowspan, style: 'tableCell'},
+                    {text: savedValues[1], rowSpan: currentRowspan, style: 'tableCell'},
+                    {text: savedValues[2], rowSpan: currentRowspan, style: 'tableCell'},
+                    {text: cells[3].textContent.trim(), style: 'tableCell'},
+                    {text: cells[4].textContent.trim(), style: 'tableCell'},
+                    {text: cells[5].textContent.trim(), style: 'tableCell'},
+                    {text: cells[6].textContent.trim(), style: 'tableCell'},
+                    {text: savedValues[3], rowSpan: currentRowspan, style: 'tableCell'}
+                ];
+                currentRowspan--;
+            } else {
+                rowData = [
+                    {text: '', style: 'tableCell'},
+                    {text: '', style: 'tableCell'},
+                    {text: '', style: 'tableCell'},
+                    {text: cells[0].textContent.trim(), style: 'tableCell'},
+                    {text: cells[1].textContent.trim(), style: 'tableCell'},
+                    {text: cells[2].textContent.trim(), style: 'tableCell'},
+                    {text: cells[3].textContent.trim(), style: 'tableCell'},
+                    {text: '', style: 'tableCell'}
+                ];
+                currentRowspan--;
+            }
+            tableBody.push(rowData);
+        }
+    }
+
+    docDefinition.content.push({
+        table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', '*', 'auto', 'auto', 'auto', 'auto'],
+            body: tableBody
+        }
+    });
+
+    let fileName = "reporte_ventas_mes";
+    if(fechaDesde && fechaHasta) {
+        fileName += `_${fechaDesde}_a_${fechaHasta}`;
+    }
+    pdfMake.createPdf(docDefinition).download(`${fileName}.pdf`);
+}
+
+function printTable() {
+    let printContents = document.getElementById('example7').outerHTML;
+    let originalContents = document.body.innerHTML;
+    
+    // Agregar fechas al título si están seleccionadas
+    let fechaDesde = document.getElementById('fecha-desde').value;
+    let fechaHasta = document.getElementById('fecha-hasta').value;
+    let fechasText = '';
+    if(fechaDesde && fechaHasta) {
+        fechasText = `<p>Período: ${fechaDesde} a ${fechaHasta}</p>`;
+    }
+    
+    document.body.innerHTML = `
+        <style>
+            @media print {
+                table { 
+                    border-collapse: collapse; 
+                    width: 100%; 
+                    page-break-inside: auto;
+                }
+                th { 
+                    background-color: #f2f2f2 !important; 
+                    -webkit-print-color-adjust: exact;
+                    color-adjust: exact;
+                }
+                th, td { 
+                    border: 1px solid black; 
+                    padding: 8px; 
+                    text-align: left;
+                }
+                tr { 
+                    page-break-inside: avoid; 
+                    page-break-after: auto;
+                }
+                .dataTables_wrapper .dataTables_paginate,
+                .dataTables_wrapper .dataTables_filter,
+                .dataTables_wrapper .dataTables_length,
+                .dataTables_wrapper .dataTables_info {
+                    display: none;
+                }
+                .color-num {
+                    color: #083CC2 !important;
+                    -webkit-print-color-adjust: exact;
+                    color-adjust: exact;
+                }
+            }
+            @page {
+                size: landscape;
+                margin: 1cm;
+            }
+        </style>
+        <h1 style="text-align: center; margin-bottom: 20px;">Reporte de Ventas Mensual</h1>
+        ${fechasText}
+        ${printContents}
+    `;
+    
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+}
+</script>

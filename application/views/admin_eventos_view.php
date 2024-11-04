@@ -85,7 +85,7 @@
 
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-striped table-neon">
+                <table id="eventos" class="table table-bordered table-striped table-neon">
 <hr class="hr-ta">
             <thead>
 

@@ -67,7 +67,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 id="title">REPORTE MESERO</h1>
+                        <h1 id="title">REPORTE EVENTOS</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -84,49 +84,37 @@
                 <hr class="hr-ta">
                 
                 <table id="example1" class="table table-bordered table-striped table-neon">
-                    <thead>
-                        <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center">Nombre evento</th>
-                            <th class="text-center">Fecha creación</th>
-                            <th class="text-center">Descripción</th>
-                            <th class="text-center">Fecha inicio</th>
-                            <th>Usuario</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        if(isset($reporteEventos) && !empty($reporteEventos)) {
-                            $contador = 1;
-                            foreach($reporteEventos as $evento) { ?>
-                                <tr>
-                                    <td class="text-center"><?php echo $contador++; ?></td>
-                                    <td><?php echo $evento['nombre_evento']; ?></td>
-                                    <td class="text-center">
-                                        <?php 
-                                        $fecha = new DateTime($evento['fechaCreacion']);
-                                        echo $fecha->format('d/m/Y H:i:s'); 
-                                        ?>
-                                    </td>
-                                    <td class="descripcion-cell" title="<?php echo htmlspecialchars($evento['descripcion']); ?>">
-                                        <?php echo $evento['descripcion']; ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php 
-                                        $fecha_inicio = new DateTime($evento['fecha_inicio']);
-                                        echo $fecha_inicio->format('d/m/Y H:i:s'); 
-                                        ?>
-                                    </td>
-                                    <td><?php echo $evento['nombre_usuario']; ?></td>
-                                </tr>
-                            <?php }
-                        } else { ?>
-                            <tr>
-                                <td colspan="6" class="text-center">No hay registros disponibles</td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+    <thead>
+        <tr>
+            <th class="text-center">#</th>
+            <th class="text-center">Nombre evento</th>
+            <th class="text-center">Fecha creación</th>
+            <th class="text-center">Descripción</th>
+            <th class="text-center">Fecha inicio</th>
+            <th>Usuario</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+        if(isset($reporteEventos) && !empty($reporteEventos)) {
+            $contador = 1;
+            foreach($reporteEventos as $evento) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $contador++; ?></td>
+                    <td><?php echo $evento['nombre_evento']; ?></td>
+                    <td class="text-center"><?php echo date('d/m/Y H:i:s', strtotime($evento['fechaCreacion'])); ?></td>
+                    <td><?php echo $evento['descripcion']; ?></td>
+                    <td class="text-center"><?php echo date('d/m/Y H:i:s', strtotime($evento['fecha_inicio'])); ?></td>
+                    <td><?php echo $evento['nombre_usuario']; ?></td>
+                </tr>
+            <?php }
+        } else { ?>
+            <tr>
+                <td colspan="6" class="text-center">No hay registros disponibles</td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
 
             </div>
             <!-- /.card-body -->
