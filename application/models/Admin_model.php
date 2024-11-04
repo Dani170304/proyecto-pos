@@ -276,10 +276,17 @@ public function obtenerReporteEventos() {
     }
     
     private function numero_a_letras($numero) {
-        // Implementa la conversión de números a letras
-        // Esta es una implementación básica que deberías expandir según tus necesidades
+        // Separar parte entera y decimal
+        $partes = explode('.', number_format($numero, 2, '.', ''));
+        $entero = $partes[0];
+        $decimal = isset($partes[1]) ? $partes[1] : '00';
+    
+        // Convertir la parte entera a letras
         $formatter = new NumberFormatter('es', NumberFormatter::SPELLOUT);
-        return $formatter->format($numero) . ' Bolivianos';
+        $letras = ucfirst($formatter->format($entero));
+    
+        // Formatear el resultado
+        return $letras . ' con ' . $decimal . '/100 Bolivianos';
     }
 public function eliminarOrdenYRestaurarStock($orden_id) {
     try {

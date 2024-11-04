@@ -90,7 +90,7 @@
                             <th class="text-center">#</th>
                             <th class="text-center">N° de Orden</th>
                             <th class="text-center">Fecha eliminación</th>
-                            <th class="text-center">Usuario</th>
+                            <th class="text-center">Elimino</th>
                         </tr>
                     </thead>
                     <tbody>
