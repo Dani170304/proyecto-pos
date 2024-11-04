@@ -1,0 +1,17 @@
+              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 21:28:32           
+          Número de Orden: 26          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 26                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       GIN BEEFEATER TRADIC     286.00     286.00
+x1       GASEOSA SPRITE 2 L.        0.00       0.00
+x1       CIGARRILLO CAMEL DOB      20.50      20.50
+---------------------------------------------------------
+TOTAL Bs.:                                    306.50
+---------------------------------------------------------
+Son: Trescientos seis coma cinco con 50/100 bolivianos

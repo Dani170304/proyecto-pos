@@ -1,0 +1,16 @@
+              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 21:10:44           
+          Número de Orden: 24          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 24                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       WHISKY JOHNNIE WALKE     498.00     498.00
+x1       GASEOSA SPRITE 2 L.        0.00       0.00
+---------------------------------------------------------
+TOTAL Bs.:                                    498.00
+---------------------------------------------------------
+Son: Cuatrocientos noventa y ocho con 00/100 bolivianos

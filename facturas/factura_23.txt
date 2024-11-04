@@ -1,0 +1,17 @@
+              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 18:25:01           
+          Número de Orden: 23          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 23                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       WHISKY JOHNNIE WALKE     498.00     498.00
+x1       GASEOSA COCA COLA 2        0.00       0.00
+x1       CERVEZA AMSTEL LAGER       8.20       8.20
+---------------------------------------------------------
+TOTAL Bs.:                                    506.20
+---------------------------------------------------------
+Son: Quinientos seis coma dos con 20/100 bolivianos

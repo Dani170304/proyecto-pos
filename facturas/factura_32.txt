@@ -1,0 +1,17 @@
+@k!              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 23:34:56           
+          Número de Orden: 32          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 32                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       GIN BEEFEATER TRA...     286.00     286.00
+x1       GASEOSA SPRITE 2 L.        0.00       0.00
+---------------------------------------------------------
+TOTAL Bs.:                                    286.00
+---------------------------------------------------------
+Son: Doscientos ochenta y seis con 00/100 bolivianos
+@

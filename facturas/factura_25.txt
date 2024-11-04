@@ -1,0 +1,20 @@
+              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 21:27:26           
+          Número de Orden: 25          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 25                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       GASEOSA SPRITE 2 L.       11.50      11.50
+x1       AGUA VITAL SIN GAS 6       4.40       4.40
+x1       FERNET                    15.00      15.00
+x1       SINGANI                   15.00      15.00
+x1       WHISKY JOHNNIE WALKE    2580.00    2580.00
+x1       GASEOSA COCA COLA 2        0.00       0.00
+---------------------------------------------------------
+TOTAL Bs.:                                   2625.90
+---------------------------------------------------------
+Son: Dos mil seiscientos veinticinco coma nueve con 90/100 bolivianos

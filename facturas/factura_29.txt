@@ -1,0 +1,18 @@
+              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 23:24:46           
+          Número de Orden: 29          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 29                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       GIN BEEFEATER TRADIC     286.00     286.00
+x1       GASEOSA SPRITE 2 L.        0.00       0.00
+x1       FERNET BRANCA 1 L.       119.00     119.00
+x1       GASEOSA SCHWEPPES GI       0.00       0.00
+---------------------------------------------------------
+TOTAL Bs.:                                    405.00
+---------------------------------------------------------
+Son: Cuatrocientos cinco con 00/100 bolivianos

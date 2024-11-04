@@ -77,17 +77,64 @@ date_default_timezone_set('America/La_Paz');
     <button id="new">Nuevo</button>
 </section>
 
-    <script>
-        (function() {
-            document.querySelector('#print').addEventListener('click', function() {
-                window.print();
-            });
-            let newButton = document.querySelector('#new');
-            newButton.addEventListener('click', function() {
-                window.location = '<?php echo base_url("index.php/menu/nueva_orden"); ?>';
-            });
-        })();
-    </script>
+<script>
+// Primero, convertimos los datos PHP a JavaScript
+const cart = <?php echo json_encode($cart); ?>;
+const mesero = <?php echo json_encode($mesero); ?>;
+const id_orden = <?php echo json_encode($id_orden); ?>;
+const fecha_hora = <?php echo json_encode($fecha_hora); ?>;
+async function sendBillToPHP(billData) {
+    try {
+        const response = await fetch('<?php echo base_url("/index.php/Ticket/save_bill"); ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(billData)
+        });
+        
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.error || 'Error al guardar la factura');
+        }
+        
+        console.log('Factura guardada:', result);
+        return true;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
+        return false;
+    }
+}
+
+// Manejador del botón de impresión
+document.querySelector('#print').addEventListener('click', async function() {
+    // Recolectar los datos de la factura usando las variables que definimos arriba
+    const billData = {
+        cart: cart,
+        name: mesero,
+        id: id_orden,
+        metodoPago: 'Efectivo', // O podrías tener un select para esto
+        newIdOrden: id_orden,
+        fecha_hora: fecha_hora
+    };
+    
+    // Enviar al PHP para guardar
+    const saved = await sendBillToPHP(billData);
+    
+    if (saved) {
+        alert('Factura enviada a la impresora');
+    } else {
+        alert('Error al procesar la factura');
+    }
+});
+
+// Manejador del botón nuevo
+document.querySelector('#new').addEventListener('click', function() {
+    window.location = '<?php echo base_url("index.php/menu/nueva_orden"); ?>';
+});
+</script>
     <script>
     window.addEventListener('load', function () {
         const preloader = document.getElementById('preloader');

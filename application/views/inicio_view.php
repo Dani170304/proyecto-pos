@@ -76,10 +76,6 @@
 
     <div class="row">
       <?php if (empty($eventos)): ?>
-        <div class="col-12 text-center">
-          <h4>No hay eventos disponibles aún :(</h4>
-          <p><span class="typed" data-typed-items="¡Haz de cada bebida un evento!, ¡Sabor y diversión en cada copa!, Tu experiencia de bebida mejorada., Brindemos por los buenos tiempos."></span></p>
-        </div>
       <?php else: ?>
         <?php foreach ($eventos as $evento): ?>
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">

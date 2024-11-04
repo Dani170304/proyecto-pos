@@ -1,0 +1,18 @@
+              DRINKMASTER               
+          Cochabamba - Bolivia          
+                  2024                  
+          2024-11-03 22:56:49           
+          Número de Orden: 27          
+---------------------------------------------------------
+Usuario: ROSARIO                       
+ID: 27                               
+---------------------------------------------------------
+Cant.    Producto                 Precio      Total
+x1       SINGANI CASA REAL DO     186.00     186.00
+x1       GASEOSA SPRITE 2 L.        0.00       0.00
+x1       CIGARRILLO L&M KRETE      16.00      16.00
+x1       CIGARRILLO CAMEL DOB      20.50      20.50
+---------------------------------------------------------
+TOTAL Bs.:                                    222.50
+---------------------------------------------------------
+Son: Doscientos veintidós coma cinco con 50/100 bolivianos

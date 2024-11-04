@@ -63,6 +63,7 @@
 }
 body{
     background-color: #000;
+    border-color: none;
 }
 .logo-img {
     position: absolute;
@@ -144,9 +145,8 @@ body{
 section.bill-print {
     background-color: #fff;
     display: block;
-    border: none;
     box-sizing: border-box;
-    margin: 1rem auto; /* Reducir el margen superior e inferior */
+    margin: 0.5rem auto; /* Reducir el margen superior e inferior */
     max-width: 8cm; /* Establece el ancho máximo del contenido */
     width: 100%; /* Opcional: Puedes establecer un ancho máximo para la factura */
     height: auto; /* Ajusta la altura automáticamente según el contenido */
@@ -178,7 +178,7 @@ section.bill-print .bill-print-total p span:last-of-type {
 }
 
 section.bill-print .bill-print-products p:first-of-type {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 section.bill-print .bill-print-header {
