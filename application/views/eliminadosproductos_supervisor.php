@@ -41,7 +41,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 id="title">RODUCTOS DESHABILITADOS</h1>
+            <h1 id="title">LISTA DE PRODUCTOS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -64,7 +64,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="example1" class="table table-bordered table-striped table-neon">
             <thead>
             <th>No.</th>
                 <th>Imagen</th>
@@ -97,15 +97,16 @@
                     <td><?php echo $row-> precio; ?></td>
                     <td class="orientation_col"><?php echo $row-> estado; ?></td>
                     <td>
-                    <?php
-                    echo form_open_multipart("Productos/habilitarproductobd");
-                    ?>
-                    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
-                    <button type="submit" class="btn btn-morado"><i class="fas fa-check-circle"></i></button>
-                    <?php
-                    echo form_close();
-                    ?>
-                    </td>
+    <?php
+    echo form_open_multipart("Productos_supervisor/habilitarproductobd", ['class' => 'habilitar-form']); // Añadir una clase al formulario
+    ?>
+    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+    <button type="button" class="btn btn-morado habilitar-btn"><i class="fas fa-check-circle"></i></button>
+    <?php
+    echo form_close();
+    ?>
+</td>
+
                 </tr>
 
                 <?php
@@ -130,3 +131,64 @@
   <!-- /.content-wrapper -->
   </div>
   <!-- ./wrapper -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Agregar SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function() {
+    $('.habilitar-btn').on('click', function(e) {
+        e.preventDefault();
+        const form = $(this).closest('form');
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Deseas habilitar este producto?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#6f42c1',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, habilitar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: response.message,
+                                confirmButtonColor: '#6f42c1'
+                            }).then(() => {
+                                // Redirigir a la página de productos eliminados
+                                window.location.href = '<?php echo base_url(); ?>index.php/Productos_supervisor/productos';
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                confirmButtonColor: '#d33'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar la solicitud: ' + error,
+                            confirmButtonColor: '#d33'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>

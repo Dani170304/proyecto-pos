@@ -118,60 +118,76 @@
 </div>
 
 <script>
-    function togglePasswordVisibility(id) {
-        var passwordInput = document.getElementById(id);
-        var toggleIcon = document.getElementById('password-toggle-icon');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleIcon.classList.remove('zmdi-eye');
-            toggleIcon.classList.add('zmdi-eye-off');
-        } else {
-            passwordInput.type = 'password';
-            toggleIcon.classList.remove('zmdi-eye-off');
-            toggleIcon.classList.add('zmdi-eye');
-        }
+function togglePasswordVisibility(id) {
+    var passwordInput = document.getElementById(id);
+    var toggleIcon = document.getElementById('password-toggle-icon');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('zmdi-eye');
+        toggleIcon.classList.add('zmdi-eye-off');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('zmdi-eye-off');
+        toggleIcon.classList.add('zmdi-eye');
     }
+}
 
-    $(document).ready(function() {
-        $('#formAgregar').on('submit', function(e) {
-            e.preventDefault(); 
-            
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: $(this).serialize(),
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'success') {
+$(document).ready(function() {
+    $('#formAgregar').on('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        
+        // Primero mostrar el mensaje de confirmación
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "¿Desea agregar este nuevo usuario?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#6f42c1',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, agregar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, procedemos con el AJAX
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                title: '¡Usuario Agregado!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonColor: '#6f42c1'
+                            }).then(() => {
+                                window.location.href = 'index';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonColor: '#6f42c1'
+                            });
+                        }
+                    },
+                    error: function() {
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: response.message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1AEB01',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
-                            }
-                        }).then(() => {
-                            window.location.href = 'index'; 
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
                             title: 'Error',
-                            text: response.message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#1AEB01',
-                            customClass: {
-                                confirmButton: 'swal2-confirm'
-                            }
+                            text: 'Hubo un error al procesar la solicitud',
+                            icon: 'error',
+                            confirmButtonColor: '#6f42c1'
                         });
                     }
-                }
-            });
+                });
+            }
         });
     });
+});
 </script>
-
 </body>
 </html>

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .form-control {
             position: relative;
@@ -70,7 +72,7 @@
                     <div class="card">
                         <div class="card-body">
                             <?php foreach ($infousuario->result() as $row): ?>
-                                <?php echo form_open_multipart("Admin/modificardb"); ?>
+                                <?php echo form_open_multipart("Supervisor/modificardb"); ?>
                                 
                                 <?php if ($this->session->flashdata('error_msg')): ?>
                                     <script>
@@ -147,6 +149,52 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
+<script>
+$(document).ready(function() {
+    $('form').on('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "¿Desea modificar los datos del usuario?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#6f42c1',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, modificar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Realizar la petición AJAX
+                $.ajax({
+                    url: '<?php echo base_url(); ?>index.php/Supervisor/modificardb',
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    success: function(response) {
+                        Swal.fire({
+                            title: '¡Modificado!',
+                            text: 'Los datos del usuario han sido modificados correctamente',
+                            icon: 'success',
+                            confirmButtonColor: '#6f42c1'
+                        }).then((result) => {
+                            window.location.href = '<?php echo base_url(); ?>index.php/Supervisor/index';
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un error al modificar los datos',
+                            icon: 'error',
+                            confirmButtonColor: '#6f42c1'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

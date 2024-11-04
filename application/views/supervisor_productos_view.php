@@ -1,4 +1,5 @@
-  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     .btn{
       font-weight: bold;
@@ -125,10 +126,10 @@
                           <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
                           <button type="submit" class="btn btn-morado"><i class="fas fa-edit"></i></button>
                         <?php echo form_close(); ?>
-                        <?php echo form_open_multipart("Productos_supervisor/deshabilitarproductodb"); ?>
-                          <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
-                          <button type="submit" class="btn btn-info"><i class="fas fa-ban"></i></button>
-                        <?php echo form_close(); ?>
+                        <?php echo form_open_multipart("Productos_supervisor/deshabilitarproductodb", ['class' => 'form-deshabilitar']); ?>
+    <input type="hidden" name="id_producto" value="<?php echo $row->id_producto; ?>">
+    <button type="submit" class="btn btn-info"><i class="fas fa-ban"></i></button>
+<?php echo form_close(); ?>
                       </div>
                       
                     </td>
@@ -157,3 +158,73 @@
   <!-- ./wrapper -->
 
    
+  <script>
+if (typeof Swal === 'undefined') {
+    console.error('SweetAlert2 is not loaded. Please include the library.');
+}
+
+$(document).ready(function() {
+    // Ensure jQuery is loaded
+    if (typeof jQuery === 'undefined') {
+        console.error('jQuery is not loaded. Please include the library.');
+        return;
+    }
+
+    // Add event listener to all forms with class 'form-deshabilitar'
+    $('.form-deshabilitar').on('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        
+        // Show confirmation dialog
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "¿Desea deshabilitar este producto?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#6f42c1',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, deshabilitar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Send AJAX request
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: 'POST',
+                    data: $(form).serialize(),
+                    dataType: 'json', // Expect JSON response
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                title: '¡Deshabilitado!',
+                                text: response.message,
+                                icon: 'success',
+                                confirmButtonColor: '#6f42c1'
+                            }).then(() => {
+                                // Reload the page or redirect
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: response.message || 'Hubo un error al deshabilitar el producto',
+                                icon: 'error',
+                                confirmButtonColor: '#6f42c1'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un error al procesar la solicitud: ' + error,
+                            icon: 'error',
+                            confirmButtonColor: '#6f42c1'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>

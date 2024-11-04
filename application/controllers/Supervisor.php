@@ -249,21 +249,31 @@ class Supervisor extends CI_Controller
 
     public function modificardb()
     {
-        $password = $this->input->post('password');
-
-        $id_usuario = $this->input->post('id_usuario');  // Usar $this->input->post en lugar de $_POST para consistencia
+        // Verificar si es una petición AJAX
+        if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+    
+        $id_usuario = $this->input->post('id_usuario');
         $data['nombres'] = strtoupper($this->input->post('nombres'));
         $data['apellidos'] = strtoupper($this->input->post('apellidos'));
         $data['email'] = $this->input->post('email');
         $data['rol'] = $this->input->post('rol');
         
+        $password = $this->input->post('password');
         if (!empty($password)) {
             $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
         
-        $this->Supervisor_model->modificarusuario($id_usuario, $data);
-        redirect('Supervisor/index', 'refresh');
-        
+        try {
+            $this->Supervisor_model->modificarusuario($id_usuario, $data);
+            // La respuesta será manejada por el success del AJAX
+            echo json_encode(['status' => 'success']);
+        } catch (Exception $e) {
+            // En caso de error, enviamos una respuesta de error
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
     // FIN CRUD USUARIOS
 

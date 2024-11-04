@@ -138,6 +138,70 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+ <!-- /.content-wrapper -->
+ <script>
+$(document).ready(function() {
+    // Agregar el id del formulario si no lo tiene
+    $('form').attr('id', 'formModificarProducto');
+    
+    $('#formModificarProducto').on('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "¿Desea modificar este producto?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#6f42c1',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, modificar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const formData = new FormData(form);
+                
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                title: '¡Modificado!',
+                                text: 'El producto ha sido modificado correctamente',
+                                icon: 'success',
+                                confirmButtonColor: '#6f42c1'
+                            }).then(() => {
+                                window.location.href = '<?php echo base_url(); ?>index.php/Productos_supervisor/productos';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: response.message || 'Hubo un error al modificar el producto',
+                                icon: 'error',
+                                confirmButtonColor: '#6f42c1'
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Hubo un error al procesar la solicitud',
+                            icon: 'error',
+                            confirmButtonColor: '#6f42c1'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>
