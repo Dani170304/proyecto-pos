@@ -493,9 +493,9 @@ class Admin extends CI_Controller
     
 
     //fin
-    
-    
-    public function editarTicket() {
+
+    //FIN
+    public function eliminarTicket() {
         $user_id = $this->session->userdata('id_usuario');
         $user_data = $this->Admin_model->get_user_by_id($user_id);
     
@@ -505,19 +505,60 @@ class Admin extends CI_Controller
             $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
         }
     
-        // Pasar los datos de usuario
         $data_u['user'] = $user_data;
-    
-        // Obtener el producto más vendido
-        $producto_mas_vendido = $this->Admin_model->obtenerProductosMasVendidos();
-        $data['producto_mas_vendido'] = $producto_mas_vendido;
+        
+        // Solo buscar ticket si es una petición POST
+        if ($this->input->server('REQUEST_METHOD') === 'POST' && $this->input->post('orden_id')) {
+            $ticket_data = $this->Admin_model->get_ticket_by_order($this->input->post('orden_id'));
+            if ($ticket_data) {
+                $data_u['ticket'] = $ticket_data;
+            } else {
+                $data_u['error'] = 'Orden no encontrada';
+            }
+        }
     
         $this->load->view('inc/head');
         $this->load->view('inc/menu', $data_u);
-        $this->load->view('admin_editar_view', $data);
+        $this->load->view('admin_eliminar_view', $data_u);
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
+
+    
+    public function procesarEliminacionTicket() {
+        // Verificar si es una petición AJAX
+        if (!$this->input->is_ajax_request()) {
+            echo json_encode(['status' => 'error', 'message' => 'Acceso no permitido']);
+            return;
+        }
+    
+        $orden_id = $this->input->post('orden_id');
+        
+        if (!$orden_id) {
+            echo json_encode(['status' => 'error', 'message' => 'ID de orden no proporcionado']);
+            return;
+        }
+    
+        // Iniciar transacción
+        $this->db->trans_start();
+    
+        try {
+            // Intentar eliminar la orden y restaurar el stock
+            $result = $this->Admin_model->eliminarOrdenYRestaurarStock($orden_id);
+    
+            if ($result['success']) {
+                $this->db->trans_complete();
+                echo json_encode(['status' => 'success', 'message' => 'Orden eliminada correctamente']);
+            } else {
+                $this->db->trans_rollback();
+                echo json_encode(['status' => 'error', 'message' => $result['message']]);
+            }
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            echo json_encode(['status' => 'error', 'message' => 'Error al procesar la eliminación: ' . $e->getMessage()]);
+        }
+    }
+    // 
     // FIN CRUD USUARIOS
 
 }

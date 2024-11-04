@@ -94,11 +94,12 @@ class Admin_model extends CI_Model {
         return $this->db->count_all_results();
     }
     public function obtener_ultimas_ventas() {
-        // Paso 1: Obtener los últimos IDs de orden de ayer y hoy
+        // Paso 1: Obtener los últimos IDs de orden de ayer y hoy con estado activo
         $this->db->select('id_orden');
         $this->db->from('ventas_cabeza');
         $this->db->where('fechaCreacion >=', date('Y-m-d 00:00:00', strtotime('-1 day'))); // Desde el inicio de ayer
         $this->db->where('fechaCreacion <=', date('Y-m-d 23:59:59')); // Hasta el final de hoy
+        $this->db->where('estado', 1); // Solo ventas activas
         $this->db->order_by('fechaCreacion', 'DESC'); // Ordenar por fecha de creación
         $this->db->limit(5); // Limitar a las últimas 5 órdenes
         $subquery = $this->db->get();
@@ -117,15 +118,16 @@ class Admin_model extends CI_Model {
             $this->db->join('ventas_cabeza v', 'dv.id_orden = v.id_orden');
             $this->db->join('usuarios u', 'v.id_mesero = u.id_usuario');
             $this->db->where_in('v.id_orden', $orden_ids); // Filtrar solo las órdenes obtenidas
-            $this->db->order_by('dv.fecha', 'DESC'); // Suponiendo que 'fecha' es una columna de 'detalle_ventas'
+            $this->db->where('v.estado', 1); // Solo ventas activas en la cabecera
+            $this->db->where('dv.estado', 1); // Solo detalles activos
+            $this->db->order_by('dv.fecha', 'DESC');
     
             $query = $this->db->get();
-            return $query->result(); // Asegúrate de que esto devuelva un array de objetos
+            return $query->result();
         } else {
             return []; // Retornar un array vacío si no hay órdenes
         }
     }
-    
     
     public function obtenerVentasDelDia()
     {
@@ -197,6 +199,7 @@ class Admin_model extends CI_Model {
         $this->db->from('ventas_cabeza vc');
         $this->db->join('usuarios u', 'vc.id_mesero = u.id_usuario');
         $this->db->where('vc.id_orden', $order_id);
+        $this->db->where('vc.estado', '1');
         $cabecera = $this->db->get()->row_array();
         
         if (!$cabecera) {
@@ -236,6 +239,39 @@ class Admin_model extends CI_Model {
         $formatter = new NumberFormatter('es', NumberFormatter::SPELLOUT);
         return $formatter->format($numero) . ' Bolivianos';
     }
+    public function eliminarOrdenYRestaurarStock($orden_id) {
+        try {
+            // 1. Obtener los detalles de la venta antes de eliminar
+            $detalles = $this->db->where('id_orden', $orden_id)
+                                ->where('estado', 1)
+                                ->get('detalle_ventas')
+                                ->result_array();
+    
+            if (empty($detalles)) {
+                return ['success' => false, 'message' => 'No se encontraron detalles de la orden'];
+            }
+    
+            // 2. Restaurar el stock de cada producto
+            foreach ($detalles as $detalle) {
+                $this->db->set('stock', 'stock + ' . $detalle['cantidad'], false)
+                         ->where('id_producto', $detalle['id_producto'])
+                         ->update('productos');
+            }
+    
+            // 3. Marcar los detalles como eliminados (estado = 0)
+            $this->db->where('id_orden', $orden_id)
+                     ->update('detalle_ventas', ['estado' => 0]);
+    
+            // 4. Marcar la cabecera como eliminada (estado = 0)
+            $this->db->where('id_orden', $orden_id)
+                     ->update('ventas_cabeza', ['estado' => 0]);
+    
+            return ['success' => true, 'message' => 'Orden eliminada y stock restaurado correctamente'];
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => 'Error al procesar la eliminación: ' . $e->getMessage()];
+        }
+    }
+    
 
 }
 ?>

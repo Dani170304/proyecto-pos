@@ -56,6 +56,7 @@ $route['cerrar'] = 'cerrar';
 $route['logout'] = 'login/logout';
 $route['admin'] = 'admin/dash';
 $route['ticket/save_bill'] = 'ticket/save_bill';
+$route['admin/eliminarTicketAjax'] = 'admin/eliminarTicketAjax';
 $route['Productos/verificar_producto_ajax'] = 'Productos/verificar_producto_ajax';
 $route['eventos/agregareventobd'] = 'eventos/agregareventobd';
 
