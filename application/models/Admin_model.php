@@ -187,11 +187,55 @@ class Admin_model extends CI_Model {
         }
     }
     
+    public function get_user_by_id_2($id) {
+        return $this->db->get_where('usuarios', ['id_usuario' => $id])->row_array();
+    }
     
+    public function get_ticket_by_order($order_id) {
+        // Obtener la cabecera de la venta
+        $this->db->select('vc.*, u.nombres, u.apellidos');
+        $this->db->from('ventas_cabeza vc');
+        $this->db->join('usuarios u', 'vc.id_mesero = u.id_usuario');
+        $this->db->where('vc.id_orden', $order_id);
+        $cabecera = $this->db->get()->row_array();
+        
+        if (!$cabecera) {
+            return null;
+        }
+        
+        // Obtener los detalles de la venta
+        $this->db->select('*');
+        $this->db->from('detalle_ventas');
+        $this->db->where('id_orden', $order_id);
+        $detalles = $this->db->get()->result_array();
+        
+        // Formatear los datos para el ticket
+        $mesero_nombres = explode(' ', $cabecera['nombres']);
+        $mesero_apellidos = explode(' ', $cabecera['apellidos']);
+        
+        return [
+            'fecha_hora' => $cabecera['fechaCreacion'],
+            'mesero' => $mesero_nombres[0] . ' ' . $mesero_apellidos[0],
+            'id_orden' => $order_id,
+            'cart' => array_map(function($item) {
+                return [
+                    'cantidad' => $item['cantidad'],
+                    'nombre' => $item['nombre_producto'],
+                    'valor' => $item['precio'],
+                ];
+            }, $detalles),
+            'literal_total' => $this->numero_a_letras(array_sum(array_map(function($item) {
+                return $item['cantidad'] * $item['precio'];
+            }, $detalles)))
+        ];
+    }
     
-    
-    //FIN CRUD USUARIOS
+    private function numero_a_letras($numero) {
+        // Implementa la conversión de números a letras
+        // Esta es una implementación básica que deberías expandir según tus necesidades
+        $formatter = new NumberFormatter('es', NumberFormatter::SPELLOUT);
+        return $formatter->format($numero) . ' Bolivianos';
+    }
 
-    
 }
 ?>

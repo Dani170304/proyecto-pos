@@ -225,65 +225,110 @@ button:hover {
 {
 	color: #fff;
 }
-/*Phone*/
-@media (min-width: 900px) {
-
-	.btn-container{
-		transform: scale(2);
-		top: 25px; /* Ajusta la distancia desde la parte superior */
-		left: 60px;
-	}
-	@keyframes windowEffect {
-		0% {
-			opacity: 0;
-			transform: scale(0.5);
-		}
-		100% {
-			opacity: 1;
-			transform: scale(1.8);
-		}
-	}
+/* Móviles */
+@media (max-width: 899px) {
+    .btn-container {
+        transform: scale(5);
+        top: 5px;
+        left: 5px;
+    }
+    @keyframes windowEffect {
+        0% {
+            opacity: 0;
+            transform: scale(0.7);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(0.9);
+        }
+    }
 }
-/*Desktop */
-@media (min-width: 1000px) {
 
-	.btn-container{				
-		transform: scale(1);
-		top: -5px; /* Ajusta la distancia desde la parte superior */
-		left: -1px;
-	}
-	@keyframes windowEffect {
-		0% {
-			opacity: 0;
-			transform: scale(0.5);
-		}
-		100% {
-			opacity: 1;
-			transform: scale(1);
-
-		}
-		
-	}
+/* Tablets (incluye iPad 8va gen) */
+@media (min-width: 900px) and (max-width: 999px) {
+    body {
+		background-color: #bb0533;
+    }
+    
+    .btn-container {
+        transform: scale(1.9);
+        top: 15px;
+        left: 50px;
+    }
+    
+    @keyframes windowEffect {
+        0% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1.8);
+        }
+    }
+    
+    .main {
+        margin-top: 50px;
+    }
 }
-/*Tablet (min-width: 480px) and (max-width: 839px)*/
 
-@media (min-width: 950px) {
+/* Desktop pequeño */
+@media (min-width: 1000px) and (max-width: 1199px) {
+    .btn-container {
+        transform: scale(1);
+        top: -5px;
+        left: -1px;
+    }
+    
+    @keyframes windowEffect {
+        0% {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
 
-	.btn-container{				
-		transform: scale(1);
-		top: -5px; /* Ajusta la distancia desde la parte superior */
-		left: -1px;
-	}
-	@keyframes windowEffect {
-		0% {
-			opacity: 0;
-			transform: scale(1);
-		}
-		100% {
-			opacity: 1;
-			transform: scale(1.2);
+/* Desktop grande y tablets más grandes */
+@media (min-width: 1200px) {
+    .btn-container {
+        transform: scale(1);
+        top: -5px;
+        left: -1px;
+    }
+    
+    @keyframes windowEffect {
+        0% {
+            opacity: 0;
+            transform: scale(1);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+    }
+}
 
-		}
-		
-	}
+/* Orientación específica para tablets */
+@media (min-width: 900px) and (max-width: 999px) and (orientation: portrait) {
+    body {
+        background-position: center center;
+    }
+    
+    .main {
+        margin-top: 100px;
+    }
+}
+
+@media (min-width: 900px) and (max-width: 999px) and (orientation: landscape) {
+    body {
+        background-position: center center;
+    }
+    
+    .main {
+        margin-top: 50px;
+    }
 }

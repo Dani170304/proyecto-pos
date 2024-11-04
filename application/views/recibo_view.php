@@ -11,7 +11,8 @@ date_default_timezone_set('America/La_Paz');
     <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css'); ?>">
     <link rel="icon" href="<?php echo base_url(); ?>assets/img/logo_drink.jpg" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body class="bill">
@@ -83,6 +84,7 @@ const cart = <?php echo json_encode($cart); ?>;
 const mesero = <?php echo json_encode($mesero); ?>;
 const id_orden = <?php echo json_encode($id_orden); ?>;
 const fecha_hora = <?php echo json_encode($fecha_hora); ?>;
+
 async function sendBillToPHP(billData) {
     try {
         const response = await fetch('<?php echo base_url("/index.php/Ticket/save_bill"); ?>', {
@@ -103,7 +105,11 @@ async function sendBillToPHP(billData) {
         return true;
     } catch (error) {
         console.error('Error:', error);
-        alert('Error: ' + error.message);
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: 'Error: ' + error.message
+        });
         return false;
     }
 }
@@ -124,9 +130,13 @@ document.querySelector('#print').addEventListener('click', async function() {
     const saved = await sendBillToPHP(billData);
     
     if (saved) {
-        alert('Factura enviada a la impresora');
-    } else {
-        alert('Error al procesar la factura');
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: 'Imprimiendo factura',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 });
 

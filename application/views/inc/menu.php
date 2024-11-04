@@ -124,15 +124,15 @@
               <!-- <i class="fas fa-angle-right right"></i> -->
             </p>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Factura/index" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Admin/recuperarTicket" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>REC. FACTURA</p>
+                  <p>REC. TICKET</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Factura/editar" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Admin/editarTicket" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>EDITAR FACTURA</p>
+                  <p>EDITAR TICKET</p>
                 </a>
               </li>
           </li>

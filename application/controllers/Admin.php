@@ -461,7 +461,64 @@ class Admin extends CI_Controller
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
+    //RECUPERAR
+    public function recuperarTicket() {
+        $user_id = $this->session->userdata('id_usuario');
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
     
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Solo buscar ticket si es una petición POST
+        if ($this->input->server('REQUEST_METHOD') === 'POST' && $this->input->post('orden_id')) {
+            $ticket_data = $this->Admin_model->get_ticket_by_order($this->input->post('orden_id'));
+            if ($ticket_data) {
+                $data_u['ticket'] = $ticket_data;
+            } else {
+                $data_u['error'] = 'Orden no encontrada';
+            }
+        }
+    
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_recuperar_view', $data_u);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
+    
+
+    //fin
+    
+    
+    public function editarTicket() {
+        $user_id = $this->session->userdata('id_usuario');
+        $user_data = $this->Admin_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        // Pasar los datos de usuario
+        $data_u['user'] = $user_data;
+    
+        // Obtener el producto más vendido
+        $producto_mas_vendido = $this->Admin_model->obtenerProductosMasVendidos();
+        $data['producto_mas_vendido'] = $producto_mas_vendido;
+    
+        $this->load->view('inc/head');
+        $this->load->view('inc/menu', $data_u);
+        $this->load->view('admin_editar_view', $data);
+        $this->load->view('inc/footer');
+        $this->load->view('inc/pie');
+    }
     // FIN CRUD USUARIOS
+
 }
 ?>

@@ -101,11 +101,8 @@ body{
     }
 
     .logo-img-eben {
-        width: 120px;
-        bottom: 5px;
-        animation: scaleAnimationEbenSmall 3s infinite;
+        display: none;
     }
-
     @keyframes scaleAnimationSmall {
         0%, 100% { width: 80px; }
         50% { width: 88px; }
@@ -114,6 +111,20 @@ body{
     @keyframes scaleAnimationEbenSmall {
         0%, 100% { width: 120px; }
         50% { width: 108px; }
+    }
+    .close-ticket {
+        font-family: 'GilroyBold', sans-serif;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        font-size: 20px;
+        text-decoration: none;
+        margin-left: 20px;
+        text-shadow: 0 0 10px #03009c, 0 0 20px #03009c, 0 0 30px #03009c, 0 0 40px #03009c;
+        position: absolute; /* Posicionamiento absoluto */
+        bottom: 20px; /* Distancia desde la parte inferior del contenedor */
+        left: 45%; /* Centrar horizontalmente */
+        transform: translateX(-50%); /* Ajustar para centrar correctamente */
     }
 }
 .close-ticket{

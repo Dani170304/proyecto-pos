@@ -233,7 +233,7 @@
                 <br>
                 <?php if (isset($nombres) && isset($apellidos)) : ?>
                     <div class="bold-text-info">
-                        <span class="span-nmbre">CLIENTE: </span>
+                        <span class="span-nmbre">USUARIO: </span>
                         <input type="text" value="<?= htmlspecialchars($nombres.'  '.$apellidos) ?>" readonly>
                         <input type="hidden" value="<?= htmlspecialchars($id_usuario) ?>" readonly>
                         
