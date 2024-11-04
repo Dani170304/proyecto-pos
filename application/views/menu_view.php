@@ -228,7 +228,7 @@
                 <br>
 
                 <div>
-                    <input class="submit-confirmar" type="button" value="CONFIRMAR ORDEN" id="confirmar-btn">
+                    <input class="submit-confirmar" type="button" value="CONFIRMAR" id="confirmar-btn">
                 </div>
                 <br>
                 <?php if (isset($nombres) && isset($apellidos)) : ?>

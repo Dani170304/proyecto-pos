@@ -84,25 +84,29 @@
 
         </div>
 
+
         <div class="signup">
-            <form action="<?php echo site_url('login/validate_signup'); ?>" method="POST" id="signupForm" onsubmit="showLoadingMessage('loadingMessageSignup');">
-                <label id="label-si" for="chk" aria-hidden="true">SIGN UP</label>
-                <div class="loading-message" id="loadingMessageSignup">Enviando correo, por favor espera...</div>
-                <input type="text" name="nombre" id="signupNombre" placeholder="Nombre" required="">
-                <input type="text" name="apellido" id="signupApellido" placeholder="Apellido" required="">
-                <input type="email" name="email" id="signupEmail" placeholder="Email" required="">
-                <div class="password-container">
-                    <input type="password" name="password" id="signupPasswordInput" placeholder="Password" required="">
-                    <span class="password-toggle" onclick="togglePasswordVisibility('signupPasswordInput', 'signup-password-toggle-icon')">
-                        <i id="signup-password-toggle-icon" class="zmdi zmdi-eye"></i>
-                    </span>
-                </div>
-                <div class="g-recaptcha-container">
-                    <div class="g-recaptcha" data-sitekey="6LfifAQqAAAAACWV8ZpG_1ZcgLMsyd-gPeAc1oKF"></div>
-                </div>
-                <button type="submit" id="SingUp-b"><i class="bx bx-file"></i> SIGN UP</button>
-            </form>
-        </div>
+        <form action="<?php echo site_url('login/validate_signup'); ?>" method="POST" id="signupForm" onsubmit="showLoadingMessage('loadingMessageSignup');">
+            <label id="label-si" for="chk" aria-hidden="true">SIGN UP</label>
+            <div class="loading-message" id="loadingMessageSignup">Enviando correo, por favor espera...</div>
+            <input type="text" name="nombre" id="signupNombre" placeholder="Nombre" required="">
+            <input type="text" name="apellido" id="signupApellido" placeholder="Apellido" required="">
+            <input type="email" name="email" id="signupEmail" placeholder="Email" required="">
+            <div class="password-container">
+                <input type="password" name="password" id="signupPasswordInput" placeholder="Password" required="">
+                <span class="password-toggle" onclick="togglePasswordVisibility('signupPasswordInput', 'signup-password-toggle-icon')">
+                    <i id="signup-password-toggle-icon" class="zmdi zmdi-eye"></i>
+                </span>
+            </div>
+            <!-- Comentado el div de reCAPTCHA -->
+            <!--
+            <div class="g-recaptcha-container">
+                <div class="g-recaptcha" data-sitekey="6LfifAQqAAAAACWV8ZpG_1ZcgLMsyd-gPeAc1oKF"></div>
+            </div>
+            -->
+            <button type="submit" id="SingUp-b"><i class="bx bx-file"></i> SIGN UP</button>
+        </form>
+    </div>
 
         <script>
             function showLoadingMessage(messageId) {

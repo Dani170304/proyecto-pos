@@ -106,34 +106,29 @@ class Login extends CI_Controller {
 
     public function validate_signup()
     {
-        // Recoger datos del formulario
         $nombre = $this->input->post('nombre');
         $apellido = $this->input->post('apellido');
         $email = $this->input->post('email');
         $password = $this->input->post('password');
-        $rol = 'usuario'; // Cambiado de 'mesero' a 'usuario'
-        $estado = 1; // Por defecto el usuario se registra activo
+        $rol = 'usuario';
+        $estado = 1;
 
-        // Convertir el email a minúsculas
         $email = strtolower($email);
-        // Convertir el nombre a mayúsculas
         $nombre = strtoupper($nombre);
         $apellido = strtoupper($apellido);
 
-        // Verificar si el correo electrónico ya existe en la base de datos
         $this->load->model('Usuario_model');
         if ($this->Usuario_model->email_exists($email)) {
-            // Mostrar mensaje de error si el correo ya está registrado
             $this->session->set_flashdata('error_msg', 'El correo electrónico ya está registrado.');
             redirect('login');
-            return; // Terminar la ejecución del método
+            return;
         }
 
-        // Verificar reCAPTCHA v2
+        // Comentado el código de reCAPTCHA ya que no es necesario
+        /*
         $recaptchaResponse = $this->input->post('g-recaptcha-response');
-        $recaptchaSecret = '6LfifAQqAAAAAI8DZjl9CegRk9qvjFve3AI271S7'; // Aquí colocar tu clave secreta de reCAPTCHA v2
+        $recaptchaSecret = '6LfifAQqAAAAAI8DZjl9CegRk9qvjFve3AI271S7';
 
-        // Hacer una solicitud POST para verificar la respuesta del reCAPTCHA
         $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
         $recaptchaResponseData = array(
             'secret' => $recaptchaSecret,
@@ -149,48 +144,41 @@ class Login extends CI_Controller {
         curl_close($recaptchaVerification);
 
         $recaptchaResponseData = json_decode($recaptchaResponseJson);
+        */
 
-        // Verificar si la respuesta del reCAPTCHA es válida
-        if ($recaptchaResponseData->success) {
-            // Generar un código de verificación de 4 dígitos
-            $codigo_verificacion = rand(1000, 9999);
+        // Eliminada la verificación del reCAPTCHA
+        // if ($recaptchaResponseData->success) {
+        
+        // Generar código de verificación
+        $codigo_verificacion = rand(1000, 9999);
 
-            // Preparar los datos para la inserción
-            $data = array(
-                'nombres' => $nombre,
-                'apellidos' => $apellido,
-                'password' => password_hash($password, PASSWORD_DEFAULT), // Utilizamos password_hash
-                'email' => $email,
-                'estado' => $estado,
-                'rol' => $rol,
-                'codigo_verificacion' => $codigo_verificacion,
-                'sesion_verificada' => 'no'
-            );
+        $data = array(
+            'nombres' => $nombre,
+            'apellidos' => $apellido,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'email' => $email,
+            'estado' => $estado,
+            'rol' => $rol,
+            'codigo_verificacion' => $codigo_verificacion,
+            'sesion_verificada' => 'no'
+        );
 
-            // Insertar el usuario utilizando el modelo
-            $insert_id = $this->Usuario_model->insert_user($data);
+        $insert_id = $this->Usuario_model->insert_user($data);
 
-            if ($insert_id) {
-                // Actualizar el campo idUsuario_auditoria con el id del usuario recién insertado
-                // $this->Usuario_model->update_user_auditoria($insert_id);
-
-                // Enviar correo de verificación
-                $this->send_verification_email($email, $codigo_verificacion, $nombre);
-
-                // Mostrar mensaje de éxito
-                $this->session->set_flashdata('success_msg', 'Cuenta creada exitosamente. Revisa tu correo para verificar la cuenta.');
-                redirect('login'); // Redirigir al formulario de inicio de sesión
-            } else {
-                // Mostrar mensaje de error si no se pudo insertar
-                $this->session->set_flashdata('error_msg', 'Error al registrar usuario. Por favor, intenta nuevamente.');
-                redirect('login');
-            }
+        if ($insert_id) {
+            $this->send_verification_email($email, $codigo_verificacion, $nombre);
+            $this->session->set_flashdata('success_msg', 'Cuenta creada exitosamente. Revisa tu correo para verificar la cuenta.');
+            redirect('login');
         } else {
-            // Mostrar mensaje de error si el reCAPTCHA no fue validado correctamente
-            $this->session->set_flashdata('error_msg', 'Por favor, completa el reCAPTCHA correctamente.');
-            $this->load->view('login_view'); // Cargar la vista de registro nuevamente
+            $this->session->set_flashdata('error_msg', 'Error al registrar usuario. Por favor, intenta nuevamente.');
+            redirect('login');
         }
+        /* } else {
+            $this->session->set_flashdata('error_msg', 'Por favor, completa el reCAPTCHA correctamente.');
+            $this->load->view('login_view');
+        } */
     }
+    
 
     private function send_verification_email($email, $codigo_verificacion, $nombre_usuario)
     {
