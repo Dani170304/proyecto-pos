@@ -12,10 +12,10 @@ class Supervisor extends CI_Controller
     // usuarios
     public function dash()
     {
-        $data_g['ganancias'] = $this->Supervisor_model->get_ganancias();
-        $data_g['ventas'] = $this->Supervisor_model->get_ventas();
+        $data_g['ganancias'] = $this->Supervisor_model->get_total_ganancias();
+        $data_g['Nroventas'] = $this->Supervisor_model->get_ventas();
         $data_g['clientes'] = $this->Supervisor_model->get_clientes();
-        $data_v['ventas'] = $this->Supervisor_model->obtener_ultimas_ventas();
+        $data_g['ventas'] = $this->Supervisor_model->obtener_ultimas_ventas();
         $user_id = $this->session->userdata('id_usuario'); // Cambia 'user_id' si es necesario
         $user_data = $this->Supervisor_model->get_user_by_id($user_id);
     
@@ -33,7 +33,7 @@ class Supervisor extends CI_Controller
         $data['user'] = $user_data;
         $this->load->view('incSupervisor/head');
         $this->load->view('incSupervisor/menu', $data);
-        $this->load->view('incSupervisor/dash',$data_g, $data_v); // Suponiendo que esta es la vista
+        $this->load->view('incSupervisor/dash',$data_g); // Suponiendo que esta es la vista
         $this->load->view('incSupervisor/footer');
         $this->load->view('incSupervisor/pie');
     }
@@ -266,5 +266,182 @@ class Supervisor extends CI_Controller
         
     }
     // FIN CRUD USUARIOS
+
+    //tickets
+    public function recuperarTicket() {
+        $user_id = $this->session->userdata('id_usuario');
+        $user_data = $this->Supervisor_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Solo buscar ticket si es una petición POST
+        if ($this->input->server('REQUEST_METHOD') === 'POST' && $this->input->post('orden_id')) {
+            $ticket_data = $this->Supervisor_model->get_ticket_by_order($this->input->post('orden_id'));
+            if ($ticket_data) {
+                $data_u['ticket'] = $ticket_data;
+            } else {
+                $data_u['error'] = 'Orden no encontrada';
+            }
+        }
+    
+        $this->load->view('incSupervisor/head');
+        $this->load->view('incSupervisor/menu', $data_u);
+        $this->load->view('supervisor_recuperar_view', $data_u);
+        $this->load->view('incSupervisor/footer');
+        $this->load->view('incSupervisor/pie');
+    }
+    
+    //eliminacion ticket
+    public function eliminarTicket() {
+        $user_id = $this->session->userdata('id_usuario');
+        $user_data = $this->Supervisor_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Solo buscar ticket si es una petición POST
+        if ($this->input->server('REQUEST_METHOD') === 'POST' && $this->input->post('orden_id')) {
+            $ticket_data = $this->Supervisor_model->get_ticket_by_order($this->input->post('orden_id'));
+            if ($ticket_data) {
+                $data_u['ticket'] = $ticket_data;
+            } else {
+                $data_u['error'] = 'Orden no encontrada';
+            }
+        }
+    
+        $this->load->view('incSupervisor/head');
+        $this->load->view('incSupervisor/menu', $data_u);
+        $this->load->view('supervisor_eliminar_view', $data_u);
+        $this->load->view('incSupervisor/footer');
+        $this->load->view('incSupervisor/pie');
+    }
+
+    
+    public function procesarEliminacionTicket() {
+        // Verificar si es una petición AJAX
+        if (!$this->input->is_ajax_request()) {
+            echo json_encode(['status' => 'error', 'message' => 'Acceso no permitido']);
+            return;
+        }
+    
+        $orden_id = $this->input->post('orden_id');
+        
+        if (!$orden_id) {
+            echo json_encode(['status' => 'error', 'message' => 'ID de orden no proporcionado']);
+            return;
+        }
+    
+        // Iniciar transacción
+        $this->db->trans_start();
+    
+        try {
+            // Intentar eliminar la orden y restaurar el stock
+            $result = $this->Supervisor_model->eliminarOrdenYRestaurarStock($orden_id);
+    
+            if ($result['success']) {
+                $this->db->trans_complete();
+                echo json_encode(['status' => 'success', 'message' => 'Orden eliminada correctamente']);
+            } else {
+                $this->db->trans_rollback();
+                echo json_encode(['status' => 'error', 'message' => $result['message']]);
+            }
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            echo json_encode(['status' => 'error', 'message' => 'Error al procesar la eliminación: ' . $e->getMessage()]);
+        }
+    }
+
+    //reportes
+    public function reporteDia()
+    {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Supervisor_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener la lista de usuarios
+        $lista = $this->Supervisor_model->listausuarios();
+        $data['usuarios'] = $lista;
+        
+        // Obtener las ventas del día
+        $ventasDelDia = $this->Supervisor_model->obtenerVentasDelDia();
+        $data['ventas'] = $ventasDelDia; // Pasar los datos de ventas a la vista
+    
+        $this->load->view('incSupervisor/head');
+        $this->load->view('incSupervisor/menu', $data_u);
+        $this->load->view('supervisor_reportedia_view', $data);
+        $this->load->view('incSupervisor/footer');
+        $this->load->view('incSupervisor/pie');
+    }
+
+    public function reporteMesero() {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Supervisor_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener el reporte de meseros
+        $reporteMeseros = $this->Supervisor_model->obtenerReporteMeseros();
+        
+        // Calcular el total general
+        $total_general = 0;
+        foreach($reporteMeseros as $mesero) {
+            $total_general += $mesero['total_venta'];
+        }
+        
+        $data['reporteMeseros'] = $reporteMeseros;
+        $data['total_general'] = $total_general;
+        
+        $this->load->view('incSupervisor/head');
+        $this->load->view('incSupervisor/menu', $data_u);
+        $this->load->view('supervisor_reportemesero_view', $data);
+        $this->load->view('incSupervisor/footer');
+        $this->load->view('incSupervisor/pie');
+    }
+    public function reporteTicketsEliminados()
+    {
+        $user_id = $this->session->userdata('id_usuario'); 
+        $user_data = $this->Supervisor_model->get_user_by_id($user_id);
+    
+        if ($user_data) {
+            $nombres = explode(' ', $user_data['nombres']);
+            $apellidos = explode(' ', $user_data['apellidos']);
+            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
+        }
+    
+        $data_u['user'] = $user_data;
+        
+        // Obtener las órdenes eliminadas
+        $data['ordenesEliminadas'] = $this->Supervisor_model->obtenerOrdenesEliminadas();
+        
+        $this->load->view('incSupervisor/head');
+        $this->load->view('incSupervisor/menu', $data_u);
+        $this->load->view('supervisor_reporteordenes_view', $data);
+        $this->load->view('incSupervisor/footer');
+        $this->load->view('incSupervisor/pie');
+    }
 }
 ?>

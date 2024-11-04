@@ -9,7 +9,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Supervisor/dash">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>index.php/Admin/dash">Home</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                 </div><!-- /.col -->
@@ -45,7 +45,7 @@
                         <span class="info-box-icon bg-blue elevation-1"><i class="fas fa-shopping-cart"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text">Ventas</span>
-                            <span class="info-box-number"><?php echo $ventas; ?></span>
+                            <span class="info-box-number"><?php echo $Nroventas; ?></span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -58,7 +58,7 @@
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-red elevation-1"><i class="fas fa-users"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">Clientes</span>
+                            <span class="info-box-text">Usuarios</span>
                             <span class="info-box-number"><?php echo $clientes; ?></span>
                         </div>
                         <!-- /.info-box-content -->
@@ -84,23 +84,49 @@
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table m-0">
-                <thead>
+                <thead class="color-dark">
                     <tr>
                         <th>N° de Orden</th>
-                        <th>Producto</th>
-                        <th>Total</th>
                         <th>Usuario</th>
+                        <th>Producto(s)</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php if (is_array($ventas) || is_object($ventas)): ?>
-                        <?php foreach ($ventas as $venta): ?>
+                <tbody class="color-dark1">
+                    <?php 
+                    if (is_array($ventas) || is_object($ventas)):
+                        $current_order = null;
+                        $rowspan_count = 0; // Inicializamos el contador de rowspan
+                        $total_venta = 0; // Inicializamos el total de la venta
+                    ?>
+                        <?php foreach ($ventas as $index => $venta): ?>
+                            <?php 
+                            // Si el id_orden es diferente del anterior, contamos y mostramos el rowspan
+                            if ($venta->id_orden !== $current_order): 
+                                // Contamos cuántas veces aparece el mismo id_orden y sumamos el total
+                                $current_order = $venta->id_orden;
+                                $rowspan_count = 0;
+                                $total_venta = 0; // Reiniciar el total para esta orden
+                                
+                                foreach ($ventas as $v) {
+                                    if ($v->id_orden === $venta->id_orden) {
+                                        $rowspan_count++;
+                                        $total_venta += $v->total; // Sumar el total de cada producto
+                                    }
+                                }
+                            ?>
                             <tr>
-                                <td><?php echo $venta->id_orden; ?></td>
+                                <td class="orden-bg" rowspan="<?php echo $rowspan_count; ?>"><?php echo $venta->id_orden; ?></td>
+                                <td rowspan="<?php echo $rowspan_count; ?>"><?php echo $venta->usuario; ?></td>
                                 <td><?php echo $venta->producto; ?></td>
-                                <td><?php echo number_format($venta->total, 2); ?> Bs.</td>
-                                <td><?php echo $venta->usuario; ?></td>
+                                <td class="total-align" rowspan="<?php echo $rowspan_count; ?>"><?php echo number_format($total_venta, 2); ?> Bs.</td> <!-- Mostrar el total de la venta -->
                             </tr>
+
+                            <?php else: ?>
+                                <tr>
+                                    <td><?php echo $venta->producto; ?></td>
+                                </tr>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
@@ -112,6 +138,9 @@
         </div>
         <!-- /.table-responsive -->
     </div>
+
+
+
     <!-- /.card-body -->
     <div class="card-footer clearfix">
         <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-right">View All Orders</a> -->

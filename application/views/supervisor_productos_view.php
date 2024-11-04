@@ -88,7 +88,7 @@
 <hr class="hr-ta">
             <thead>
 
-                <th>No.</th>
+                <th>#</th>
                 <th>Imagen</th>
                 <th>Nombre</th>
                 <th>Categoria</th>

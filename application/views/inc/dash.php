@@ -58,7 +58,7 @@
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-red elevation-1"><i class="fas fa-users"></i></span>
                         <div class="info-box-content">
-                            <span class="info-box-text">Clientes</span>
+                            <span class="info-box-text">Usuarios</span>
                             <span class="info-box-number"><?php echo $clientes; ?></span>
                         </div>
                         <!-- /.info-box-content -->

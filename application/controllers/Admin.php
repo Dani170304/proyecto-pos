@@ -493,7 +493,7 @@ class Admin extends CI_Controller
         $this->load->view('inc/pie');
     }
     
-    public function reporteOrdenesEliminadas()
+    public function reporteTicketsEliminados()
     {
         $user_id = $this->session->userdata('id_usuario'); 
         $user_data = $this->Admin_model->get_user_by_id($user_id);

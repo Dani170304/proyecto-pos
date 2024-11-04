@@ -118,15 +118,15 @@
               <!-- <i class="fas fa-angle-right right"></i> -->
             </p>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Supervisor/recuperarTicket" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
                   <p>REC. TICKET</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>template/pages/tables/data.html" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Supervisor/eliminarTicket" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>EDITAR TICKET</p>
+                  <p>ELIMINAR TICKET</p>
                 </a>
               </li>
           </li>
@@ -143,9 +143,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>index.php/Supervisor/reporteProducto" class="nav-link">
+                <a href="<?php echo base_url(); ?>index.php/Supervisor/reporteMesero" class="nav-link">
                   <i class="far fa-dot-circle nav-icon"></i>
-                  <p>REPORTE PRODUCTOS</p>
+                  <p>REPORTE VENTAS MESERO</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url(); ?>index.php/Supervisor/reporteTicketsEliminados" class="nav-link">
+                  <i class="far fa-dot-circle nav-icon"></i>
+                  <p>REPORTE TICKETS ELIMINADOS</p>
                 </a>
               </li>
           </li>
