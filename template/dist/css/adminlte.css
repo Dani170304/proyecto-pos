@@ -40,7 +40,7 @@
   --font-family-sans-serif: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-
+/*  */
 *,
 *::before,
 *::after {
@@ -944,8 +944,9 @@ pre code {
         0 0 15px #0400ff, /* Brillo más fuerte */
         0 0 20px #0066ff; /* Brillo aún más fuerte */
     font-weight: bold; /* Negrita para más efecto */
-    /* text-align: center; */
+    text-align: center;
 }
+
 
 
   .col-sm-7 {
@@ -2065,8 +2066,8 @@ tbody{
 
 .form-control:focus {
   color: #495057;
-  background-color: #fff;
-  border-color: #80bdff;
+  background-color: #000;
+  border-color: #ff8080;
   outline: 0;
   box-shadow: inset 0 0 0 rgba(0, 0, 0, 0);
 }
@@ -18461,7 +18462,7 @@ body.text-sm .control-sidebar {
 
 .dark-mode .nav-pills .nav-link {
   color: #000;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .dark-mode .nav-tabs {
@@ -24126,19 +24127,21 @@ body.text-sm .input-group-text {
 .dark-mode .custom-file-label::after,
 .dark-mode .custom-control-label::before,
 .dark-mode .input-group-text {
-  background-color: transparent;
+  background-color: #000;
   color: #fff;
 }
+
+
 
 .dark-mode .form-control:not(.form-control-navbar):not(.form-control-sidebar):not(.is-invalid):not(:focus),
 .dark-mode .custom-file-label,
 .dark-mode .custom-file-label::after {
   border: 2px solid #C9005A;
-
+  background-color: #000;
 }
 
 .dark-mode select {
-  background-color: #343a40;
+  background-color: #C9005A;
   color: #fff;
   border-color: #6c757d;
 }
@@ -53118,7 +53121,7 @@ border: 2px solid #000;
 {
 color: #fff;
 font-weight: bold;
-font-size: 21px;
+font-size: 18px;
 }
 .info-p
 {

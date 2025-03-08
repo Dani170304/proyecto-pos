@@ -134,62 +134,95 @@ class Admin extends CI_Controller
     }
     
     
-    
     public function agregarbd()
-    {
-        // Cargar el modelo de Usuario
-        $this->load->model('Admin_model');
-        
-        // Recoger datos del formulario
-        $nombre = $this->input->post('nombres');
-        $apellido = $this->input->post('apellidos');
+{
+    // Cargar el modelo de Usuario
+    $this->load->model('Admin_model');
+    
+    // Recoger datos del formulario
+    $nombre = $this->input->post('nombres');
+    $apellido = $this->input->post('apellidos');
+    $password = $this->input->post('password');
+    $rol = $this->input->post('rol');
+    
+    // Convertir el nombre a mayúsculas
+    $nombre = strtoupper($nombre);
+    $apellido = strtoupper($apellido);
+    
+    // Generar el login: SOLO con el PRIMER nombre (en minúsculas)
+    // Obtener solo el primer nombre
+    $nombres_array = explode(' ', $nombre);
+    $primer_nombre = $nombres_array[0];
+    
+    // Generar el login solo con el primer nombre
+    $login = strtolower($primer_nombre);
+    
+    // Verificar si existe el mismo login y añadir un número si es necesario
+    $login_base = $login;
+    $counter = 1;
+    while ($this->Admin_model->verificarLogin($login)) {
+        $login = $login_base . $counter;
+        $counter++;
+    }
+    
+    // Resto del código permanece igual
+    // Procesar el email según el rol
+    $email = null;
+    if ($rol != 'usuario') {
         $email = $this->input->post('email');
-        $password = $this->input->post('password');
-        $rol = $this->input->post('rol');
-        
-        // Convertir el email a minúsculas
-        $email = strtolower($email);
-        // Convertir el nombre a mayúsculas
-        $nombre = strtoupper($nombre);
-        $apellido = strtoupper($apellido);
-        
-        // Verificar si el email ya existe
-        if ($this->Admin_model->verificarEmail($email)) {
-            // Enviar respuesta JSON si el email ya existe
-            echo json_encode(['status' => 'error', 'message' => 'El correo electrónico ya está registrado.']);
+        if (empty($email)) {
+            echo json_encode(['status' => 'error', 'message' => 'El correo electrónico es obligatorio para administradores y supervisores.']);
             return;
         }
         
-        // Generar un código de verificación de 4 dígitos
-        $codigo_verificacion = rand(1000, 9999);
-
-        $id_usuario_auditoria = $this->session->userdata('id_usuario');
-        // Preparar los datos para la inserción
-        $data = array(
-            'nombres' => $nombre,
-            'apellidos' => $apellido,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
-            'rol' => $rol,
-            'codigo_verificacion' => $codigo_verificacion,
-            'idUsuario_auditoria' => $this->session->userdata('id_usuario') // Incluye el ID del usuario que hizo la acción
-        );
+        // Convertir el email a minúsculas
+        $email = strtolower($email);
         
-        // Insertar el usuario utilizando el modelo
-        $insert = $this->Admin_model->agregarUsuario($data);
-        
-        if ($insert) {
-            // Enviar correo de verificación
-            $this->send_verification_email($email, $codigo_verificacion, $nombre);
-            
-            // Enviar respuesta JSON
-            echo json_encode(['status' => 'success', 'message' => 'Cuenta creada exitosamente. Revisa tu correo para verificar la cuenta.']);
-        } else {
-            // Obtener el mensaje de error
-            $error = $this->db->error(); // Obtiene detalles del error
-            echo json_encode(['status' => 'error', 'message' => 'Error al registrar usuario. Detalles: ' . $error['message']]);
+        // Verificar si el email ya existe
+        if ($this->Admin_model->verificarEmail($email)) {
+            echo json_encode(['status' => 'error', 'message' => 'El correo electrónico ya está registrado.']);
+            return;
         }
     }
+    
+    // Generar un código de verificación de 4 dígitos (solo para usuarios con email)
+    $codigo_verificacion = ($email) ? rand(1000, 9999) : null;
+
+    $id_usuario_auditoria = $this->session->userdata('id_usuario');
+    
+    // Preparar los datos para la inserción
+    $data = array(
+        'nombres' => $nombre,
+        'apellidos' => $apellido,
+        'email' => $email,
+        'password' => password_hash($password, PASSWORD_DEFAULT),
+        'rol' => $rol,
+        'codigo_verificacion' => $codigo_verificacion,
+        'idUsuario_auditoria' => $this->session->userdata('id_usuario'),
+        'login' => $login
+    );
+    
+    // Insertar el usuario utilizando el modelo
+    $insert = $this->Admin_model->agregarUsuario($data);
+    
+    if ($insert) {
+        // Enviar correo de verificación si tiene email
+        if ($email) {
+            $this->send_verification_email($email, $codigo_verificacion, $nombre);
+            $message = 'Cuenta creada exitosamente. Se ha enviado un correo de verificación.';
+        } else {
+            $message = 'Cuenta creada exitosamente. Login generado: ' . $login;
+        }
+        
+        // Enviar respuesta JSON
+        echo json_encode(['status' => 'success', 'message' => $message]);
+    } else {
+        // Obtener el mensaje de error
+        $error = $this->db->error(); // Obtiene detalles del error
+        echo json_encode(['status' => 'error', 'message' => 'Error al registrar usuario. Detalles: ' . $error['message']]);
+    }
+}
+
     
     
     
@@ -285,24 +318,74 @@ class Admin extends CI_Controller
         $this->load->view('inc/pie');
     }
 
+    // Corrección para el método modificardb() en Admin.php
     public function modificardb()
     {
         $password = $this->input->post('password');
         $id_usuario = $this->input->post('id_usuario');
-        $data['nombres'] = strtoupper($this->input->post('nombres'));
-        $data['apellidos'] = strtoupper($this->input->post('apellidos'));
-        $data['email'] = $this->input->post('email');
-        $data['rol'] = $this->input->post('rol');
-    
+        $nombres = strtoupper($this->input->post('nombres'));
+        $apellidos = strtoupper($this->input->post('apellidos'));
+        $rol = $this->input->post('rol');
+        
+        // Obtener los datos actuales del usuario
+        $usuario_actual = $this->Admin_model->recuperarusuario($id_usuario)->row();
+        
+        // Preparar los datos para la actualización
+        $data = array(
+            'nombres' => $nombres,
+            'apellidos' => $apellidos,
+            'rol' => $rol
+        );
+        
+        // Actualizar el email solo si el rol es administrador o supervisor
+        if ($rol != 'usuario') {
+            $email = $this->input->post('email');
+            if (empty($email)) {
+                echo json_encode(['status' => 'error', 'message' => 'El correo electrónico es obligatorio para administradores y supervisores.']);
+                return;
+            }
+            $data['email'] = strtolower($email);
+        } else {
+            // Si el rol es usuario, establecer email como NULL
+            $data['email'] = null;
+        }
+        
+        // Actualizar el password si se proporciona uno nuevo
         if (!empty($password)) {
             $data['password'] = password_hash($password, PASSWORD_DEFAULT);
         }
-    
-        // Actualiza el usuario en la base de datos
-        $this->Admin_model->modificarusuario($id_usuario, $data);
-    
-        // Redirige a la página de inicio o cualquier otra página
-        redirect('Admin/index', 'refresh');
+        
+        // Verificar si han cambiado los nombres o apellidos y actualizar el login si es necesario
+        if ($nombres != $usuario_actual->nombres || $apellidos != $usuario_actual->apellidos) {
+            // Generar un nuevo login solo con el PRIMER nombre
+            $nombres_array = explode(' ', $nombres);
+            $primer_nombre = $nombres_array[0];
+            
+            $login = strtolower($primer_nombre);
+            
+            // Verificar si ya existe (excepto el propio usuario)
+            $login_base = $login;
+            $counter = 1;
+            while ($this->Admin_model->verificarLoginExceptoUsuario($login, $id_usuario)) {
+                $login = $login_base . $counter;
+                $counter++;
+            }
+            
+            $data['login'] = $login;
+        }
+        
+        // Actualizar el usuario en la base de datos
+        $resultado = $this->Admin_model->modificarusuario($id_usuario, $data);
+        
+        if ($resultado) {
+            $mensaje = 'Usuario modificado correctamente.';
+            if (isset($data['login']) && $data['login'] != $usuario_actual->login) {
+                $mensaje .= ' Nuevo login: ' . $data['login'];
+            }
+            echo json_encode(['status' => 'success', 'message' => $mensaje]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al modificar el usuario.']);
+        }
     }
     public function reporteDia()
     {
@@ -451,9 +534,17 @@ class Admin extends CI_Controller
         // Pasar los datos de usuario
         $data_u['user'] = $user_data;
     
-        // Obtener el producto más vendido
-        $producto_mas_vendido = $this->Admin_model->obtenerProductosMasVendidos();
+        // Por defecto, mostrar datos de los últimos 30 días
+        $fecha_hasta = date('Y-m-d'); // Hoy
+        $fecha_desde = date('Y-m-d', strtotime('-30 days')); // 30 días atrás
+        
+        // Obtener el producto más vendido con filtro de fecha por defecto
+        $producto_mas_vendido = $this->Admin_model->obtenerProductosMasVendidosPorFecha($fecha_desde, $fecha_hasta);
         $data['producto_mas_vendido'] = $producto_mas_vendido;
+        
+        // También pasar las fechas para que se muestren en los campos de filtro
+        $data['fecha_desde'] = $fecha_desde;
+        $data['fecha_hasta'] = $fecha_hasta;
     
         $this->load->view('inc/head');
         $this->load->view('inc/menu', $data_u);
@@ -492,6 +583,55 @@ class Admin extends CI_Controller
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
+    public function reporteTicketsEliminadosFiltrado() {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+    
+        if ($fecha_desde && $fecha_hasta) {
+            $ordenes_eliminadas = $this->Admin_model->obtenerOrdenesEliminadasPorFecha($fecha_desde, $fecha_hasta);
+    
+            if (!empty($ordenes_eliminadas)) {
+                $contador = 1;
+                foreach ($ordenes_eliminadas as $orden) {
+                    echo '<tr>';
+                    echo '<td class="text-center">' . $contador++ . '</td>';
+                    echo '<td class="text-center">' . $orden['id_orden'] . '</td>';
+                    echo '<td class="text-center">' . date('d/m/Y H:i:s', strtotime($orden['fecha_eliminacion'])) . '</td>';
+                    echo '<td>' . $orden['nombre_usuario'] . '</td>';
+                    echo '</tr>';
+                }
+            } else {
+                echo '<tr><td colspan="4" class="text-center">No hay registros disponibles en el rango de fechas seleccionado.</td></tr>';
+            }
+        } else {
+            echo '<tr><td colspan="4" class="text-center">Por favor, selecciona ambas fechas para filtrar.</td></tr>';
+        }
+    }
+    public function reporteProductoMasVendidoFiltrado() {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+    
+        if ($fecha_desde && $fecha_hasta) {
+            $productos = $this->Admin_model->obtenerProductosMasVendidosPorFecha($fecha_desde, $fecha_hasta);
+    
+            if (!empty($productos)) {
+                $contador = 1;
+                foreach ($productos as $producto) {
+                    echo '<tr>';
+                    echo '<td class="color-num">' . $contador++ . '</td>';
+                    echo '<td>' . $producto['nombre'] . '</td>';
+                    echo '<td>' . $producto['categoria'] . '</td>';
+                    echo '<td>' . $producto['total_vendido'] . '</td>';
+                    echo '<td>' . number_format($producto['total_recaudado'], 2) . ' Bs</td>';
+                    echo '</tr>';
+                }
+            } else {
+                echo '<tr><td colspan="5" class="text-center">No hay ventas registradas en el rango de fechas seleccionado.</td></tr>';
+            }
+        } else {
+            echo '<tr><td colspan="5" class="text-center">Por favor, selecciona ambas fechas para filtrar.</td></tr>';
+        }
+    }
     
     public function reporteTicketsEliminados()
     {
@@ -506,8 +646,12 @@ class Admin extends CI_Controller
     
         $data_u['user'] = $user_data;
         
-        // Obtener las órdenes eliminadas
-        $data['ordenesEliminadas'] = $this->Admin_model->obtenerOrdenesEliminadas();
+        // Obtener las órdenes eliminadas de ayer y hoy por defecto
+        $fecha_desde = date('Y-m-d', strtotime('-1 day')); // ayer
+        $fecha_hasta = date('Y-m-d'); // hoy
+        
+        // Usar el modelo para obtener solo las órdenes eliminadas en ese rango de fechas
+        $data['ordenesEliminadas'] = $this->Admin_model->obtenerOrdenesEliminadasPorFecha($fecha_desde, $fecha_hasta);
         
         $this->load->view('inc/head');
         $this->load->view('inc/menu', $data_u);
@@ -515,27 +659,7 @@ class Admin extends CI_Controller
         $this->load->view('inc/footer');
         $this->load->view('inc/pie');
     }
-    public function reporteEventos() {
-        $user_id = $this->session->userdata('id_usuario'); 
-        $user_data = $this->Admin_model->get_user_by_id($user_id);
-    
-        if ($user_data) {
-            $nombres = explode(' ', $user_data['nombres']);
-            $apellidos = explode(' ', $user_data['apellidos']);
-            $user_data['nombre_completo'] = $nombres[0] . ' ' . $apellidos[0];
-        }
-    
-        $data_u['user'] = $user_data;
-        
-        // Obtener el reporte de eventos
-        $data['reporteEventos'] = $this->Admin_model->obtenerReporteEventos();
-        
-        $this->load->view('inc/head');
-        $this->load->view('inc/menu', $data_u);
-        $this->load->view('admin_reporteeventos_view', $data);
-        $this->load->view('inc/footer');
-        $this->load->view('inc/pie');
-    }
+
     //RECUPERAR
     public function recuperarTicket() {
         $user_id = $this->session->userdata('id_usuario');

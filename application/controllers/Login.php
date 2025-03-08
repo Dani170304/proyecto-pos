@@ -15,47 +15,22 @@ class Login extends CI_Controller {
 
     public function validate_login()
     {
-        $email = $this->input->post('email');
+        $login = $this->input->post('login'); // Ahora usamos login en lugar de email
         $password = $this->input->post('password');
         $codigo_ingresado = $this->input->post('codigo_verificacion');
     
         // Consultar la base de datos para verificar las credenciales
         $this->load->model('Usuario_model');
-        $user = $this->Usuario_model->get_user($email);
+        $user = $this->Usuario_model->get_user_by_login($login); // Cambio en el método
     
         if ($user && password_verify($password, $user->password)) {
-            if ($user->sesion_verificada == 'no') {
+            // Verificar si el usuario necesita verificación (solo administradores y supervisores)
+            if ($user->rol != 'usuario' && $user->sesion_verificada == 'no') {
                 if ($codigo_ingresado) {
                     if ($codigo_ingresado == $user->codigo_verificacion) {
                         // Código es correcto, actualizar el estado de verificación
-                        $this->Usuario_model->update_verification_status($email);
-                        $userdata = array(
-                            'id_usuario' => $user->id_usuario,
-                            'nombres' => $user->nombres,
-                            'apellidos' => $user->apellidos,
-                            'email' => $user->email,
-                            'rol' => $user->rol,
-                            'logged_in' => TRUE
-                        );
-    
-                        // Guardar datos del usuario en sesión
-                        $this->session->set_userdata($userdata);
-                        
-                        // Redireccionar según el rol del usuario
-                        switch ($user->rol) {
-                            case 'administrador':
-                                redirect('admin');
-                                break;
-                            case 'usuario':
-                                redirect('menu');
-                                break;
-                            case 'supervisor':
-                                redirect('supervisor');
-                                break;
-                            default:
-                                redirect('menu');
-                                break;
-                        }
+                        $this->Usuario_model->update_verification_status($user->id_usuario);
+                        $this->create_session_and_redirect($user);
                     } else {
                         $this->session->set_flashdata('error_msg', 'Código de verificación incorrecto.');
                         redirect('login');
@@ -63,47 +38,52 @@ class Login extends CI_Controller {
                 } else {
                     // Guardar información temporal en la sesión
                     $this->session->set_userdata('temp_login', array(
-                        'email' => $email,
+                        'login' => $login,
                         'password' => $password
                     ));
                     $this->session->set_flashdata('codigo_verificacion', $user->codigo_verificacion);
                     $this->load->view('login_view', ['mostrar_codigo_verificacion' => true]);
                 }
             } else {
-                $userdata = array(
-                    'id_usuario' => $user->id_usuario,
-                    'nombres' => $user->nombres,
-                    'apellidos' => $user->apellidos,
-                    'email' => $user->email,
-                    'rol' => $user->rol,
-                    'logged_in' => TRUE
-                );
-    
-                $this->session->set_userdata($userdata);
-                
-                switch ($user->rol) {
-                    case 'administrador':
-                        redirect('admin');
-                        break;
-                    case 'usuario':
-                        redirect('menu');
-                        break;
-                    case 'supervisor':
-                        redirect('supervisor/dash');
-                        break;
-                    default:
-                        redirect('menu');
-                        break;
-                }
+                // Usuario tipo cliente o ya verificado, iniciar sesión directamente
+                $this->create_session_and_redirect($user);
             }
         } else {
-            $this->session->set_flashdata('error_msg', 'Email o contraseña incorrectos.');
+            $this->session->set_flashdata('error_msg', 'Login o contraseña incorrectos.');
             redirect('login');
         }
     }
     
-    
+    private function create_session_and_redirect($user)
+    {
+        $userdata = array(
+            'id_usuario' => $user->id_usuario,
+            'nombres' => $user->nombres,
+            'apellidos' => $user->apellidos,
+            'email' => $user->email,
+            'login' => $user->login,
+            'rol' => $user->rol,
+            'logged_in' => TRUE
+        );
 
+        $this->session->set_userdata($userdata);
+        
+        switch ($user->rol) {
+            case 'administrador':
+                redirect('admin');
+                break;
+            case 'usuario':
+                redirect('menu');
+                break;
+            case 'supervisor':
+                redirect('supervisor/dash');
+                break;
+            default:
+                redirect('menu');
+                break;
+        }
+    }
+    
     public function validate_signup()
     {
         $nombre = $this->input->post('nombre');
@@ -113,44 +93,39 @@ class Login extends CI_Controller {
         $rol = 'usuario';
         $estado = 1;
 
-        $email = strtolower($email);
         $nombre = strtoupper($nombre);
         $apellido = strtoupper($apellido);
 
+        // Generar login automáticamente (nombre + primera inicial del apellido)
+        $login = strtolower(preg_replace('/\s+/', '', $nombre) . substr($apellido, 0, 1));
+        
         $this->load->model('Usuario_model');
-        if ($this->Usuario_model->email_exists($email)) {
-            $this->session->set_flashdata('error_msg', 'El correo electrónico ya está registrado.');
-            redirect('login');
-            return;
+        
+        // Verificar si el login ya existe y añadir un número si es necesario
+        $login_base = $login;
+        $counter = 1;
+        while ($this->Usuario_model->login_exists($login)) {
+            $login = $login_base . $counter;
+            $counter++;
         }
 
-        // Comentado el código de reCAPTCHA ya que no es necesario
-        /*
-        $recaptchaResponse = $this->input->post('g-recaptcha-response');
-        $recaptchaSecret = '6LfifAQqAAAAAI8DZjl9CegRk9qvjFve3AI271S7';
+        // Para usuarios normales, el email es opcional
+        if (!empty($email)) {
+            $email = strtolower($email);
+            
+            // Verificar si el email ya existe
+            if ($this->Usuario_model->email_exists($email)) {
+                $this->session->set_flashdata('error_msg', 'El correo electrónico ya está registrado.');
+                redirect('login');
+                return;
+            }
+        } else {
+            $email = null; // Email opcional para usuarios normales
+        }
 
-        $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
-        $recaptchaResponseData = array(
-            'secret' => $recaptchaSecret,
-            'response' => $recaptchaResponse
-        );
-
-        $recaptchaVerification = curl_init($recaptchaUrl);
-        curl_setopt($recaptchaVerification, CURLOPT_POST, true);
-        curl_setopt($recaptchaVerification, CURLOPT_POSTFIELDS, http_build_query($recaptchaResponseData));
-        curl_setopt($recaptchaVerification, CURLOPT_RETURNTRANSFER, true);
-
-        $recaptchaResponseJson = curl_exec($recaptchaVerification);
-        curl_close($recaptchaVerification);
-
-        $recaptchaResponseData = json_decode($recaptchaResponseJson);
-        */
-
-        // Eliminada la verificación del reCAPTCHA
-        // if ($recaptchaResponseData->success) {
-        
-        // Generar código de verificación
-        $codigo_verificacion = rand(1000, 9999);
+        // Los usuarios tipo 'usuario' no necesitan verificación
+        $sesion_verificada = 'si';
+        $codigo_verificacion = null;
 
         $data = array(
             'nombres' => $nombre,
@@ -159,26 +134,22 @@ class Login extends CI_Controller {
             'email' => $email,
             'estado' => $estado,
             'rol' => $rol,
+            'login' => $login,
             'codigo_verificacion' => $codigo_verificacion,
-            'sesion_verificada' => 'no'
+            'sesion_verificada' => $sesion_verificada
         );
 
         $insert_id = $this->Usuario_model->insert_user($data);
 
         if ($insert_id) {
-            $this->send_verification_email($email, $codigo_verificacion, $nombre);
-            $this->session->set_flashdata('success_msg', 'Cuenta creada exitosamente. Revisa tu correo para verificar la cuenta.');
+            $message = 'Cuenta creada exitosamente. Tu login es: ' . $login;
+            $this->session->set_flashdata('success_msg', $message);
             redirect('login');
         } else {
             $this->session->set_flashdata('error_msg', 'Error al registrar usuario. Por favor, intenta nuevamente.');
             redirect('login');
         }
-        /* } else {
-            $this->session->set_flashdata('error_msg', 'Por favor, completa el reCAPTCHA correctamente.');
-            $this->load->view('login_view');
-        } */
     }
-    
 
     private function send_verification_email($email, $codigo_verificacion, $nombre_usuario)
     {
@@ -209,9 +180,6 @@ class Login extends CI_Controller {
         }
     }
 
-
-
-
     public function reset_password()
     {
         $this->load->view('reset_password_view');
@@ -219,36 +187,43 @@ class Login extends CI_Controller {
 
     public function send_reset_link()
     {
-        $email = $this->input->post('email');
+        $login_or_email = $this->input->post('login_or_email');
         $this->load->model('Usuario_model');
     
-        // Verifica si el correo existe
-        if ($this->Usuario_model->email_exists2($email)) {
-            // Verifica si la cuenta está activa
-            if ($this->Usuario_model->is_account_verified($email)) {
+        // Buscar al usuario por login o email
+        $user = $this->Usuario_model->get_user_by_login_or_email($login_or_email);
+        
+        if ($user) {
+            // Si es un usuario cliente, debe tener email para poder resetear
+            if ($user->rol == 'usuario' && empty($user->email)) {
+                $this->session->set_flashdata('error_msg', 'Este tipo de cuenta no permite restablecer la contraseña. Contacta al administrador.');
+                redirect('login/reset_password');
+                return;
+            }
+            
+            // Solo se puede resetear si la cuenta está activa
+            if ($user->estado == 1) {
                 $token = bin2hex(random_bytes(50)); // Genera un token único
-                $this->Usuario_model->store_reset_token($email, $token);
+                $this->Usuario_model->store_reset_token($user->id_usuario, $token);
     
                 // Enviar correo con el enlace de restablecimiento
-                if ($this->send_reset_email($email, $token)) {
+                if ($this->send_reset_email($user->email, $token)) {
                     $this->session->set_flashdata('success_msg', 'Se ha enviado un enlace para restablecer tu contraseña.');
-                    redirect('login/index'); // Redirige al login en caso de éxito
+                    redirect('login/index');
                 } else {
                     $this->session->set_flashdata('error_msg', 'Error al enviar el correo.');
-                    redirect('login/reset_password'); // Mantener en la misma página en caso de error
+                    redirect('login/reset_password');
                 }
             } else {
-                $this->session->set_flashdata('error_msg', 'La cuenta no está activa. Verifica tu correo electrónico para activarla.');
-                redirect('login/reset_password'); // Mantener en la misma página si la cuenta no está activa
+                $this->session->set_flashdata('error_msg', 'La cuenta no está activa.');
+                redirect('login/reset_password');
             }
         } else {
-            $this->session->set_flashdata('error_msg', 'El correo no está registrado.');
-            redirect('login/reset_password'); // Mantener en la misma página si el correo no existe
+            $this->session->set_flashdata('error_msg', 'No se encontró ninguna cuenta con ese login o correo.');
+            redirect('login/reset_password');
         }
     }
     
-    
-
     private function send_reset_email($email, $token)
     {
         $resetLink = base_url("index.php/login/reset_password_form/$token");
@@ -283,6 +258,7 @@ class Login extends CI_Controller {
 
     public function reset_password_form($token)
     {
+        $this->load->model('Usuario_model');
         // Verificar el token aquí
         if ($this->Usuario_model->is_token_valid($token)) {
             $data['token'] = $token;
@@ -292,10 +268,10 @@ class Login extends CI_Controller {
             redirect('login/reset_password');
         }
     }
-    
 
     public function update_password()
     {
+        $this->load->model('Usuario_model');
         $token = $this->input->post('token');
         $new_password = $this->input->post('new_password');
     
@@ -308,6 +284,5 @@ class Login extends CI_Controller {
             redirect("login/reset_password_form/$token");
         }
     }
-    
 }
 ?>

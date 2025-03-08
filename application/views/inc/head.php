@@ -18,7 +18,9 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>template/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>template/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>template/dist/css/adminlte.css">
-
+  <style>
+    
+  </style>
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 

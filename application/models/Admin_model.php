@@ -32,6 +32,24 @@ class Admin_model extends CI_Model {
         $query = $this->db->get('usuarios');
         return $query->num_rows() > 0;
     }
+    
+    // Nueva función para verificar si un login ya existe
+    public function verificarLogin($login)
+    {
+        $this->db->where('login', $login);
+        $query = $this->db->get('usuarios');
+        return ($query->num_rows() > 0);
+    }
+
+    // Nueva función para verificar si un login existe, exceptuando un usuario específico
+    public function verificarLoginExceptoUsuario($login, $id_usuario)
+    {
+        $this->db->where('login', $login);
+        $this->db->where('id_usuario !=', $id_usuario);
+        $query = $this->db->get('usuarios');
+        return ($query->num_rows() > 0);
+    }
+    
     public function eliminarusuario($id_usuario)
     {
         $this->db->where('id_usuario', $id_usuario);
@@ -177,6 +195,7 @@ class Admin_model extends CI_Model {
         $this->db->from('detalle_ventas dv');
         $this->db->join('productos p', 'dv.id_producto = p.id_producto');
         $this->db->where('dv.estado', 1); // Considerar solo ventas activas
+        $this->db->where('p.categoria !=', 'COMBO'); // Excluir categoría COMBO
         $this->db->group_by('dv.id_producto');
         $this->db->order_by('total_vendido', 'DESC');
         $this->db->limit(5); // Limitar a los 5 productos más vendidos
@@ -202,7 +221,22 @@ class Admin_model extends CI_Model {
         
         return $this->db->get()->result_array();
     }
-
+public function obtenerOrdenesEliminadasPorFecha($fecha_desde, $fecha_hasta) {
+    // Ajustar la fecha hasta para incluir todo el día
+    $fecha_hasta_ajustada = date('Y-m-d 23:59:59', strtotime($fecha_hasta));
+    
+    $this->db->select('vc.id_orden, 
+                       vc.fechaCreacion as fecha_eliminacion,
+                       CONCAT(u.nombres, " ", u.apellidos) as nombre_usuario');
+    $this->db->from('ventas_cabeza vc');
+    $this->db->join('usuarios u', 'u.id_usuario = vc.idUsuario');
+    $this->db->where('vc.estado', 0);
+    $this->db->where('vc.fechaCreacion >=', $fecha_desde . ' 00:00:00');
+    $this->db->where('vc.fechaCreacion <=', $fecha_hasta_ajustada);
+    $this->db->order_by('vc.fechaCreacion', 'DESC');
+    
+    return $this->db->get()->result_array();
+}
     public function obtenerOrdenesEliminadas() {
         $this->db->select('vc.id_orden, 
                            vc.fechaCreacion as fecha_eliminacion,
@@ -215,21 +249,57 @@ class Admin_model extends CI_Model {
         return $this->db->get()->result_array();
     }
 
-
-public function obtenerReporteEventos() {
-    $this->db->select('e.id_evento,
-                       e.nombre_evento,
-                       e.fechaCreacion,
-                       e.descripcion,
-                       e.fecha_inicio,
-                       CONCAT(u.nombres, " ", u.apellidos) as nombre_usuario');
-    $this->db->from('eventos e');
-    $this->db->join('usuarios u', 'u.id_usuario = e.idUsuario', 'left');
-    $this->db->where('e.estado', 1);
-    $this->db->order_by('e.fecha_inicio', 'DESC');
+    public function reporteProductoMasVendidoFiltrado() {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
     
-    return $this->db->get()->result_array();
-}
+        if ($fecha_desde && $fecha_hasta) {
+            $productos = $this->Admin_model->obtenerProductosMasVendidosPorFecha($fecha_desde, $fecha_hasta);
+    
+            if (!empty($productos)) {
+                $contador = 1;
+                foreach ($productos as $producto) {
+                    echo '<tr>';
+                    echo '<td class="color-num">' . $contador++ . '</td>';
+                    echo '<td>' . $producto['nombre'] . '</td>';
+                    echo '<td>' . $producto['categoria'] . '</td>';
+                    echo '<td>' . $producto['total_vendido'] . '</td>';
+                    echo '<td>' . number_format($producto['total_recaudado'], 2) . ' Bs</td>';
+                    echo '</tr>';
+                }
+            } else {
+                echo '<tr><td colspan="5" class="text-center">No hay ventas registradas en el rango de fechas seleccionado.</td></tr>';
+            }
+        } else {
+            echo '<tr><td colspan="5" class="text-center">Por favor, selecciona ambas fechas para filtrar.</td></tr>';
+        }
+    }
+    
+    public function obtenerProductosMasVendidosPorFecha($fecha_desde, $fecha_hasta) {
+        // Ajustar la fecha hasta para incluir todo el día
+        $fecha_hasta_ajustada = date('Y-m-d 23:59:59', strtotime($fecha_hasta));
+        
+        $this->db->select('p.precio, p.nombre, p.categoria, SUM(dv.cantidad) AS total_vendido, (p.precio * SUM(dv.cantidad)) AS total_recaudado');
+        $this->db->from('detalle_ventas dv');
+        $this->db->join('productos p', 'dv.id_producto = p.id_producto');
+        $this->db->join('ventas_cabeza vc', 'dv.id_orden = vc.id_orden');
+        $this->db->where('dv.estado', 1); // Considerar solo ventas activas
+        $this->db->where('vc.fechaCreacion >=', $fecha_desde . ' 00:00:00');
+        $this->db->where('vc.fechaCreacion <=', $fecha_hasta_ajustada);
+        $this->db->where('p.categoria !=', 'COMBO'); // Excluir categoría COMBO
+        $this->db->group_by('dv.id_producto');
+        $this->db->order_by('total_vendido', 'DESC');
+        $this->db->limit(5); // Limitar a los 5 productos más vendidos
+        $query = $this->db->get();
+    
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); // Devuelve los 5 productos más vendidos
+        } else {
+            return []; // Retorna un arreglo vacío si no hay ventas
+        }
+    }
+    
+    
 
     public function get_user_by_id_2($id) {
         return $this->db->get_where('usuarios', ['id_usuario' => $id])->row_array();
@@ -335,7 +405,6 @@ public function eliminarOrdenYRestaurarStock($orden_id) {
         return ['success' => false, 'message' => 'Error al procesar la eliminación: ' . $e->getMessage()];
     }
 }
-    
 
 }
 ?>

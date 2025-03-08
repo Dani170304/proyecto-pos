@@ -1,133 +1,49 @@
-2024-11-03 21:05:50 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
-2024-11-03 21:12:51 - Nuevo archivo detectado: factura_24.txt
-2024-11-03 21:12:52 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_24.txt
-2024-11-03 21:12:52 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_24.txt
-2024-11-03 21:27:44 - Nuevo archivo detectado: factura_25.txt
-2024-11-03 21:27:45 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_25.txt
-2024-11-03 21:27:45 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_25.txt
-2024-11-03 21:28:35 - Nuevo archivo detectado: factura_26.txt
-2024-11-03 21:28:36 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_26.txt
-2024-11-03 21:28:36 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_26.txt
-2024-11-03 22:43:50 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
-2024-11-03 22:56:50 - Nuevo archivo detectado: factura_27.txt
-2024-11-03 22:56:51 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_27.txt
-2024-11-03 22:56:51 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_27.txt
-2024-11-03 23:12:28 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
-2024-11-03 23:15:49 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
-2024-11-03 23:23:44 - Nuevo archivo detectado: factura_28.txt
-2024-11-03 23:23:45 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_28.txt
-2024-11-03 23:23:45 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_28.txt
-2024-11-03 23:24:47 - Nuevo archivo detectado: factura_29.txt
-2024-11-03 23:24:48 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_29.txt
-2024-11-03 23:24:48 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_29.txt
-2024-11-03 23:30:45 - Nuevo archivo detectado: factura_30.txt
-2024-11-03 23:30:46 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_30.txt
-2024-11-03 23:30:46 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_30.txt
-2024-11-03 23:33:13 - Nuevo archivo detectado: factura_31.txt
-2024-11-03 23:33:14 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_31.txt
-2024-11-03 23:33:14 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_31.txt
-2024-11-03 23:34:58 - Nuevo archivo detectado: factura_32.txt
-2024-11-03 23:34:59 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_32.txt
-2024-11-03 23:34:59 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_32.txt
-2024-11-03 23:37:50 - Nuevo archivo detectado: factura_33.txt
-2024-11-03 23:37:51 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_33.txt
-2024-11-03 23:37:51 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_33.txt
-2024-11-04 00:12:07 - Nuevo archivo detectado: factura_34.txt
-2024-11-04 00:12:08 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_34.txt
-2024-11-04 00:12:08 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_34.txt
-2024-11-04 00:12:46 - Nuevo archivo detectado: factura_35.txt
-2024-11-04 00:12:47 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_35.txt
-2024-11-04 00:12:47 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_35.txt
-2024-11-04 00:15:38 - Nuevo archivo detectado: factura_36.txt
-2024-11-04 00:15:39 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_36.txt
-2024-11-04 00:15:39 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_36.txt
-2024-11-04 00:17:52 - Nuevo archivo detectado: factura_37.txt
-2024-11-04 00:17:53 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_37.txt
-2024-11-04 00:17:53 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_37.txt
-2024-11-04 00:18:51 - Nuevo archivo detectado: factura_38.txt
-2024-11-04 00:18:52 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_38.txt
-2024-11-04 00:18:52 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_38.txt
-2024-11-04 00:29:41 - Nuevo archivo detectado: factura_39.txt
-2024-11-04 00:29:42 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_39.txt
-2024-11-04 00:29:42 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_39.txt
-2024-11-04 00:53:08 - Nuevo archivo detectado: factura_40.txt
-2024-11-04 00:53:09 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_40.txt
-2024-11-04 00:53:09 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_40.txt
-2024-11-04 00:58:15 - Nuevo archivo detectado: factura_41.txt
-2024-11-04 00:58:16 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_41.txt
-2024-11-04 00:58:16 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_41.txt
-2024-11-04 00:58:51 - Nuevo archivo detectado: factura_42.txt
-2024-11-04 00:58:52 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_42.txt
-2024-11-04 00:58:52 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_42.txt
-2024-11-04 01:03:01 - Nuevo archivo detectado: factura_43.txt
-2024-11-04 01:03:02 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_43.txt
-2024-11-04 01:03:02 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_43.txt
-2024-11-04 01:04:34 - Nuevo archivo detectado: factura_44.txt
-2024-11-04 01:04:35 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_44.txt
-2024-11-04 01:04:35 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_44.txt
-2024-11-04 01:06:16 - Nuevo archivo detectado: factura_45.txt
-2024-11-04 01:06:17 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_45.txt
-2024-11-04 01:06:17 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_45.txt
-2024-11-04 01:07:56 - Nuevo archivo detectado: factura_46.txt
-2024-11-04 01:07:57 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_46.txt
-2024-11-04 01:07:57 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_46.txt
-2024-11-04 01:16:06 - Nuevo archivo detectado: factura_48.txt
-2024-11-04 01:16:07 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_48.txt
-2024-11-04 01:16:07 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_48.txt
-2024-11-04 01:20:48 - Nuevo archivo detectado: factura_49.txt
-2024-11-04 01:20:49 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_49.txt
-2024-11-04 01:20:49 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_49.txt
-2024-11-04 01:23:04 - Nuevo archivo detectado: factura_50.txt
-2024-11-04 01:23:05 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_50.txt
-2024-11-04 01:23:05 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_50.txt
-2024-11-04 01:24:04 - Nuevo archivo detectado: factura_51.txt
-2024-11-04 01:24:05 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_51.txt
-2024-11-04 01:24:05 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_51.txt
-2024-11-04 01:28:02 - Nuevo archivo detectado: factura_52.txt
-2024-11-04 01:28:03 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_52.txt
-2024-11-04 01:28:03 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_52.txt
-2024-11-04 01:32:12 - Nuevo archivo detectado: factura_53.txt
-2024-11-04 01:32:13 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_53.txt
-2024-11-04 01:32:13 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_53.txt
-2024-11-04 01:33:14 - Nuevo archivo detectado: factura_54.txt
-2024-11-04 01:33:15 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_54.txt
-2024-11-04 01:33:15 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_54.txt
-2024-11-04 02:07:36 - Nuevo archivo detectado: factura_55.txt
-2024-11-04 02:07:37 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_55.txt
-2024-11-04 02:07:37 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_55.txt
-2024-11-04 02:11:31 - Nuevo archivo detectado: factura_56.txt
-2024-11-04 02:11:32 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_56.txt
-2024-11-04 02:11:32 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_56.txt
-2024-11-04 05:31:13 - Nuevo archivo detectado: factura_copia_40.txt
-2024-11-04 05:31:14 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:31:14 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:37:08 - Nuevo archivo detectado: factura_copia_40.txt
-2024-11-04 05:37:09 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:37:09 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:42:48 - Nuevo archivo detectado: factura_copia_40.txt
-2024-11-04 05:42:49 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:42:49 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:43:51 - Nuevo archivo detectado: factura_copia_40.txt
-2024-11-04 05:43:52 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:43:52 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:47:04 - Nuevo archivo detectado: factura_copia_40.txt
-2024-11-04 05:47:05 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:47:05 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:47:38 - Nuevo archivo detectado: factura_copia_40.txt
-2024-11-04 05:47:39 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 05:47:39 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_40.txt
-2024-11-04 09:07:15 - Nuevo archivo detectado: factura_58.txt
-2024-11-04 09:07:16 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_58.txt
-2024-11-04 09:07:16 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_58.txt
-2024-11-04 15:01:01 - Nuevo archivo detectado: factura_copia_45.txt
-2024-11-04 15:01:02 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_45.txt
-2024-11-04 15:01:02 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_copia_45.txt
-2024-11-04 15:57:03 - Nuevo archivo detectado: factura_59.txt
-2024-11-04 15:57:04 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_59.txt
-2024-11-04 15:57:04 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_59.txt
-2024-11-04 15:58:17 - Nuevo archivo detectado: factura_60.txt
-2024-11-04 15:58:18 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_60.txt
-2024-11-04 15:58:18 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_60.txt
-2024-11-04 16:00:11 - Nuevo archivo detectado: factura_61.txt
-2024-11-04 16:00:12 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_61.txt
-2024-11-04 16:00:12 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_61.txt
+2024-11-29 17:40:51 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-01 23:56:53 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-02 00:07:13 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-02 23:40:01 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-06 02:55:10 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-06 16:59:06 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-09 14:23:51 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-12 18:15:40 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-14 23:04:03 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-16 22:49:31 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-20 11:54:50 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-21 22:05:25 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-23 00:12:05 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-27 11:52:26 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-28 09:24:07 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-29 11:37:23 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2024-12-31 22:06:01 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-03 10:32:43 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-05 00:24:33 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-07 22:13:36 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-09 11:06:11 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-13 23:42:28 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-16 12:17:46 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-17 13:54:56 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-23 22:00:25 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-24 11:22:30 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-24 23:12:25 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-25 19:28:14 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-27 17:37:38 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-28 23:57:54 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-29 16:34:28 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-01-29 19:31:24 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-02-07 02:20:13 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-02-11 01:26:50 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-03-07 12:24:59 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-03-07 14:40:52 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-03-07 15:30:52 - Nuevo archivo detectado: factura_68.txt
+2025-03-07 15:30:53 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_68.txt
+2025-03-07 15:30:53 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_68.txt
+2025-03-07 15:32:19 - Iniciando monitoreo en directorio: /opt/lampp/htdocs/POS-SELF/facturas
+2025-03-07 15:32:33 - Nuevo archivo detectado: factura_69.txt
+2025-03-07 15:32:33 - Nuevo archivo detectado: factura_69.txt
+2025-03-07 15:32:34 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_69.txt
+2025-03-07 15:32:34 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_69.txt
+2025-03-07 15:32:34 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_69.txt
+2025-03-07 15:32:34 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_69.txt
+2025-03-08 03:17:07 - Nuevo archivo detectado: factura_80.txt
+2025-03-08 03:17:08 - Intentando imprimir: /opt/lampp/htdocs/POS-SELF/facturas/factura_80.txt
+2025-03-08 03:17:08 - Archivo impreso exitosamente: /opt/lampp/htdocs/POS-SELF/facturas/factura_80.txt

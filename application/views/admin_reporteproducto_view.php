@@ -66,10 +66,10 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <h1 id="title">REPORTE PRODUCTOS MAS VENDIDOS</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">Reportes</li>
@@ -80,7 +80,7 @@
         </section>
         <div class="card-info">
     <div class="card-body">
-    <table id="tablaProductosVendidos" class="table table-bordered table-striped table-neon">
+    <table id="example9" class="table table-bordered table-striped table-neon">
     <hr class="hr-ta">
     <thead>
         <th>#</th>

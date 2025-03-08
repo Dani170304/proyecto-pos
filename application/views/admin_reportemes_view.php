@@ -83,14 +83,8 @@
             margin-right: 5px;
         }
         
-        .btn-secondary-print {
-            background-color: #6c757d;
-            color: white;
-        }
-        
         .btn-secondary-excel:hover,
-        .btn-secondary-pdf:hover,
-        .btn-secondary-print:hover {
+        .btn-secondary-pdf:hover {
             opacity: 0.9;
             color: white;
         }
@@ -98,6 +92,90 @@
         .export-buttons {
             margin-bottom: 15px;
         }
+
+         /* paginacion */
+
+/* Estilos para el contenedor de paginación */
+.dataTables_paginate {
+    text-align: right;
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* Estilos para el contenedor de botones */
+.paginate_button_container {
+    display: inline-flex;
+    border-radius: 3px;
+
+    border: 2px solid #C9005A; /* Borde rojo alrededor de todos los botones */
+    overflow: hidden; /* Para que los bordes redondeados funcionen correctamente */
+}
+
+/* Estilos comunes para todos los botones */
+.paginate_button {
+    padding: 6px 15px;
+    text-align: center;
+    cursor: pointer;
+    background: black;
+    font-weight: bold;
+    font-size: 17px;
+    color: #2a92ff; /* Azul para el texto de los botones */
+    border: none; /* Sin bordes individuales */
+}
+
+/* Botón de página actual */
+.paginate_button.current {
+    background-color: black;
+    color: white;
+}
+
+/* Estados deshabilitados */
+.paginate_button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Estilos para el campo de búsqueda */
+.dataTables_filter {
+    margin-top: -40px;
+    text-align: right;
+    background-color: #000;
+    color: #fff;
+    padding: 6px 10px;
+}
+
+.dataTables_filter input {
+    padding: 5px;
+    border-radius: 3px;
+    border: 2px solid #C9005A; /* Borde rojo como en la imagen */
+    background-color: #000;
+    color: #fff;
+    margin-left: 5px;
+}
+/* Estilos para el hover de los botones de paginación */
+.paginate_button:hover {
+    background-color: #C9005A !important; /* Color rojo similar al borde */
+    color: white !important; /* Texto blanco al hacer hover */
+    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+}
+
+/* Aplicar hover también a los botones numéricos */
+.paginate_button:not(.previous):not(.next):hover {
+    background-color: #C9005A !important;
+    color: white !important;
+}
+
+/* Asegurarse de que el botón actual no cambie su estilo al hacer hover */
+.paginate_button.current:hover {
+    background-color: black !important;
+    color: white !important;
+}
+
+/* Eliminar efecto de opacidad para botones deshabilitados */
+.paginate_button.disabled {
+    opacity: 1 !important;
+    cursor: pointer !important;
+}
     </style>
 </head>
 <body>
@@ -107,10 +185,10 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <h1 id="title">REPORTE MENSUAL</h1>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">Reportes</li>
@@ -136,9 +214,6 @@
     </button>
     <button class="btn btn-secondary-pdf" onclick="exportToPDF()">
         <i class="fas fa-file-pdf"></i> PDF
-    </button>
-    <button class="btn btn-secondary-print" onclick="printTable()">
-        <i class="fas fa-print"></i> Print
     </button>
 </div>
                 <br>
@@ -230,61 +305,6 @@
 
     if (fechaDesde && fechaHasta) {
         $.ajax({
-            url: '<?= base_url("index.php/admin/reporteMesFiltrado") ?>', // Ruta del controlador para filtrar
-            type: 'POST',
-            data: {
-                fecha_desde: fechaDesde,
-                fecha_hasta: fechaHasta
-            },
-            success: function(response) {
-                $('#example7 tbody').html(response); // Actualiza el cuerpo de la tabla con los nuevos datos
-            },
-            error: function() {
-                alert('Error al obtener los datos.');
-            }
-        });
-    } else {
-        alert('Por favor, selecciona ambas fechas.');
-    }
-}
-
- </script>
-<script>
-// Inicialización de DataTable
-$(document).ready(function() {
-    let table = $('#example7').DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "pageLength": 10,
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ registros por página",
-            "zeroRecords": "No se encontraron registros",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        }
-    });
-});
-
-// Función para filtrar fechas (actualizada para trabajar con DataTables)
-function filtrarFechas() {
-    var fechaDesde = document.getElementById('fecha-desde').value;
-    var fechaHasta = document.getElementById('fecha-hasta').value;
-
-    if (fechaDesde && fechaHasta) {
-        $.ajax({
             url: '<?= base_url("index.php/admin/reporteMesFiltrado") ?>',
             type: 'POST',
             data: {
@@ -292,32 +312,11 @@ function filtrarFechas() {
                 fecha_hasta: fechaHasta
             },
             success: function(response) {
+                // Actualizar el contenido de la tabla
                 $('#example7 tbody').html(response);
-                // Destruir y reinicializar DataTable
-                $('#example7').DataTable().destroy();
-                $('#example7').DataTable({
-                    "paging": true,
-                    "lengthChange": true,
-                    "searching": true,
-                    "ordering": true,
-                    "info": true,
-                    "autoWidth": false,
-                    "responsive": true,
-                    "language": {
-                        "lengthMenu": "Mostrar _MENU_ registros por página",
-                        "zeroRecords": "No se encontraron registros",
-                        "info": "Mostrando página _PAGE_ de _PAGES_",
-                        "infoEmpty": "No hay registros disponibles",
-                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                        "search": "Buscar:",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Último",
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        }
-                    }
-                });
+                
+                // Reinicializar la paginación después de filtrar
+                initPagination();
             },
             error: function() {
                 Swal.fire({
@@ -335,9 +334,446 @@ function filtrarFechas() {
         });
     }
 }
+function initPagination() {
+    // Definir variables de paginación
+    const rowsPerPage = 10; // Cantidad de filas por página (10 órdenes)
+    let currentPage = 1;
+    
+    // Obtener todas las filas actualizadas
+    const rows = $('#example7 tbody tr');
+    
+    // Calcular el número total de órdenes (contando solo filas principales)
+    let totalOrders = 0;
+    rows.each(function() {
+        if ($(this).find('td[rowspan]').length > 0) {
+            totalOrders++;
+        }
+    });
+    
+    // Calcular total de páginas
+    const totalPages = Math.ceil(totalOrders / rowsPerPage);
+    
+    // Eliminar paginación existente
+    $('.dataTables_paginate').remove();
+    
+    // Si no hay órdenes, no crear paginación
+    if (totalOrders === 0) {
+        return;
+    }
+    
+    // Mostrar las filas correspondientes a la página actual
+    function showRows() {
+        // Ocultar todas las filas
+        rows.hide();
+        
+        // Calcular índices de órdenes para la página actual
+        const startOrder = (currentPage - 1) * rowsPerPage;
+        const endOrder = startOrder + rowsPerPage;
+        
+        // Contador para órdenes
+        let orderCount = 0;
+        
+        // Mostrar órdenes para la página actual
+        rows.each(function() {
+            // Si es una fila principal (con primera celda con rowspan)
+            if ($(this).find('td:first-child').attr('rowspan')) {
+                // Si esta orden está en el rango de la página actual
+                if (orderCount >= startOrder && orderCount < endOrder) {
+                    const rowspan = parseInt($(this).find('td:first-child').attr('rowspan'));
+                    const rowIndex = rows.index(this);
+                    
+                    // Mostrar la fila principal
+                    $(this).show();
+                    
+                    // Mostrar todas las filas relacionadas (según rowspan)
+                    for (let i = 1; i < rowspan; i++) {
+                        if (rowIndex + i < rows.length) {
+                            $(rows[rowIndex + i]).show();
+                        }
+                    }
+                }
+                orderCount++;
+            }
+        });
+    }
+  // Crear la estructura de paginación en el estilo deseado
+  function createPagination() {
+        // Crear el contenedor principal
+        const paginationContainer = $('<div></div>')
+            .addClass('dataTables_paginate paging_simple_numbers');
+        
+        // Crear contenedor de botones
+        const buttonContainer = $('<div></div>')
+            .addClass('paginate_button_container');
+        
+        // Botón Anterior
+        const prevButton = $('<button></button>')
+            .text('Anterior')
+            .addClass('paginate_button previous')
+            .on('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    showRows();
+                    updatePaginationInfo();
+                }
+            });
+        
+        // Determinar qué botones numerados mostrar
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        
+        // Si estamos cerca del final, ajustar el rango
+        if (endPage - startPage < 4 && totalPages > 5) {
+            startPage = Math.max(1, endPage - 4);
+        }
+        
+        // Agregar botón Anterior
+        buttonContainer.append(prevButton);
+        
+        // Agregar botones numerados
+        for (let i = startPage; i <= endPage; i++) {
+            const pageButton = $('<button></button>')
+                .text(i)
+                .addClass('paginate_button')
+                .on('click', function() {
+                    if (currentPage !== i) {
+                        currentPage = i;
+                        showRows();
+                        updatePaginationInfo();
+                    }
+                });
+            
+            // Marcar el botón actual como activo
+            if (i === currentPage) {
+                pageButton.addClass('current');
+            }
+            
+            buttonContainer.append(pageButton);
+        }
+        
+        // Botón Siguiente
+        const nextButton = $('<button></button>')
+            .text('Siguiente')
+            .addClass('paginate_button next')
+            .on('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    showRows();
+                    updatePaginationInfo();
+                }
+            });
+        
+        // Agregar botón Siguiente
+        buttonContainer.append(nextButton);
+        
+        // Agregar elementos al contenedor principal
+        paginationContainer.append(buttonContainer);
+        
+        // Añadir el contenedor de paginación después de la tabla
+        $('#example7').after(paginationContainer);
+    }
 
-function exportToExcel() {
+    // Actualizar la información de paginación
+    function updatePaginationInfo() {    
+        // Actualizar botones numerados
+        $('.paginate_button').removeClass('current');
+        $('.paginate_button').each(function() {
+            if ($(this).text() == currentPage) {
+                $(this).addClass('current');
+            }
+        });
+        
+        // Si la página actual no está en los botones visibles, recrear la paginación
+        if ($('.paginate_button.current').length === 0) {
+            $('.dataTables_paginate').remove();
+            createPagination();
+        }
+    }
+    
+    // Crear la paginación y mostrar la primera página
+    createPagination();
+    showRows();
+    
+    // Agregar campo de búsqueda
+    addSearchField();
+    
+    // Función para el campo de búsqueda
+    function addSearchField() {
+    // Eliminar cualquier campo de búsqueda existente
+    $('.dataTables_filter').remove();
+    
+    const searchContainer = $('<div></div>')
+        .addClass('dataTables_filter');
+    
+    const searchLabel = $('<label></label>')
+        .text('Buscar por N° de Orden: ');
+    
+    const searchInput = $('<input>')
+        .attr('type', 'text')
+        .attr('placeholder', 'Ingrese número de orden')
+        .on('input', function() {
+            filterTable($(this).val());
+        });
+    
+    searchLabel.append(searchInput);
+    searchContainer.append(searchLabel);
+    
+    // Agregar justo después de los botones de exportación
+    $('.export-buttons').after(searchContainer);
+}
+    
+    // Función de filtrado para búsqueda
+    function filterTable(term) {
+    const searchTerm = term.toLowerCase().trim();
+    
+    if (searchTerm === '') {
+        // Si se borra la búsqueda, volver a la paginación normal
+        currentPage = 1;
+        showRows();
+        updatePaginationInfo();
+        // Asegurarse de que la paginación sea visible
+        $('.dataTables_paginate').css('display', 'block');
+        return;
+    }
+    
+    // Ocultar todas las filas inicialmente
+    rows.hide();
+    
+    // Conjunto para rastrear las órdenes que coinciden
+    const matchingOrders = new Set();
+    
+    // Buscar solo en filas principales y solo por número de orden (tercera columna)
+    rows.each(function() {
+        const firstCell = $(this).find('td:first-child');
+        
+        // Solo procesar filas principales (las que tienen rowspan)
+        if (firstCell.attr('rowspan')) {
+            // Obtener el número de orden (tercera columna, índice 2)
+            const orderNumber = $(this).find('td:eq(2)').text().trim().toLowerCase();
+            
+            // Verificar si el número de orden contiene el término de búsqueda
+            if (orderNumber.includes(searchTerm)) {
+                const orderId = $(this).find('td:eq(2)').text().trim();
+                matchingOrders.add(orderId);
+            }
+        }
+    });
+    
+    // Si no hay resultados, mostrar mensaje
+    if (matchingOrders.size === 0) {
+        // Mostrar mensaje de "No se encontraron resultados"
+        const noResultsRow = $('<tr><td colspan="8" class="text-center">No se encontraron resultados para el número de orden: "' + term + '"</td></tr>');
+        rows.parent().append(noResultsRow);
+        
+        // Ocultar paginación si no hay resultados
+        $('.dataTables_paginate').css('display', 'none');
+        return;
+    }
+    
+    // Mostrar todas las filas de órdenes que coincidan
+    rows.each(function() {
+        const firstCell = $(this).find('td:first-child');
+        
+        if (firstCell.attr('rowspan')) {
+            const orderId = $(this).find('td:eq(2)').text().trim();
+            
+            if (matchingOrders.has(orderId)) {
+                // Mostrar la fila principal
+                $(this).show();
+                
+                // Mostrar filas relacionadas
+                const rowspan = parseInt(firstCell.attr('rowspan'));
+                const rowIndex = rows.index(this);
+                
+                for (let i = 1; i < rowspan; i++) {
+                    if (rowIndex + i < rows.length) {
+                        $(rows[rowIndex + i]).show();
+                    }
+                }
+            }
+        }
+    });
+    
+    // Recalcular la paginación basada en resultados filtrados
+    
+    // Recalcular total de órdenes filtradas
+    let filteredOrders = matchingOrders.size;
+    let newTotalPages = Math.ceil(filteredOrders / rowsPerPage);
+    
+    if (newTotalPages > 0) {
+        // Asegurarse de que currentPage no exceda el nuevo total
+        if (currentPage > newTotalPages) {
+            currentPage = 1;
+        }
+        
+        // Recrear paginación con el nuevo total
+        $('.dataTables_paginate').remove();
+        
+        // Crear paginación adaptada al filtro
+        createFilteredPagination(newTotalPages, Array.from(matchingOrders));
+    } else {
+        // Si no hay páginas, ocultar paginación
+        $('.dataTables_paginate').css('display', 'none');
+    }
+}
+// Función para crear paginación específica para resultados filtrados
+function createFilteredPagination(totalFilteredPages, matchingOrderIds) {
+    // Crear el contenedor principal
+    const paginationContainer = $('<div></div>')
+        .addClass('dataTables_paginate paging_simple_numbers');
+    
+    // Crear contenedor de botones
+    const buttonContainer = $('<div></div>')
+        .addClass('paginate_button_container');
+    
+    // Botón Anterior
+    const prevButton = $('<button></button>')
+        .text('Anterior')
+        .addClass('paginate_button previous')
+        .on('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                showFilteredRows(matchingOrderIds);
+                updateFilteredPaginationInfo(totalFilteredPages);
+            }
+        });
+    
+    // Determinar qué botones numerados mostrar
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalFilteredPages, startPage + 4);
+    
+    // Si estamos cerca del final, ajustar el rango
+    if (endPage - startPage < 4 && totalFilteredPages > 5) {
+        startPage = Math.max(1, endPage - 4);
+    }
+    
+    // Agregar botón Anterior
+    buttonContainer.append(prevButton);
+    
+    // Agregar botones numerados
+    for (let i = startPage; i <= endPage; i++) {
+        const pageButton = $('<button></button>')
+            .text(i)
+            .addClass('paginate_button')
+            .on('click', function() {
+                if (currentPage !== i) {
+                    currentPage = i;
+                    showFilteredRows(matchingOrderIds);
+                    updateFilteredPaginationInfo(totalFilteredPages);
+                }
+            });
+        
+        // Marcar el botón actual como activo
+        if (i === currentPage) {
+            pageButton.addClass('current');
+        }
+        
+        buttonContainer.append(pageButton);
+    }
+    
+    // Botón Siguiente
+    const nextButton = $('<button></button>')
+        .text('Siguiente')
+        .addClass('paginate_button next')
+        .on('click', function() {
+            if (currentPage < totalFilteredPages) {
+                currentPage++;
+                showFilteredRows(matchingOrderIds);
+                updateFilteredPaginationInfo(totalFilteredPages);
+            }
+        });
+    
+    // Agregar botón Siguiente
+    buttonContainer.append(nextButton);
+    
+    // Agregar elementos al contenedor principal
+    paginationContainer.append(buttonContainer);
+    
+    // Añadir el contenedor de paginación después de la tabla
+    $('#example7').after(paginationContainer);
+    
+    // Mostrar la primera página de resultados filtrados
+    showFilteredRows(matchingOrderIds);
+}
+
+// Actualizar la información de paginación para resultados filtrados
+function updateFilteredPaginationInfo(totalFilteredPages) {
+    // Actualizar botones numerados
+    $('.paginate_button').removeClass('current');
+    $('.paginate_button').each(function() {
+        if ($(this).text() == currentPage) {
+            $(this).addClass('current');
+        }
+    });
+    
+    // Si la página actual no está en los botones visibles, recrear la paginación
+    if ($('.paginate_button.current').length === 0) {
+        $('.dataTables_paginate').remove();
+        createFilteredPagination(totalFilteredPages);
+    }
+}
+
+// Mostrar las filas correspondientes a la página actual para resultados filtrados
+function showFilteredRows(matchingOrderIds) {
+    // Ocultar todas las filas
+    rows.hide();
+    
+    // Eliminar cualquier mensaje de "no se encontraron resultados"
+    $('#example7 tbody tr:has(td[colspan])').remove();
+    
+    // Calcular índices para la página actual
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    
+    // Obtener solo las órdenes visibles para esta página
+    const visibleOrders = matchingOrderIds.slice(startIndex, endIndex);
+    
+    // Mostrar las órdenes para esta página
+    rows.each(function() {
+        const firstCell = $(this).find('td:first-child');
+        
+        if (firstCell.attr('rowspan')) {
+            const orderId = $(this).find('td:eq(2)').text().trim();
+            
+            if (visibleOrders.includes(orderId)) {
+                // Mostrar la fila principal
+                $(this).show();
+                
+                // Mostrar filas relacionadas
+                const rowspan = parseInt(firstCell.attr('rowspan'));
+                const rowIndex = rows.index(this);
+                
+                for (let i = 1; i < rowspan; i++) {
+                    if (rowIndex + i < rows.length) {
+                        $(rows[rowIndex + i]).show();
+                    }
+                }
+            }
+        }
+    });
+}
+}
+ </script>
+<script>
+// Reemplaza todo el script del $(document).ready con este código más limpio
+$(document).ready(function() {
+    // Desactivar la inicialización de DataTable existente
+    if ($.fn.dataTable.isDataTable('#example7')) {
+        $('#example7').DataTable().destroy();
+    }
+    
+    // Inicializar la paginación personalizada
+    initPagination();
+});
+
+// Modificar la función exportToExcel para que use la referencia global 
+// a las filas en lugar de una referencia local
+window.exportToExcel = function() {
     let table = document.getElementById('example7');
+    
+    // Mostrar temporalmente todas las filas para exportar
+    $('#example7 tbody tr').show();
+    
     let ws = XLSX.utils.table_to_sheet(table, {
         raw: true,
         display: true,
@@ -357,10 +793,10 @@ function exportToExcel() {
     // Agregar el título
     XLSX.utils.sheet_add_aoa(ws, [[titulo]], { origin: 'A1' });
     
-    // Combinar celdas para el título (ajusta el número de columnas según tu tabla)
+    // Combinar celdas para el título
     if(!ws['!merges']) ws['!merges'] = [];
     ws['!merges'].push(
-        {s: {r:0, c:0}, e: {r:0, c:7}} // Ajusta c:7 según el número de columnas
+        {s: {r:0, c:0}, e: {r:0, c:7}} // Ajustar según el número de columnas
     );
     
     let wb = XLSX.utils.book_new();
@@ -373,11 +809,18 @@ function exportToExcel() {
     }
     
     XLSX.writeFile(wb, `${fileName}.xlsx`);
-}
+    
+    // Volver a aplicar la paginación reimplementándola
+    initPagination();
+};
 
-function exportToPDF() {
+// Modificar también exportToPDF y printTable de manera similar
+window.exportToPDF = function() {
+    // Mostrar temporalmente todas las filas para la exportación
+    $('#example7 tbody tr').show();
+    
     let table = document.getElementById('example7');
-    let rows = Array.from(table.getElementsByTagName('tr'));
+    let tableRows = Array.from(table.getElementsByTagName('tr'));
     
     let docDefinition = {
         pageOrientation: 'landscape',
@@ -416,7 +859,7 @@ function exportToPDF() {
     }
 
     let tableBody = [];
-    let headerCells = Array.from(rows[0].cells).map(cell => ({
+    let headerCells = Array.from(tableRows[0].cells).map(cell => ({
         text: cell.textContent.trim(),
         style: 'tableHeader'
     }));
@@ -425,45 +868,43 @@ function exportToPDF() {
     let currentRowspan = 0;
     let savedValues = null;
 
-    for (let i = 1; i < rows.length; i++) {
-        if (!rows[i].classList.contains('d-none')) {  // Solo procesar filas visibles
-            let cells = Array.from(rows[i].cells);
-            let rowData = [];
+    for (let i = 1; i < tableRows.length; i++) {
+        let cells = Array.from(tableRows[i].cells);
+        let rowData = [];
 
-            if (cells[0].hasAttribute('rowspan')) {
-                currentRowspan = parseInt(cells[0].getAttribute('rowspan'));
-                savedValues = [
-                    cells[0].textContent.trim(),
-                    cells[1].textContent.trim(),
-                    cells[2].textContent.trim(),
-                    cells[7].textContent.trim()
-                ];
-                rowData = [
-                    {text: savedValues[0], rowSpan: currentRowspan, style: 'tableCell'},
-                    {text: savedValues[1], rowSpan: currentRowspan, style: 'tableCell'},
-                    {text: savedValues[2], rowSpan: currentRowspan, style: 'tableCell'},
-                    {text: cells[3].textContent.trim(), style: 'tableCell'},
-                    {text: cells[4].textContent.trim(), style: 'tableCell'},
-                    {text: cells[5].textContent.trim(), style: 'tableCell'},
-                    {text: cells[6].textContent.trim(), style: 'tableCell'},
-                    {text: savedValues[3], rowSpan: currentRowspan, style: 'tableCell'}
-                ];
-                currentRowspan--;
-            } else {
-                rowData = [
-                    {text: '', style: 'tableCell'},
-                    {text: '', style: 'tableCell'},
-                    {text: '', style: 'tableCell'},
-                    {text: cells[0].textContent.trim(), style: 'tableCell'},
-                    {text: cells[1].textContent.trim(), style: 'tableCell'},
-                    {text: cells[2].textContent.trim(), style: 'tableCell'},
-                    {text: cells[3].textContent.trim(), style: 'tableCell'},
-                    {text: '', style: 'tableCell'}
-                ];
-                currentRowspan--;
-            }
-            tableBody.push(rowData);
+        if (cells[0].hasAttribute('rowspan')) {
+            currentRowspan = parseInt(cells[0].getAttribute('rowspan'));
+            savedValues = [
+                cells[0].textContent.trim(),
+                cells[1].textContent.trim(),
+                cells[2].textContent.trim(),
+                cells[7].textContent.trim()
+            ];
+            rowData = [
+                {text: savedValues[0], rowSpan: currentRowspan, style: 'tableCell'},
+                {text: savedValues[1], rowSpan: currentRowspan, style: 'tableCell'},
+                {text: savedValues[2], rowSpan: currentRowspan, style: 'tableCell'},
+                {text: cells[3].textContent.trim(), style: 'tableCell'},
+                {text: cells[4].textContent.trim(), style: 'tableCell'},
+                {text: cells[5].textContent.trim(), style: 'tableCell'},
+                {text: cells[6].textContent.trim(), style: 'tableCell'},
+                {text: savedValues[3], rowSpan: currentRowspan, style: 'tableCell'}
+            ];
+            currentRowspan--;
+        } else {
+            rowData = [
+                {text: '', style: 'tableCell'},
+                {text: '', style: 'tableCell'},
+                {text: '', style: 'tableCell'},
+                {text: cells[0].textContent.trim(), style: 'tableCell'},
+                {text: cells[1].textContent.trim(), style: 'tableCell'},
+                {text: cells[2].textContent.trim(), style: 'tableCell'},
+                {text: cells[3].textContent.trim(), style: 'tableCell'},
+                {text: '', style: 'tableCell'}
+            ];
+            currentRowspan--;
         }
+        tableBody.push(rowData);
     }
 
     docDefinition.content.push({
@@ -479,66 +920,9 @@ function exportToPDF() {
         fileName += `_${fechaDesde}_a_${fechaHasta}`;
     }
     pdfMake.createPdf(docDefinition).download(`${fileName}.pdf`);
-}
+    
+    // Reinicializar la paginación
+    initPagination();
+};
 
-function printTable() {
-    let printContents = document.getElementById('example7').outerHTML;
-    let originalContents = document.body.innerHTML;
-    
-    // Agregar fechas al título si están seleccionadas
-    let fechaDesde = document.getElementById('fecha-desde').value;
-    let fechaHasta = document.getElementById('fecha-hasta').value;
-    let fechasText = '';
-    if(fechaDesde && fechaHasta) {
-        fechasText = `<p>Período: ${fechaDesde} a ${fechaHasta}</p>`;
-    }
-    
-    document.body.innerHTML = `
-        <style>
-            @media print {
-                table { 
-                    border-collapse: collapse; 
-                    width: 100%; 
-                    page-break-inside: auto;
-                }
-                th { 
-                    background-color: #f2f2f2 !important; 
-                    -webkit-print-color-adjust: exact;
-                    color-adjust: exact;
-                }
-                th, td { 
-                    border: 1px solid black; 
-                    padding: 8px; 
-                    text-align: left;
-                }
-                tr { 
-                    page-break-inside: avoid; 
-                    page-break-after: auto;
-                }
-                .dataTables_wrapper .dataTables_paginate,
-                .dataTables_wrapper .dataTables_filter,
-                .dataTables_wrapper .dataTables_length,
-                .dataTables_wrapper .dataTables_info {
-                    display: none;
-                }
-                .color-num {
-                    color: #083CC2 !important;
-                    -webkit-print-color-adjust: exact;
-                    color-adjust: exact;
-                }
-            }
-            @page {
-                size: landscape;
-                margin: 1cm;
-            }
-        </style>
-        <h1 style="text-align: center; margin-bottom: 20px;">Reporte de Ventas Mensual</h1>
-        ${fechasText}
-        ${printContents}
-    `;
-    
-    window.print();
-    document.body.innerHTML = originalContents;
-    window.location.reload();
-}
 </script>
