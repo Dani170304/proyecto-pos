@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +12,15 @@
         }
 
         .btn-morado {
-            background-color: #6f42c1; /* Color morado */
-            color: white; /* Color del texto */
+            background-color: #6f42c1;
+            /* Color morado */
+            color: white;
+            /* Color del texto */
         }
 
         .btn-morado:hover {
-            background-color: #563d7c; /* Color morado más oscuro para el hover */
+            background-color: #563d7c;
+            /* Color morado más oscuro para el hover */
             color: white;
         }
 
@@ -28,13 +32,16 @@
         }
 
         .btn-verde {
-            background-color: #3AD335; /* Color verde */
-            color: black; /* Color del texto */
+            background-color: #3AD335;
+            /* Color verde */
+            color: black;
+            /* Color del texto */
             margin-left: 7px;
         }
 
         .btn-verde:hover {
-            background-color: #2BA81B; /* Color verde más oscuro para el hover */
+            background-color: #2BA81B;
+            /* Color verde más oscuro para el hover */
             color: white;
         }
 
@@ -44,7 +51,8 @@
         }
 
         .text-center {
-            text-align: center; /* Centra el contenido horizontalmente */
+            text-align: center;
+            /* Centra el contenido horizontalmente */
         }
 
         .color-num {
@@ -59,6 +67,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -82,11 +91,11 @@
         <div class="card-info">
             <div class="card-body">
                 <hr class="hr-ta">
-                
+
                 <table id="ordenesELiminadas" class="table table-bordered table-striped table-neon">
                     <thead>
                         <tr>
-                            
+
                             <th class="text-center">#</th>
                             <th class="text-center">N° de Orden</th>
                             <th class="text-center">Fecha eliminación</th>
@@ -94,10 +103,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                        if(isset($ordenesEliminadas) && !empty($ordenesEliminadas)) {
+                        <?php
+                        if (isset($ordenesEliminadas) && !empty($ordenesEliminadas)) {
                             $contador = 1;
-                            foreach($ordenesEliminadas as $orden) { ?>
+                            foreach ($ordenesEliminadas as $orden) { ?>
                                 <tr>
                                     <td class="text-center"><?php echo $contador++; ?></td>
                                     <td class="text-center"><?php echo $orden['id_orden']; ?></td>
@@ -119,11 +128,11 @@
         <!-- /.card -->
     </div>
     <!-- /.col -->
-</div>
-<!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+    </div>
+    <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->

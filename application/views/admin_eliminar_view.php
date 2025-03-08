@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,18 +73,18 @@
         .bill-print {
             font-family: 'Courier New', Courier, monospace;
         }
-        
+
         .bill-print-header {
             text-align: center;
             margin-bottom: 20px;
             color: #000;
         }
-        
+
         .bill-print-products table {
             width: 100%;
             margin: 15px 0;
         }
-        
+
         .bill-print-total {
             color: #000;
         }
@@ -91,29 +92,34 @@
         .bill-print-user {
             color: #000;
         }
+
         section.bill-actions button {
-display: block;
-background: #D20058;
-border: 1px solid #D20058;
-border-radius: 5px;
-box-sizing: border-box;
-color: #ffffff;
-font-size: 1rem;
-margin: 1rem auto;
-max-width: 350px;
-padding: 0.5rem 1.5rem;
-transition: 0.3s ease-in-out;
-width: 100%;
-font-weight: bold;
-}
-section.bill-actions button:hover {
-background: #008DEB;
-border: 1px solid #008DEB;
-color: #000;
-transform: scale(0.9); /* Hacer el botón un 5% más pequeño */
-transition: transform 0.2s ease-in-out; /* Suavizar la transición */
-}
-.copy-text {
+            display: block;
+            background: #D20058;
+            border: 1px solid #D20058;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #ffffff;
+            font-size: 1rem;
+            margin: 1rem auto;
+            max-width: 350px;
+            padding: 0.5rem 1.5rem;
+            transition: 0.3s ease-in-out;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        section.bill-actions button:hover {
+            background: #008DEB;
+            border: 1px solid #008DEB;
+            color: #000;
+            transform: scale(0.9);
+            /* Hacer el botón un 5% más pequeño */
+            transition: transform 0.2s ease-in-out;
+            /* Suavizar la transición */
+        }
+
+        .copy-text {
             font-weight: bold;
             font-size: 14px;
             margin-top: 5px;
@@ -129,6 +135,7 @@ transition: transform 0.2s ease-in-out; /* Suavizar la transición */
                 color: #000 !important;
                 -webkit-print-color-adjust: exact;
             }
+
             .bill-actions {
                 display: none !important;
             }
@@ -139,6 +146,7 @@ transition: transform 0.2s ease-in-out; /* Suavizar la transición */
         }
     </style>
 </head>
+
 <body>
     <!-- El resto del HTML permanece igual -->
     <div class="content-wrapper">
@@ -165,7 +173,7 @@ transition: transform 0.2s ease-in-out; /* Suavizar la transición */
                         <input type="number" name="orden_id" class="search-input date-picker" placeholder="Ingrese nro. de orden" required>
                         <button type="submit" class="btn btn-morado">Buscar Ticket</button>
                     </form>
-                    
+
                 </div>
                 <br>
                 <hr class="hr-ta">
@@ -177,114 +185,114 @@ transition: transform 0.2s ease-in-out; /* Suavizar la transición */
                 <?php endif; ?>
 
                 <?php if (isset($ticket)): ?>
-        <div class="ticket-container">
-            <section class="bill-print">
-                <div class="bill-print-header">
-                    <h1 class="bold-text">DRINKMASTER</h1>
-                    <p class="bold-text"><span>DRINKMASTER.COM</span></p>
-                    <p class="bold-text"><span>Cochabamba, Bolivia</span></p>
-                    <p class="bold-text"><?php echo date('d/m/Y H:i', strtotime($ticket['fecha_hora'])); ?></p>
-                </div>
-                <div class="bill-print-user">
-                    <p><span>Usuario:</span> <span><?php echo $ticket['mesero']; ?></span></p>
-                    <p><span>N° de Orden:</span> <span><?php echo $ticket['id_orden']; ?></span></p>
-                </div>
-                <div class="bill-print-products">
-                    <table>
-                        <tr>
-                            <th>Cant.</th>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Subtotal</th>
-                        </tr>
-                        <?php 
-                        $total = 0;
-                        foreach ($ticket['cart'] as $item): 
-                            $subtotal = $item['valor'] * $item['cantidad'];
-                            $total += $subtotal;
-                        ?>
-                            <tr>
-                                <td class='product-quantity'>x<?php echo $item['cantidad']; ?></td>
-                                <td class='product-name'><?php echo $item['nombre']; ?></td>
-                                <td class='product-value'><?php echo number_format($item['valor'], 2); ?> Bs</td>
-                                <td class='product-total'><?php echo number_format($subtotal, 2); ?> Bs</td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <div class="bill-print-total">
-                    <p><span>Importe TOTAL Bs:</span> <span><?php echo number_format($total, 2); ?></span></p>
-                    <p>Son: <?php echo $ticket['literal_total']; ?></p>
-                </div>
-            </section>
-            <section class="bill-actions">
-                <button id="eliminar">Eliminar</button>
-            </section>
-        </div>
+                    <div class="ticket-container">
+                        <section class="bill-print">
+                            <div class="bill-print-header">
+                                <h1 class="bold-text">DRINKMASTER</h1>
+                                <p class="bold-text"><span>DRINKMASTER.COM</span></p>
+                                <p class="bold-text"><span>Cochabamba, Bolivia</span></p>
+                                <p class="bold-text"><?php echo date('d/m/Y H:i', strtotime($ticket['fecha_hora'])); ?></p>
+                            </div>
+                            <div class="bill-print-user">
+                                <p><span>Usuario:</span> <span><?php echo $ticket['mesero']; ?></span></p>
+                                <p><span>N° de Orden:</span> <span><?php echo $ticket['id_orden']; ?></span></p>
+                            </div>
+                            <div class="bill-print-products">
+                                <table>
+                                    <tr>
+                                        <th>Cant.</th>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                    <?php
+                                    $total = 0;
+                                    foreach ($ticket['cart'] as $item):
+                                        $subtotal = $item['valor'] * $item['cantidad'];
+                                        $total += $subtotal;
+                                    ?>
+                                        <tr>
+                                            <td class='product-quantity'>x<?php echo $item['cantidad']; ?></td>
+                                            <td class='product-name'><?php echo $item['nombre']; ?></td>
+                                            <td class='product-value'><?php echo number_format($item['valor'], 2); ?> Bs</td>
+                                            <td class='product-total'><?php echo number_format($subtotal, 2); ?> Bs</td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </table>
+                            </div>
+                            <div class="bill-print-total">
+                                <p><span>Importe TOTAL Bs:</span> <span><?php echo number_format($total, 2); ?></span></p>
+                                <p>Son: <?php echo $ticket['literal_total']; ?></p>
+                            </div>
+                        </section>
+                        <section class="bill-actions">
+                            <button id="eliminar">Eliminar</button>
+                        </section>
+                    </div>
 
-        
-    <?php endif; ?>
-    <script>
-$(document).ready(function() {
-    $('#eliminar').click(function(e) {
-        e.preventDefault();
-        
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: "Esta acción eliminará la orden y restaurará el stock. No se puede revertir.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const orden_id = <?php echo isset($ticket) ? $ticket['id_orden'] : 'null'; ?>;
-                
-                if (!orden_id) {
-                    Swal.fire('Error', 'No se encontró el ID de la orden', 'error');
-                    return;
-                }
 
-                $.ajax({
-                    url: '<?php echo base_url('index.php/admin/procesarEliminacionTicket'); ?>',
-                    type: 'POST',
-                    data: {
-                        orden_id: orden_id
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.status === 'success') {
+                <?php endif; ?>
+                <script>
+                    $(document).ready(function() {
+                        $('#eliminar').click(function(e) {
+                            e.preventDefault();
+
                             Swal.fire({
-                                title: '¡Eliminado!',
-                                text: response.message,
-                                icon: 'success'
-                            }).then(() => {
-                                // Recargar la página o redireccionar
-                                window.location.reload();
+                                title: '¿Estás seguro?',
+                                text: "Esta acción eliminará la orden y restaurará el stock. No se puede revertir.",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Sí, eliminar',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const orden_id = <?php echo isset($ticket) ? $ticket['id_orden'] : 'null'; ?>;
+
+                                    if (!orden_id) {
+                                        Swal.fire('Error', 'No se encontró el ID de la orden', 'error');
+                                        return;
+                                    }
+
+                                    $.ajax({
+                                        url: '<?php echo base_url('index.php/admin/procesarEliminacionTicket'); ?>',
+                                        type: 'POST',
+                                        data: {
+                                            orden_id: orden_id
+                                        },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            if (response.status === 'success') {
+                                                Swal.fire({
+                                                    title: '¡Eliminado!',
+                                                    text: response.message,
+                                                    icon: 'success'
+                                                }).then(() => {
+                                                    // Recargar la página o redireccionar
+                                                    window.location.reload();
+                                                });
+                                            } else {
+                                                Swal.fire('Error', response.message, 'error');
+                                            }
+                                        },
+                                        error: function() {
+                                            Swal.fire('Error', 'Ocurrió un error al procesar la solicitud', 'error');
+                                        }
+                                    });
+                                }
                             });
-                        } else {
-                            Swal.fire('Error', response.message, 'error');
+                        });
+                    });
+                </script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        if (window.history.replaceState) {
+                            window.history.replaceState(null, null, window.location.href);
                         }
-                    },
-                    error: function() {
-                        Swal.fire('Error', 'Ocurrió un error al procesar la solicitud', 'error');
-                    }
-                });
-            }
-        });
-    });
-});
-</script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.history.replaceState) {
-                window.history.replaceState(null, null, window.location.href);
-            }
-            document.getElementById('searchForm').reset();
-        });
-        
-    </script>
+                        document.getElementById('searchForm').reset();
+                    });
+                </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>DRINK | RESET</title>
     <link href="<?php echo base_url(); ?>assets-ini/assets/img/logo_drink.jpg" rel="icon">
@@ -17,26 +18,34 @@
             justify-content: center;
             width: 60px;
         }
+
         .loading-message {
             display: none;
             text-align: center;
             font-size: 18px;
-            color: #bb0533; /* Color del texto */
+            color: #bb0533;
+            /* Color del texto */
         }
+
         /* Color del texto en otras partes */
         body {
-            color: #bb0533; /* Aplica el color a todo el cuerpo */
+            color: #bb0533;
+            /* Aplica el color a todo el cuerpo */
         }
-        label, input {
-            color: #bb0533; /* Aplica el color a etiquetas, inputs y botones */
+
+        label,
+        input {
+            color: #bb0533;
+            /* Aplica el color a etiquetas, inputs y botones */
         }
     </style>
 </head>
+
 <body>
 
-    <div class="main">   
+    <div class="main">
         <input type="checkbox" id="chk" aria-hidden="true">
-        
+
         <div class="login">
             <form id="login-form" action="<?php echo site_url('login/update_password'); ?>" method="POST" onsubmit="showLoadingMessage();">
                 <label for="chk" aria-hidden="true">NUEVO PASSWORD</label>
@@ -143,4 +152,5 @@
         <script src="<?php echo base_url(); ?>assets-ini/assets/vendor/venobox/venobox.min.js"></script>
     </div>
 </body>
+
 </html>

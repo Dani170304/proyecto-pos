@@ -46,7 +46,7 @@
     <div class="container" data-aos="zoom-in" data-aos-delay="100">
       <h1 id="text">DRINKMASTER</h1>
       <h2>Disfruta cada sorbo con estilo!</h2>
-      <br> 
+      <br>
       <p><span class="typed" data-typed-items="¡Haz de cada bebida un evento!, ¡Sabor y diversión en cada copa!, Tu experiencia de bebida mejorada., Brindemos por los buenos tiempos."></span></p>
       <br>
       <div class="social-links">
@@ -105,4 +105,5 @@
   </script>
 
 </body>
+
 </html>

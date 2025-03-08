@@ -13,6 +13,4 @@ class CerrarDrink extends CI_Controller
         // Redirigir a la página de login
         redirect('inicio');
     }
-    
 }
-?>

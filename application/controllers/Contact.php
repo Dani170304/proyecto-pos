@@ -1,20 +1,24 @@
 // application/controllers/ContactController.php
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Contact extends CI_Controller {
+class Contact extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('Contact_model'); // Cargar el modelo
         $this->load->library('form_validation'); // Cargar la librería de validación
     }
 
-    public function index() {
+    public function index()
+    {
         $this->load->view('ini'); // Cargar la vista del formulario
     }
 
-    public function submit() {
+    public function submit()
+    {
         // Configurar las reglas de validación
         $this->form_validation->set_rules('name', 'Name', 'required|min_length[4]');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
@@ -36,7 +40,7 @@ class Contact extends CI_Controller {
             } else {
                 $data['message'] = 'There was a problem sending your message. Please try again.';
             }
-            
+
             $this->load->view('contact_form', $data);
         }
     }

@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Inicio extends CI_Controller {
+class Inicio extends CI_Controller
+{
 
     public function __construct()
     {
@@ -16,5 +17,3 @@ class Inicio extends CI_Controller {
         $this->load->view('inicio_view', $data);  // Pasa los datos a la vista
     }
 }
-
-?>

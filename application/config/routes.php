@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -62,4 +62,3 @@ $route['eventos/agregareventobd'] = 'eventos/agregareventobd';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-

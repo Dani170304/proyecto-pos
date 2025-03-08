@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>DRINK | RESET</title>
     <link href="<?php echo base_url(); ?>assets-ini/assets/img/logo_drink.jpg" rel="icon">
@@ -17,29 +18,34 @@
             justify-content: center;
             width: 60px;
         }
+
         .loading-message {
             display: none;
             text-align: center;
             font-size: 18px;
-            color: #bb0533; /* Color del texto */
-        }
-        /* Color del texto en otras partes */
-        body,input {
-            color: #bb0533; /* Aplica el color a todo el cuerpo */
+            color: #bb0533;
+            /* Color del texto */
         }
 
+        /* Color del texto en otras partes */
+        body,
+        input {
+            color: #bb0533;
+            /* Aplica el color a todo el cuerpo */
+        }
     </style>
 </head>
+
 <body>
     <div class="btn-container">
         <a href="<?php echo site_url('login/index'); ?>" class="btn-inicio">
             <i class="bx bx-home"></i> <span>ATRAS</span>
         </a>
     </div>
-    <div class="main">   
+    <div class="main">
 
         <input type="checkbox" id="chk" aria-hidden="true">
-        
+
         <div class="login">
 
             <form id="login-form" action="<?php echo site_url('login/send_reset_link'); ?>" method="POST" onsubmit="showLoadingMessage();">
@@ -108,4 +114,5 @@
         <script src="<?php echo base_url(); ?>assets-ini/assets/vendor/venobox/venobox.min.js"></script>
     </div>
 </body>
+
 </html>

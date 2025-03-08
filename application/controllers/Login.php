@@ -1,12 +1,14 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 
-class Login extends CI_Controller {
+class Login extends CI_Controller
+{
 
     public function index()
     {
@@ -18,11 +20,11 @@ class Login extends CI_Controller {
         $login = $this->input->post('login'); // Ahora usamos login en lugar de email
         $password = $this->input->post('password');
         $codigo_ingresado = $this->input->post('codigo_verificacion');
-    
+
         // Consultar la base de datos para verificar las credenciales
         $this->load->model('Usuario_model');
         $user = $this->Usuario_model->get_user_by_login($login); // Cambio en el método
-    
+
         if ($user && password_verify($password, $user->password)) {
             // Verificar si el usuario necesita verificación (solo administradores y supervisores)
             if ($user->rol != 'usuario' && $user->sesion_verificada == 'no') {
@@ -53,7 +55,7 @@ class Login extends CI_Controller {
             redirect('login');
         }
     }
-    
+
     private function create_session_and_redirect($user)
     {
         $userdata = array(
@@ -67,7 +69,7 @@ class Login extends CI_Controller {
         );
 
         $this->session->set_userdata($userdata);
-        
+
         switch ($user->rol) {
             case 'administrador':
                 redirect('admin');
@@ -83,7 +85,7 @@ class Login extends CI_Controller {
                 break;
         }
     }
-    
+
     public function validate_signup()
     {
         $nombre = $this->input->post('nombre');
@@ -98,9 +100,9 @@ class Login extends CI_Controller {
 
         // Generar login automáticamente (nombre + primera inicial del apellido)
         $login = strtolower(preg_replace('/\s+/', '', $nombre) . substr($apellido, 0, 1));
-        
+
         $this->load->model('Usuario_model');
-        
+
         // Verificar si el login ya existe y añadir un número si es necesario
         $login_base = $login;
         $counter = 1;
@@ -112,7 +114,7 @@ class Login extends CI_Controller {
         // Para usuarios normales, el email es opcional
         if (!empty($email)) {
             $email = strtolower($email);
-            
+
             // Verificar si el email ya existe
             if ($this->Usuario_model->email_exists($email)) {
                 $this->session->set_flashdata('error_msg', 'El correo electrónico ya está registrado.');
@@ -154,7 +156,7 @@ class Login extends CI_Controller {
     private function send_verification_email($email, $codigo_verificacion, $nombre_usuario)
     {
         $mail = new PHPMailer(true);
-    
+
         try {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
@@ -163,16 +165,16 @@ class Login extends CI_Controller {
             $mail->Password = 'lhwkmuzraevheiem';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
-    
+
             $mail->setFrom('drink.master.2004@gmail.com', 'DRINKMASTER');
             $mail->addAddress($email); // Receptor del correo
-    
+
             $mail->isHTML(true);
             $mail->Subject = mb_encode_mimeheader('Verificación de tu cuenta', 'UTF-8', 'B');
-    
+
             // Modifica el cuerpo del correo para incluir el nombre del usuario
             $mail->Body = "Hola, $nombre_usuario gracias por unirte a nuestro equipo, y ahora brindemos por los buenos tiempos,<br/><br/>Tu código de verificación es: <b>$codigo_verificacion</b><br/><br/>Saludos y un abrazo del equipo de DRINKMASTER,<br/>";
-    
+
             $mail->send();
         } catch (Exception $e) {
             // Manejo de errores si ocurre
@@ -189,10 +191,10 @@ class Login extends CI_Controller {
     {
         $login_or_email = $this->input->post('login_or_email');
         $this->load->model('Usuario_model');
-    
+
         // Buscar al usuario por login o email
         $user = $this->Usuario_model->get_user_by_login_or_email($login_or_email);
-        
+
         if ($user) {
             // Si es un usuario cliente, debe tener email para poder resetear
             if ($user->rol == 'usuario' && empty($user->email)) {
@@ -200,12 +202,12 @@ class Login extends CI_Controller {
                 redirect('login/reset_password');
                 return;
             }
-            
+
             // Solo se puede resetear si la cuenta está activa
             if ($user->estado == 1) {
                 $token = bin2hex(random_bytes(50)); // Genera un token único
                 $this->Usuario_model->store_reset_token($user->id_usuario, $token);
-    
+
                 // Enviar correo con el enlace de restablecimiento
                 if ($this->send_reset_email($user->email, $token)) {
                     $this->session->set_flashdata('success_msg', 'Se ha enviado un enlace para restablecer tu contraseña.');
@@ -223,7 +225,7 @@ class Login extends CI_Controller {
             redirect('login/reset_password');
         }
     }
-    
+
     private function send_reset_email($email, $token)
     {
         $resetLink = base_url("index.php/login/reset_password_form/$token");
@@ -274,7 +276,7 @@ class Login extends CI_Controller {
         $this->load->model('Usuario_model');
         $token = $this->input->post('token');
         $new_password = $this->input->post('new_password');
-    
+
         // Verifica y actualiza la contraseña
         if ($this->Usuario_model->update_password($token, password_hash($new_password, PASSWORD_DEFAULT))) {
             $this->session->set_flashdata('success_msg', 'Contraseña actualizada con éxito.');
@@ -285,4 +287,3 @@ class Login extends CI_Controller {
         }
     }
 }
-?>

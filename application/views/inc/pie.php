@@ -157,6 +157,14 @@ $(function () {
         "autoWidth": false,
     }).container().appendTo('#example7_wrapper .col-md-6:eq(0)');
 });
+$(function () {
+    // Configuración para la tabla #example1
+    $("#example10").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+    })
+});
 // Configuración para example1
 $("#example1").DataTable({
     "responsive": true,
