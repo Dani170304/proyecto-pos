@@ -8,6 +8,8 @@ class Ticket extends CI_Controller
     {
         parent::__construct();
         $this->load->helper('file');
+        $this->load->model('Orden_model'); // Asegúrate de tener este modelo creado
+        
         // Add CORS headers for AJAX requests
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST');
@@ -18,6 +20,73 @@ class Ticket extends CI_Controller
             exit(0);
         }
     }
+
+    // public function save_bill()
+    // {
+    //     try {
+    //         // Verify POST request
+    //         if ($this->input->method() != 'post') {
+    //             throw new Exception('Método no permitido');
+    //         }
+
+    //         // Get and validate JSON data
+    //         $json = file_get_contents('php://input');
+    //         $data = json_decode($json, true);
+
+    //         if ($data === null) {
+    //             throw new Exception('JSON inválido');
+    //         }
+
+    //         // Validate required fields
+    //         if (!isset($data['cart']) || !isset($data['name']) || !isset($data['id'])) {
+    //             throw new Exception('Datos incompletos');
+    //         }
+
+    //         // Create bills directory if it doesn't exist
+    //         $directory = FCPATH . 'facturas';
+    //         if (!file_exists($directory)) {
+    //             if (!mkdir($directory, 0777, true)) {
+    //                 throw new Exception('No se pudo crear el directorio de facturas');
+    //             }
+    //             chmod($directory, 0777);  // Asegurar permisos del directorio
+    //         }
+
+    //         // Generate bill content
+    //         $contenido = $this->generate_bill_content($data);
+
+    //         // Save the file
+    //         $filename = 'factura_' . $data['newIdOrden'] . '.txt';
+    //         $filepath = $directory . DIRECTORY_SEPARATOR . $filename;
+
+    //         if (!write_file($filepath, $contenido)) {
+    //             throw new Exception('Error al guardar el archivo');
+    //         }
+
+    //         // Establecer permisos del archivo
+    //         chmod($filepath, 0777);
+
+    //         // Return success response
+    //         $this->output
+    //             ->set_content_type('application/json')
+    //             ->set_output(json_encode([
+    //                 'success' => true,
+    //                 'message' => 'Factura guardada correctamente',
+    //                 'filename' => $filename
+    //             ]));
+    //     } catch (Exception $e) {
+    //         // Log the error for debugging
+    //         log_message('error', 'Error en save_bill: ' . $e->getMessage());
+
+    //         // Return error response
+    //         $this->output
+    //             ->set_status_header(500)
+    //             ->set_content_type('application/json')
+    //             ->set_output(json_encode([
+    //                 'success' => false,
+    //                 'error' => $e->getMessage()
+    //             ]));
+    //     }
+    // }
 
     public function save_bill()
     {
@@ -39,6 +108,16 @@ class Ticket extends CI_Controller
             if (!isset($data['cart']) || !isset($data['name']) || !isset($data['id'])) {
                 throw new Exception('Datos incompletos');
             }
+
+            // Guardar la orden en la base de datos y obtener el nuevo ID
+            $orden_id = $this->Orden_model->guardar_orden($data);
+            
+            if (!$orden_id) {
+                throw new Exception('Error al guardar la orden en la base de datos');
+            }
+            
+            // Actualizar el ID de la orden con el nuevo
+            $data['newIdOrden'] = $orden_id;
 
             // Create bills directory if it doesn't exist
             $directory = FCPATH . 'facturas';
@@ -69,7 +148,8 @@ class Ticket extends CI_Controller
                 ->set_output(json_encode([
                     'success' => true,
                     'message' => 'Factura guardada correctamente',
-                    'filename' => $filename
+                    'filename' => $filename,
+                    'newOrderId' => $orden_id
                 ]));
         } catch (Exception $e) {
             // Log the error for debugging
@@ -85,6 +165,7 @@ class Ticket extends CI_Controller
                 ]));
         }
     }
+
     public function save_bill_2()
     {
         try {

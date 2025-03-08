@@ -281,29 +281,70 @@ table tr {
 }
 
 /* Estilos adicionales */
+/* Estilos específicos para impresión */
+/* Estilos específicos para impresión */
 @media print {
-    body * {
-        visibility: hidden;
-
-    }
-    #bill-print, #bill-print * {
-        visibility: visible;
-    }
-    #bill-print {
-        position: absolute;
-        left: 0;
-        top: -15px;
-    }
     body {
+        visibility: hidden;
+        background-color: white !important;
         min-height: unset;
+        margin: 0;
+        padding: 0;
     }
-    section.bill-actions {
-        display: none;
+    
+    #bill-print {
+        visibility: visible !important;
+        display: block !important;
+        position: absolute !important;
+        left: 0;
+        top: 0;
+        width: 80mm;
+        background-color: white !important;
+        color: black !important;
+        box-shadow: none !important;
     }
+    
+    #bill-print * {
+        visibility: visible !important;
+        color: black !important;
+    }
+    
+    .bill-print-header, 
+    .bill-print-user, 
+    .bill-print-products,
+    .bill-print-total {
+        display: block !important;
+        color: black !important;
+    }
+    
+    section.bill-actions,
+    .close-ticket,
+    .logo-img,
+    .logo-img-eben,
+    .titulo,
+    #preloader,
+    .swal2-container {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
     @page {
-        size: 80mm 100%; /* Ancho fijo de 80mm y altura automática */
-        margin: 0.4cm; /* Márgenes de impresión */
+        size: 80mm auto; /* Ancho fijo de 80mm y altura automática */
+        margin: 5mm; /* Márgenes de impresión */
     }
+}
+
+/* Asegurar la visibilidad del contenido del ticket en todas las situaciones */
+#bill-print {
+    display: block !important;
+    background-color: white;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+/* Clase que se agrega al body durante la impresión */
+body.printing .swal2-container {
+    display: none !important;
 }
   
 /*  */

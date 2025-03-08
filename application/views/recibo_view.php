@@ -77,7 +77,7 @@ date_default_timezone_set('America/La_Paz');
     </section>
     <section class="bill-actions">
         <button id="print">Imprimir</button>
-        <button id="new">Nuevo</button>
+        <!-- <button id="new">Nuevo</button> -->
     </section>
 
     <script>
@@ -116,36 +116,104 @@ date_default_timezone_set('America/La_Paz');
             }
         }
 
-        // Manejador del botón de impresión
+        // Manejador del botón de impresión con monitore de carpeta
+        // document.querySelector('#print').addEventListener('click', async function() {
+        //     // Recolectar los datos de la factura usando las variables que definimos arriba
+        //     const billData = {
+        //         cart: cart,
+        //         name: mesero,
+        //         id: id_orden,
+        //         metodoPago: 'Efectivo', // O podrías tener un select para esto
+        //         newIdOrden: id_orden,
+        //         fecha_hora: fecha_hora
+        //     };
+
+        //     // Enviar al PHP para guardar
+        //     const saved = await sendBillToPHP(billData);
+
+        //     if (saved) {
+        //         Swal.fire({
+        //             icon: 'success',
+        //             title: '¡Éxito!',
+        //             text: 'Imprimiendo factura',
+        //             showConfirmButton: false,
+        //             timer: 1500
+        //         });
+        //     }
+        // });
+
+
         document.querySelector('#print').addEventListener('click', async function() {
-            // Recolectar los datos de la factura usando las variables que definimos arriba
-            const billData = {
-                cart: cart,
-                name: mesero,
-                id: id_orden,
-                metodoPago: 'Efectivo', // O podrías tener un select para esto
-                newIdOrden: id_orden,
-                fecha_hora: fecha_hora
-            };
-
-            // Enviar al PHP para guardar
-            const saved = await sendBillToPHP(billData);
-
-            if (saved) {
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Éxito!',
-                    text: 'Imprimiendo factura',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
+    try {
+        // Ocultamos temporalmente los botones para la impresión
+        const billActions = document.querySelector('.bill-actions');
+        const originalDisplay = billActions.style.display;
+        billActions.style.display = 'none';
+        
+        // Primera impresión
+        await printTicket("Primera impresión");
+        
+        // Segunda impresión
+        await printTicket("Segunda impresión");
+        
+        // Restauramos los botones después de la impresión
+        billActions.style.display = originalDisplay;
+        
+        // Mensaje final y redirección
+        Swal.fire({
+            icon: 'success',
+            title: '¡Impresión completada!',
+            text: 'Cerrando sesión...',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            // Redirigir al login después de cerrar sesión
+            window.location.href = '<?php echo site_url("Login"); ?>';
         });
+        
+    } catch (error) {
+        console.error('Error al imprimir:', error);
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: 'Error: ' + error.message
+        });
+    }
+});
 
+// Función para imprimir el ticket
+async function printTicket(title) {
+    return new Promise((resolve) => {
+        // Aseguramos que el ticket sea visible
+        const billPrint = document.getElementById('bill-print');
+        billPrint.style.display = 'block';
+        
+        // Mostramos el mensaje de preparación
+        Swal.fire({
+            icon: 'info',
+            title: 'Preparando impresión',
+            text: title,
+            showConfirmButton: false,
+            timer: 500
+        }).then(() => {
+            // Antes de imprimir, aseguramos que los estilos estén correctamente aplicados
+            document.body.classList.add('printing');
+            
+            // Llamamos al diálogo de impresión del navegador
+            window.print();
+            
+            // Esperamos a que termine la impresión
+            setTimeout(() => {
+                document.body.classList.remove('printing');
+                resolve();
+            }, 100);
+        });
+    });
+}
         // Manejador del botón nuevo
-        document.querySelector('#new').addEventListener('click', function() {
-            window.location = '<?php echo base_url("index.php/menu/nueva_orden"); ?>';
-        });
+        // document.querySelector('#new').addEventListener('click', function() {
+        //     window.location = '<?php echo base_url("index.php/menu/nueva_orden"); ?>';
+        // });
     </script>
     <script>
         window.addEventListener('load', function() {
